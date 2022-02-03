@@ -39,6 +39,13 @@ output:
 
 
 
+# o2-03
+
+* Git Collab, Git push 
+* Simulering af normalfordeling i R 
+
+
+
 
 
 
