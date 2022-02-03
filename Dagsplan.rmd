@@ -11,7 +11,7 @@ output:
 
 ## P2 Overordnet Plan 
 
-![](img/pikachu.jpg){width=50%}
+![](pikachu.jpg){width=50%}
 
 
 >General Formål
