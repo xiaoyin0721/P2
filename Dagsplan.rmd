@@ -1,0 +1,45 @@
+---
+title: "Dagsplan"
+date: "`r format(Sys.time(), '%m -%d -%Y')`"
+runtime: shiny
+output:
+   html_document:
+      toc: true
+      number_sections: true
+      theme: united
+---
+
+## P2 Overordnet Plan 
+
+![](img/pikachu.jpg){width=50%}
+
+
+>General Formål
+
+* Datagenering ved hjælp af simulering
+  + Algoritme for Pseudo random number generator(PRNG)
+      - Hvordan kan vi bruge en computer, som er et fuldstændigt deterministisk              system, til at generere tilfældige tal?
+      - Hvis vi kan generere tilfældige heltal, hvodan kan vi s˚a bruge det til at           generere reele tal?
+  + Modelantagelser for statistiske metoder
+      - Antalgelser for [Linear Regression](https://statisticsbyjim.com/regression/ols-linear-regression-assumptions/), t-test, Anova 
+      - Hvad sker der når antagelser i klassiske hypotese test ikke er opfyldt? fx.          data fordeling af population er skæv, test-størrelse er ikke stor nok
+      - Vælg af konfidnesintervallers ift. Type I, type II fejl
+
+* Statistik analyse 
+  + Descriptive statistics, Modelling, Stastisk inference
+* Simulation som alternativer til klassiske hypotese test:
+  - permutationstest
+  - Boostrap
+
+
+## Ugesplan
+* 01-02 -- 06-02 
+* 07-02 -- 13-02
+
+
+
+
+
+
+
+
