@@ -79,6 +79,8 @@ output:
 * 21-02 -- 22-02
 TID TIL AT HAVE DET FEDT
 
+NO WAY NO GO
+
 ## Tidsplan
 * 05/04 2022 - Statusseminar
 * 25/05 2022 - Aflevering af projekt
