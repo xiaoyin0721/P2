@@ -45,7 +45,7 @@ output:
 * Simulering af normalfordeling i R 
 
 
-## Vejledesmøde
+## Vejledermøde
 
 * PRNG generate data, simuleration(bootstrap) to generate the population data
 
