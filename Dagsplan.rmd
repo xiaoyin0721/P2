@@ -77,7 +77,7 @@ output:
 ** 20-02:
 - Weekend
 * 21-02 -- 22-02
-
+TID TIL AT HAVE DET FEDT
 
 ## Tidsplan
 * 05/04 2022 - Statusseminar
