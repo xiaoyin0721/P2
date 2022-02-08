@@ -45,7 +45,15 @@ output:
 * Simulering af normalfordeling i R 
 
 
+## Vejledesmøde
 
+* PRNG generate data, simuleration(bootstrap) to generate the population data
+
+* linær kongurence(twisted) // uniform fordeling
+
+* selv implementere algoritme for PRNG and boostrap
+
+* parameter linear model, statistics 
 
 
 
