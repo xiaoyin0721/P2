@@ -46,14 +46,16 @@ output:
 ** 10-02:
 - Skrive om PRNG
 - Implementere PRNG
-- Line
+- Lineær algebruh
 ** 11-02:
+- Skrive om PRNG
+- Implementere PRNG
 ** 12-02:
-Weekend
+- Weekend
 ** 13-02:
-Weekend
+- Weekend
 * 14-02 -- 20-02
-
+  
 
 ## Tidsplan
 * 05/04 2022 - Statusseminar
