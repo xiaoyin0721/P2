@@ -56,13 +56,26 @@ output:
 - Weekend
 * 14-02 -- 20-02
 ** 14-02:
-
+- Skrive om PRNG
+- Implementere PRNG
+- Anvendt statistik
 ** 15-02:
+- Skrive om PRNG
+- Implementere PRNG
 ** 16-02:
+- Skrive om PRNG
+- Implementere PRNG
+- DAT REEKSAMEN FORBEREDELSE
 ** 17-02:
+- Algoritmer + datastrukturer
+- Anvendt statistik
 ** 18-02:
+- Færdiggør at skrive om PRNG
+- Færdiggør implementeringen af PRNG
 ** 19-02:
+- Weekend
 ** 20-02:
+- Weekend
 
 
 ## Tidsplan
