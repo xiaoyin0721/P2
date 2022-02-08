@@ -76,6 +76,7 @@ output:
 - Weekend
 ** 20-02:
 - Weekend
+* 21-02 -- 22-02
 
 
 ## Tidsplan
