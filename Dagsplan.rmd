@@ -32,12 +32,29 @@ output:
   - Boostrap
 
 
-## Ugesplan
-* 01-02 -- 06-02 
-* 07-02 -- 13-02
+## Ugesplan & Dagsplan
+* 08-02 -- 13-02
+** 08-02:
+- Tidsplanlægning og delegering af opgaver
+- Undersøg Mersenne / lineær cogruence
+- Forståelse af GIT
+- (Begynd at skrive om PRNG + begynd at implementere PRNG)
+** 09-02:
+** 10-02:
+** 11-02:
+** 12-02:
+Weekend
+** 13-02:
+Weekend
+* 14-02 -- 20-02
 
 
 ## Tidsplan
+* 05/04 2022 - Statusseminar
+* 25/05 2022 - Aflevering af projekt
+* 22/02 2022 - Færdiggørelse af implementering og forståelse af PRNG.
+
+
 
 
 ## 08-02 Vejledermøde
