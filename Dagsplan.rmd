@@ -84,7 +84,7 @@ TID TIL AT HAVE DET FEDT
 * 25/05 2022 - Aflevering af projekt
 * 22/02 2022 - Færdiggørelse af implementering og forståelse af PRNG.
 
-
+mit navn er mogens
 
 
 ## 08-02 Vejledermøde
