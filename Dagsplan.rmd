@@ -99,4 +99,7 @@ mit navn er mogens
 
 * parameter linear model, statistics 
 
+## Problemformulering 
 
+* HT: Indkomst for nyuddannet på sjælland er 15% procent højere end i andre dele af dk(comparision af indkomst mean)
+* 
