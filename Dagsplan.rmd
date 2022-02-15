@@ -102,4 +102,9 @@ mit navn er mogens
 ## Problemformulering 
 
 * HT: Indkomst for nyuddannet på sjælland er 15% procent højere end i andre dele af dk(comparision af indkomst mean)
-* 
+
+## Random
+
+"Random", vi kommer til at arbejde meget med "random", og i virkeligheden betyder det bare tilfældig. Ordet random benyttes dog i stedet, da det i projektets kontekst anvendes i form af en "Pseudo random number generator", herefter refereret til som PRNG. Denne PRNG kan bruges, når man har brug for tilfældige tal. Det kunne være i forbindelse med bl.a. kryptering, statistisk sampling og meget andet.
+Ordet pseudo refererer jo til at det ikke helt er tilfældigt, men kun "tilfældigt-agtigt". Det skyldes, at det deterministiske system computeren ikke i sig selv kan genere noget tilfældigt, da det altid er sat op efter en matematisk formel så vi på forhånd, altid, teoretisk set kan regne os frem til udfaldet, og netop derfor skelner vi mellem "true random" og "pseudo random". "True random" er når vi genererer tal på en måde således at det bliver indeterministiske udfald der ikke afhænger af tidligere udfald, men kun er baseret på sandsynlighed og held. True random har sin største styrke indenfor formål hvor det er meget vigtigt, at det er helt tilfældigt, hvad vi får, eksempelvis lotterier eller bingo så man ikke bare kan regne sig frem til den rigtige bingoplade.
+Pseudo random har den fordel at det er 
