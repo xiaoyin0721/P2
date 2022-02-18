@@ -98,5 +98,41 @@ mit navn er mogens
 * selv implementere algoritme for PRNG and boostrap
 
 * parameter linear model, statistics 
+```{r}
+x <- 1
+stig <- function(){
+  while(x<10) {
+    x <- x + 1
+    print(x)
+  }
+}
+stig()
+  
+```
+
+
+```{r Linear Congruence, echo=FALSE}
+library(mosaic)
+set.seed(1)
+x0 = 2000
+
+linear_congruence <- function(i) {
+t <- 0
+a <- 11102357
+c <- 21353
+m <- 2**32
+v1 <- c()
+while(t < i){
+  x0 <- (a*x0+c)%%m
+  v1 <- c(v1 , as.integer((x0/m)*100))
+  t <- t + 1
+  }
+#print(v1)
+gf_histogram(~v1, breaks = seq(0, 100, by=10), fill="black", col="grey", xlim = c(0, 100))
+}
+    
+linear_congruence(i=100000)
+```
+
 
 
