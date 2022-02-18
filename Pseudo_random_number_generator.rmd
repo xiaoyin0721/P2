@@ -1,0 +1,22 @@
+---
+title: "PRNG"
+output: html_document
+---
+
+```{r}
+set.seed(2021)
+runif(10)
+```
+
+```{r}
+lcm <- function(N, x0, a, c, m){
+  arr_x = rep(0, N)
+  arr_x[1] = x0
+  for (i in 2:N) arr_x[i] <- (a*arr_x[i-1]+c)%%m
+  u <- arr_x/m
+  return(u)
+}
+
+```
+
+
