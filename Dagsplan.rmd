@@ -143,9 +143,13 @@ linear_congruence(i=100000)
 
 "Random", vi kommer til at arbejde meget med "random", og i virkeligheden betyder det bare tilfældig. Ordet random benyttes dog i stedet, da det i projektets kontekst anvendes i form af en "Pseudo random number generator", herefter refereret til som PRNG. Denne PRNG kan bruges, når man har brug for tilfældige tal. Det kunne være i forbindelse med bl.a. kryptering, statistisk sampling og meget andet.
 Ordet pseudo refererer jo til at det ikke helt er tilfældigt, men kun "tilfældigt-agtigt". Det skyldes, at det deterministiske system computeren ikke i sig selv kan genere noget tilfældigt, da det altid er sat op efter en matematisk formel så vi på forhånd, altid, teoretisk set kan regne os frem til udfaldet, og netop derfor skelner vi mellem "true random" og "pseudo random". "True random" er når vi genererer tal på en måde således at det bliver indeterministiske udfald der ikke afhænger af tidligere udfald, men kun er baseret på sandsynlighed og held. True random har sin største styrke indenfor formål hvor det er meget vigtigt, at det er helt tilfældigt, hvad vi får, eksempelvis lotterier eller bingo så man ikke bare kan regne sig frem til den rigtige bingoplade.
+<<<<<<< Updated upstream
 Pseudo random har den fordel at det er yderst effektivt, når man skal lave mange simulationer, eller har brug for at kunne genskabe eller gendanne en simulation af udfald. 
 
 
+=======
+Pseudo random har den fordel at det er yderst effektivt, når man skal lave mange simulationer, eller har brug for at kunne genskabe eller gendanne en simulation af udfald.
+>>>>>>> Stashed changes
 
 ## Box Muller 
 
@@ -170,8 +174,13 @@ lcg.rand <- function(n=10) {
 }
 ```
 
+<<<<<<< Updated upstream
 # 
 The Box-Muller transform (George Box and Mervin Muller, 1958) is a method to transform two uniform random variables into a pair of independent standard normal random variables. The main idea is to change coordinates from Cartesian to polar coordinates.
+=======
+#The Box-Muller Transform 
+The Box-Muller transform (George Box and Mervin Muller, 1958) is a method to transform two uniform random variables into a pair of independent standard normal random variables.The main idea is to change coordinates from Cartesian to polar coordinates.
+>>>>>>> Stashed changes
 
 Input: 
 $U_{i}$: $\Omega \to (0,1) ,(i = 1, 2) $
@@ -179,6 +188,127 @@ $U_{i}$: $\Omega \to (0,1) ,(i = 1, 2) $
 Output:$(\Omega, F, P)$, probability space
 
 
+<<<<<<< Updated upstream
+=======
+#Probability density function of X and Y 
+X, Y are standard normal (standard Gaussian) random variables, shown as $X, Y \sim {\sf N(0,1)}$, X and Y are independent variables.
+
+A continuous random variable Z is said to be a standard normal (standard Gaussian) random variable, shown as $X∼N(0,1)$, if its PDF is given by
+
+$f_X(x)=1/ \sqrt{2\pi} \exp{(−x^2)/2}$ for all $z∈R$
+
+```{r}
+p <- ggplot(data.frame(x = c(-3,3)), aes(x = x)) +
+  stat_function(fun = dnorm)
+
+p +
+  annotate("text", x = 2, y = 0.3, parse = TRUE,
+           label = "frac(1, sqrt(2 * pi)) * e ^ {-x^2 / 2}")
+```
+
+
+
+#Joint Probability Density function of X, Y 
+
+The joint probability Density function (PDF) of two random variables will form a normal distribution, will prove that how X and Y can be sampled from two uniform random distributions to form a joint normal distribution.
+
+#Transform to polar coordiantes, Jacobian Matrix 
+
+The key idea is to transform the joint PDF from a function of x, y to a function of R, $\theta$. $f_XY(x,y) = f(x)f(y) = 1/2\pi\exp{-(x^2+y^2)/2}$ Transforming to polar cooridnates
+$f_XY(x,y)dxdy= f_R\theta(r,\theta)rdrd\theta$
+
+The relationship between Cartesian coordinates(x,y)and polar coordinates(r, $\theta$) is 
+
+$x = cos(\theta)r$
+$y = sin(\theta)r$
+
+$f_R\theta(r,\theta)rdrd\theta = f_XY(x,y)dxdy/drd\theta =  f_XY(x,y)|d(x,y)/d(r,\theta)|$
+
+$|d(x,y)/d(r,\theta)|$ is Jacobian matrix, which can be resolved as r
+
+
+#Rewrite the R, $\theta$ function
+
+Using substitution method, the $r, \theta$ function is transformed to pdf in terms of $r^2, \theta$
+
+
+$\int_0^2\pi  \int_0^\infty (1/2\pi) \mathrm{e}^{-r^2/2} r\mathrm{d}r\mathrm{d}\theta$
+
+$1/2\mathrm{d}r^2 = r\mathrm{d}r$ 
+
+It is transformed to $(1/2e^(-r^2/2) \mathrm{d}r^2) 1/2\pi\mathrm{d}\theta$
+It can be seen as joint function of r^2 and theta
+
+Therefore, we just need to sample values from a uniform random distribution and multiply with 2\pi for \theta values $(U1 \sim{(0, 2\pi)})$, and sample from a exponential distribution (\lamda = 1/2) for r^2 values, then R can be computed by $r = \sqrt(V)$
+
+
+
+#Exponential funktion
+
+```{r}
+#plot PDF curves
+curve(dexp(x, rate = .5), from=0, to=10, col='blue')
+curve(dexp(x, rate = 1), from=0, to=10, col='red', add=TRUE)
+curve(dexp(x, rate = 1.5), from=0, to=10, col='purple', add=TRUE)
+
+#add legend
+legend(7, .5, legend=c("rate=.5", "rate=1", "rate=1.5"),
+       col=c("blue", "red", "purple"), lty=1, cex=1.2)
+```
+
+
+
+
+```{r}
+
+u1 <- runif(10^5)
+u2 <- runif(10^5)
+
+theta <- u1 * 2 * pi
+v <- -2*log(u2)
+r <- sqrt(v)
+
+x <- r*cos(theta)
+y <- r*sin(theta)
+
+shapiro.test(x[1:5000])
+
+hist(x, breaks = 50)
+hist(y, breaks = 50)
+?hist
+
+plot(x,y,pch=19, cex=0.4, asp=1, las=1)
+
+
+```
+
+
+For an exponential distribution, 
+$f(x) = \lambda e^(-\lambda x)$
+
+The cumulative probability function(cdf) of exponential distribution is given as 
+
+$\int_\infty^0 \lambda e^(-\lambda x)$
+
+By applying inverse transformtion, the value of $R^2$ can be 
+sampled as $-2log(U2) \sim{Exp(\lambda = 1/2 )}$ 
+
+Then the joint pdf of X, Y can be expressed in polar coordinates by
+
+$x = cos(\theta)r$
+$y = sin(\theta)r$
+
+
+
+
+
+
+
+
+
+Box muller transform
+
+>>>>>>> Stashed changes
 ```{r}
 
 Box_muller_transform <- function(){
@@ -204,6 +334,4 @@ Box_muller_transform <- function(){
 
 
 ```
-
-
 
