@@ -147,9 +147,7 @@ Ordet pseudo refererer jo til at det ikke helt er tilfældigt, men kun "tilfæld
 Pseudo random har den fordel at det er yderst effektivt, når man skal lave mange simulationer, eller har brug for at kunne genskabe eller gendanne en simulation af udfald. 
 
 
-=======
 Pseudo random har den fordel at det er yderst effektivt, når man skal lave mange simulationer, eller har brug for at kunne genskabe eller gendanne en simulation af udfald.
->>>>>>> Stashed changes
 
 ## Box Muller 
 
@@ -174,10 +172,9 @@ lcg.rand <- function(n=10) {
 }
 ```
 
-<<<<<<< Updated upstream
 # 
 The Box-Muller transform (George Box and Mervin Muller, 1958) is a method to transform two uniform random variables into a pair of independent standard normal random variables. The main idea is to change coordinates from Cartesian to polar coordinates.
-=======
+
 #The Box-Muller Transform 
 The Box-Muller transform (George Box and Mervin Muller, 1958) is a method to transform two uniform random variables into a pair of independent standard normal random variables.The main idea is to change coordinates from Cartesian to polar coordinates.
 >>>>>>> Stashed changes
@@ -188,8 +185,6 @@ $U_{i}$: $\Omega \to (0,1) ,(i = 1, 2) $
 Output:$(\Omega, F, P)$, probability space
 
 
-<<<<<<< Updated upstream
-=======
 #Probability density function of X and Y 
 X, Y are standard normal (standard Gaussian) random variables, shown as $X, Y \sim {\sf N(0,1)}$, X and Y are independent variables.
 
@@ -299,16 +294,8 @@ $x = cos(\theta)r$
 $y = sin(\theta)r$
 
 
-
-
-
-
-
-
-
 Box muller transform
 
->>>>>>> Stashed changes
 ```{r}
 
 Box_muller_transform <- function(){
@@ -331,7 +318,10 @@ Box_muller_transform <- function(){
   print(plt)
 }
 
+Box_muller_transform()
 
 
 ```
+
+
 
