@@ -149,6 +149,9 @@ Pseudo random har den fordel at det er yderst effektivt, når man skal lave mang
 
 Pseudo random har den fordel at det er yderst effektivt, når man skal lave mange simulationer, eller har brug for at kunne genskabe eller gendanne en simulation af udfald.
 
+## Seeds 
+Et seed er et forudbestemt tal som gøres til startsstedet i formlen for generationen af de pseudotilfældige tal. man kan sætte seedet til et truly randomly generated number i.e. current time
+
 ## Box Muller 
 
 ```{r}
