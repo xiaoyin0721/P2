@@ -122,10 +122,7 @@ gf_histogram(~v1, breaks = seq(0, 100, by=10), fill="black", col="grey", xlim = 
 linear_congruence(i=100000)
 ```
 
-
-## Problemformulering 
-
-* HT: Indkomst for nyuddannet på sjælland er 15% procent højere end i andre dele af dk(comparision af indkomst mean)
+I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en box muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.
 
 ## Box Muller 
 
