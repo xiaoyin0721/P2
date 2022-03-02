@@ -13,6 +13,9 @@ output:
 
 ![](pikachu.jpg){width=50%}
 
+```{r include=FALSE}
+library(mosaic)
+```
 
 >General Formål
 
@@ -99,8 +102,50 @@ mit navn er mogens
 
 * parameter linear model, statistics 
 
+
+
+
+
+# Introduction
+I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en box muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.#Introduktion
+
+
+# PRNG og TRNG
+Indenfor tilfældige tal, findes der to termer. PRNG og TRNG, som står for "Pseudo Random Number Generator" og "True Random Number Generator". For at kunne generere tilfædlige tal ud fra deterministiske computere, har man brug for at bearbejde et input ved hjælp af en algoritme, og derved få et tilfældigt tal (også kaldet output) ud.
+
+Den største forskel der er på pseudorandom tal og true random tal, er at de pseudorandom tal er blevet genereret til at ligne true random tal. De er altså ikke tilfældige, og deres output afhænger af et seed. Dette gør altså at resultaterne fra en PRNG kan reproduceres, hvis man sætter seed'et til en bestemt værdi. Dette gør PRNG'er godt egnet til simulationer. Man kan dele sine resultater fra en simulation med andre, hvis de også har sat seed'et, og dette gør det utroligt nemt at undersøge forskellige videnskabenlige fund. Siden at alt PRNG'er gør er at køre tal igennem en matematisk algoritme, betyder det, at de meget hurtigt og effektivt kan spytte tusinde af pseudotilfældige tal ud. 
+
+Det er også muligt at generere true random tal. For eksempel, kan der ud fra atmosfærisk støj genereres true random tal. I modsætning til PRNG'er kan TRNG'er ikke lige så effektivt spytte tilfældige tal ud. Dette betyder altså at PRNG'er er meget bedre egnet til simulationer end TRNG'er er. TRNG'er er derimod bedre til ting som skal være tilfældige, såsom lotteriet eller gambling. De er også uden tvivl mere sikre indenfor krytografi end PRNG'er er. 
+
+I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Boxmuller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
+
+## Linear congruential generator
+Målet ved en linear congruential generator er at genere et tilfældigt tal mellem 0 og 1. Linear congruential generator er en PRNG, så tallene der fås fra generatoren, vil ikke være fuldstændigt tilfældige. 
+Der er 4 vigtige værdier indenfor en linear congruential generator.:
+	X0, som svarer til denne generators seed; X0 ≥ 0.
+	a, som bliver ganget på X0; a ≥ 0.
+	c, som bliver adderet til X0; c ≥ 0.
+	m, kaldet modulus; m > X0, m > a, m > c.
+Disse værdier vil blive brugt i den nedenstående ligning.:
+        X_(n+1)=(a*X_n+c)  mod m 
+Her vil man starte med at indsætte X0 på Xn’s plads, og ud fra dette kan man finde X1. Derefter kan man indsætte X1 på Xn’s plads og derefter få X2. Denne proces kan gentages så mange gange som man har brug for.
+Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler 2^31. 
+De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Ved at omhyggeligt vælge sine a, c og m værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. Linear congruential generators er generelt også hurtige og kræver ikke særlig meget plads. En ulempe ved LCG er at dens state ikke er stor nok, se nedenstående billede.
+
+
+
+Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en irreversibel funktion f. For at få et random tal ud, kan man bruge en irreversibel funktion g på staten. Dette kan dog kun gøres en gang per state, hvorimod andre PRNG’er kan have flere states på en gang. Et eksempel er Mersenne twister, som vil gennemgås forneden.
+
+## Mersenne twister
+Mersenne twisters mål er det samme som LCG. Dog er det en af de mere respekteret PRNG’er, da den er meget mindre forudsigelig. Når en mersenne twister bliver initialiseret, vil man få en state, som man ikke bruger til noget. Først efter at twiste state 0, med en irreversibel funktion, får man state 1, som ved hjælp af en anden reversibel funktion, kan lave op til 624 tilfældige tal. Dernæst kan man twiste staten igen, og få en ny state, som også kan lave op til 624 tilfældige tal. Dette gør at perioden af PRNG’en er meget længere, og dette er som sagt en stor fordel af PRNG’er. Da der bliver brugt en reversibel funktion fra state til de tilfældige tal, betyder det, at denne PRNG ikke kan bruges til kryptografi.
+
+## Implementering af linear congruential generator
+Efter at have undersøgt både mersenne twister og linear congruential generator, blev det besluttet at implementere LCG. For at gøre dette, blev der oprettet en funktion med en parameter i, som besluttede hvor mange tilfædlige tal man ville have ud. Hernæst blev x0 (seed'et) sat til 2000. Dernæst skulle der genereres et tilfældigt tal ud fra X_(n+1)=(a*X_n+c)%%m, hvilket betød at a, c og m skulle bestemmes. For at sørge for at få en PRNG med en lang periode, blev a sat til 11.102.357. C blev sat til 21.353 og m blev sat til 2^32. Der blev også lavet en variabel, t, som steg med en hver gang funktionen havde kørt rekursivt. Når t ikke længere var mindre end i, ville funktionen stoppe, og det ønskede antal tilfældige tal ville være genereret.
+
+Sidst men ikke mindst, blev disse tal plottet i et histogram, for at sikre at outputtet var uniformt fordelt. Resultaterne af programmet kan ses forneden.
+
 ```{r Linear Congruence, echo=FALSE}
-library(mosaic)
+
 set.seed(1)
 x0 = 2000
 
@@ -116,147 +161,30 @@ while(t < i){
   t <- t + 1
   }
 #print(v1)
-gf_histogram(~v1, breaks = seq(0, 100, by=10), fill="black", col="grey", xlim = c(0, 100))
+gf_histogram(~v1, breaks = seq(0, 100, by=10), fill="black", col="grey", xlim = c(0, 100), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller", title = "Resultaterne af den implementerede PRNG")
+
 }
     
 linear_congruence(i=100000)
 ```
-## Introduction
-I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en box muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.
 
-## Box Muller 
+## Boxmuller
+Box-Muller transformationen er en metode, hvori to uniforme random variabler transformeres til et par uafhængige standard normal random variabler. Den primære ide er at ændre koordinatorne fra kartetiske til polære koordinator.
+Sammenhænget mellem kartetiske og polære-koordinator er:
+$x = cos(\theta)*r$
+$y = sin(\theta)*r$
+Ifølge boxmuller erstattes $\theta$ med $2\pi*U_2$ og $r$ erstattes med $\sqrt V$
+hvor V er $-2*ln*U_1$
+Her skal der altså bruges to værdier, $U_1$ og $U_2$. Disse værdier er de uniform random tal.
+Det man får ud af dette, er to tal x og y, som i dette tilfælde er uafhængige random variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
 
-# 
-The Box-Muller transform (George Box and Mervin Muller, 1958) is a method to transform two uniform random variables into a pair of independent standard normal random variables. The main idea is to change coordinates from Cartesian to polar coordinates.
-
-#The Box-Muller Transform 
-The Box-Muller transform (George Box and Mervin Muller, 1958) is a method to transform two uniform random variables into a pair of independent standard normal random variables.The main idea is to change coordinates from Cartesian to polar coordinates.
->>>>>>> Stashed changes
-
-Input: 
-$U_{i}$: $\Omega \to (0,1) ,(i = 1, 2) $
-
-Output:$(\Omega, F, P)$, probability space
-
-
-#Probability density function of X and Y 
-X, Y are standard normal (standard Gaussian) random variables, shown as $X, Y \sim {\sf N(0,1)}$, X and Y are independent variables.
-
-A continuous random variable Z is said to be a standard normal (standard Gaussian) random variable, shown as $X∼N(0,1)$, if its PDF is given by
-
-$f_X(x)=1/ \sqrt{2\pi} \exp{(−x^2)/2}$ for all $z∈R$
-
-```{r}
-p <- ggplot(data.frame(x = c(-3,3)), aes(x = x)) +
-  stat_function(fun = dnorm)
-
-p +
-  annotate("text", x = 2, y = 0.3, parse = TRUE,
-           label = "frac(1, sqrt(2 * pi)) * e ^ {-x^2 / 2}")
-```
-
-
-
-#Joint Probability Density function of X, Y 
-
-The joint probability Density function (PDF) of two random variables will form a normal distribution, will prove that how X and Y can be sampled from two uniform random distributions to form a joint normal distribution.
-
-#Transform to polar coordiantes, Jacobian Matrix 
-
-The key idea is to transform the joint PDF from a function of x, y to a function of R, $\theta$. $f_XY(x,y) = f(x)f(y) = 1/2\pi\exp{-(x^2+y^2)/2}$ Transforming to polar cooridnates
-$f_XY(x,y)dxdy= f_R\theta(r,\theta)rdrd\theta$
-
-The relationship between Cartesian coordinates(x,y)and polar coordinates(r, $\theta$) is 
-
-$x = cos(\theta)r$
-$y = sin(\theta)r$
-
-$f_R\theta(r,\theta)rdrd\theta = f_XY(x,y)dxdy/drd\theta =  f_XY(x,y)|d(x,y)/d(r,\theta)|$
-
-$|d(x,y)/d(r,\theta)|$ is Jacobian matrix, which can be resolved as r
-
-
-#Rewrite the R, $\theta$ function
-
-Using substitution method, the $r, \theta$ function is transformed to pdf in terms of $r^2, \theta$
-
-
-$\int_0^2\pi  \int_0^\infty (1/2\pi) \mathrm{e}^{-r^2/2} r\mathrm{d}r\mathrm{d}\theta$
-
-$1/2\mathrm{d}r^2 = r\mathrm{d}r$ 
-
-It is transformed to $(1/2e^(-r^2/2) \mathrm{d}r^2) 1/2\pi\mathrm{d}\theta$
-It can be seen as joint function of r^2 and theta
-
-Therefore, we just need to sample values from a uniform random distribution and multiply with 2\pi for \theta values $(U1 \sim{(0, 2\pi)})$, and sample from a exponential distribution (\lamda = 1/2) for r^2 values, then R can be computed by $r = \sqrt(V)$
-
-
-
-#Exponential funktion
-
-```{r}
-#plot PDF curves
-curve(dexp(x, rate = .5), from=0, to=10, col='blue')
-curve(dexp(x, rate = 1), from=0, to=10, col='red', add=TRUE)
-curve(dexp(x, rate = 1.5), from=0, to=10, col='purple', add=TRUE)
-
-#add legend
-legend(7, .5, legend=c("rate=.5", "rate=1", "rate=1.5"),
-       col=c("blue", "red", "purple"), lty=1, cex=1.2)
-```
-
-
-
-
-```{r}
-
-u1 <- runif(10^5)
-u2 <- runif(10^5)
-
-theta <- u1 * 2 * pi
-v <- -2*log(u2)
-r <- sqrt(v)
-
-x <- r*cos(theta)
-y <- r*sin(theta)
-
-shapiro.test(x[1:5000])
-
-hist(x, breaks = 50)
-hist(y, breaks = 50)
-?hist
-
-plot(x,y,pch=19, cex=0.4, asp=1, las=1)
-
-
-```
-
-
-For an exponential distribution, 
-$f(x) = \lambda e^(-\lambda x)$
-
-The cumulative probability function(cdf) of exponential distribution is given as 
-
-$\int_\infty^0 \lambda e^(-\lambda x)$
-
-By applying inverse transformtion, the value of $R^2$ can be 
-sampled as $-2log(U2) \sim{Exp(\lambda = 1/2 )}$ 
-
-Then the joint pdf of X, Y can be expressed in polar coordinates by
-
-$x = cos(\theta)r$
-$y = sin(\theta)r$
-
-
-Box muller transform
-
-```{r}
+```{r echo=FALSE}
 
 Box_muller_transform <- function(){
   n <- 10^4
   samples <- matrix(ncol = 2, nrow = n)
-  uni_rand_num1 <- lcg.rand(n)
-  uni_rand_num2 <- lcg.rand(n)
+  uni_rand_num1 <- runif(10^4, 0, 1)
+  uni_rand_num2 <- runif(10^4, 0, 1)
   R <- sqrt(-2*log(uni_rand_num1))
   theta <- 2*pi*uni_rand_num2
   X <- R*cos(theta)
@@ -276,50 +204,6 @@ Box_muller_transform()
 
 
 ```
-
-#Introduktion
-
-
-#PRNG og TRNG
-Indenfor tilfældige tal, findes der to termer. PRNG og TRNG, som står for "Pseudo Random Number Generator" og "True Random Number Generator". For at kunne generere tilfædlige tal ud fra deterministiske computere, har man brug for at bearbejde et input ved hjælp af en algoritme, og derved få et tilfældigt tal (også kaldet output) ud.
-
-Den største forskel der er på pseudorandom tal og true random tal, er at de pseudorandom tal er blevet genereret til at ligne true random tal. De er altså ikke tilfældige, og deres output afhænger af et seed. Dette gør altså at resultaterne fra en PRNG kan reproduceres, hvis man sætter seed'et til en bestemt værdi. Dette gør PRNG'er godt egnet til simulationer. Man kan dele sine resultater fra en simulation med andre, hvis de også har sat seed'et, og dette gør det utroligt nemt at undersøge forskellige videnskabenlige fund. Siden at alt PRNG'er gør er at køre tal igennem en matematisk algoritme, betyder det, at de meget hurtigt og effektivt kan spytte tusinde af pseudotilfældige tal ud. 
-
-Det er også muligt at generere true random tal. For eksempel, kan der ud fra atmosfærisk støj genereres true random tal. I modsætning til PRNG'er kan TRNG'er ikke lige så effektivt spytte tilfældige tal ud. Dette betyder altså at PRNG'er er meget bedre egnet til simulationer end TRNG'er er. TRNG'er er derimod bedre til ting som skal være tilfældige, såsom lotteriet eller gambling. De er også uden tvivl mere sikre indenfor krytografi end PRNG'er er. 
-
-I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Boxmuller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
-
-#Linear congruential generator
-Målet ved en linear congruential generator er at genere et tilfældigt tal mellem 0 og 1. Linear congruential generator er en PRNG, så tallene der fås fra generatoren, vil ikke være fuldstændigt tilfældige. 
-Der er 4 vigtige værdier indenfor en linear congruential generator.:
-	X0, som svarer til denne generators seed; X0 ≥ 0.
-	a, som bliver ganget på X0; a ≥ 0.
-	c, som bliver adderet til X0; c ≥ 0.
-	m, kaldet modulus; m > X0, m > a, m > c.
-Disse værdier vil blive brugt i den nedenstående ligning.:
-        X_(n+1)=(a*X_n+c)  mod m 
-Her vil man starte med at indsætte X0 på Xn’s plads, og ud fra dette kan man finde X1. Derefter kan man indsætte X1 på Xn’s plads og derefter få X2. Denne proces kan gentages så mange gange som man har brug for.
-Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler 2^31. 
-De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Ved at omhyggeligt vælge sine a, c og m værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. Linear congruential generators er generelt også hurtige og kræver ikke særlig meget plads. En ulempe ved LCG er at dens state ikke er stor nok, se nedenstående billede.
-
-BILLEDE
-
-Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en irreversibel funktion f. For at få et random tal ud, kan man bruge en irreversibel funktion g på staten. Dette kan dog kun gøres en gang per state, hvorimod andre PRNG’er kan have flere states på en gang. Et eksempel er Mersenne twister, som vil gennemgås forneden.
-
-#Mersenne twister
-Mersenne twisters mål er det samme som LCG. Dog er det en af de mere respekteret PRNG’er, da den er meget mindre forudsigelig. Når en mersenne twister bliver initialiseret, vil man få en state, som man ikke bruger til noget. Først efter at twiste state 0, med en irreversibel funktion, får man state 1, som ved hjælp af en anden reversibel funktion, kan lave op til 624 tilfældige tal. Dernæst kan man twiste staten igen, og få en ny state, som også kan lave op til 624 tilfældige tal. Dette gør at perioden af PRNG’en er meget længere, og dette er som sagt en stor fordel af PRNG’er. Da der bliver brugt en reversibel funktion fra state til de tilfældige tal, betyder det, at denne PRNG ikke kan bruges til kryptografi.
-
-#Implementering af linear congruential generator
-Efter at have undersøgt både mersenne twister og linear congruential generator, blev det besluttet at implementere LCG. For at gøre dette, blev der oprettet en funktion med en parameter i, som besluttede hvor mange tilfædlige tal man ville have ud. Hernæst blev x0 (seed'et) sat til 2000. Dernæst skulle der genereres et tilfældigt tal ud fra X_(n+1)=(a*X_n+c)%%m, hvilket betød at a, c og m skulle bestemmes. For at sørge for at få en PRNG med en lang periode, blev a sat til 11.102.357. C blev sat til 21.353 og m blev sat til 2^32. Der blev også lavet en variabel, t, som steg med en hver gang funktionen havde kørt rekursivt. Når t ikke længere var mindre end i, ville funktionen stoppe, og det ønskede antal tilfældige tal ville være genereret.
-
-Sidst men ikke mindst, blev disse tal plottet i et histogram, for at sikre at outputtet var uniformt fordelt. Resultaterne af programmet kan ses forneden.
-
-BILLEDE AF RESULTAT PRNG.
-
-
-
-
-
 
 
 
