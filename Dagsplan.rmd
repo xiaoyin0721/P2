@@ -15,7 +15,7 @@ library(mosaic)
 
 
 # Introduction
-I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en box muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.#Introduktion
+I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en box muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.
 
 
 # PRNG og TRNG
