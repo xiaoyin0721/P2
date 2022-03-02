@@ -98,18 +98,6 @@ mit navn er mogens
 * selv implementere algoritme for PRNG and boostrap
 
 * parameter linear model, statistics 
-```{r}
-x <- 1
-stig <- function(){
-  while(x<10) {
-    x <- x + 1
-    print(x)
-  }
-}
-stig()
-  
-```
-
 
 ```{r Linear Congruence, echo=FALSE}
 library(mosaic)
@@ -136,41 +124,7 @@ linear_congruence(i=100000)
 ## Introduction
 I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en box muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.
 
-## Random
-
-"Random", vi kommer til at arbejde meget med "random", og i virkeligheden betyder det bare tilfældig. Ordet random benyttes dog i stedet, da det i projektets kontekst anvendes i form af en "Pseudo random number generator", herefter refereret til som PRNG. Denne PRNG kan bruges, når man har brug for tilfældige tal. Det kunne være i forbindelse med bl.a. kryptering, statistisk sampling og meget andet.
-Ordet pseudo refererer jo til at det ikke helt er tilfældigt, men kun "tilfældigt-agtigt". Det skyldes, at det deterministiske system computeren ikke i sig selv kan genere noget tilfældigt, da det altid er sat op efter en matematisk formel så vi på forhånd, altid, teoretisk set kan regne os frem til udfaldet, og netop derfor skelner vi mellem "true random" og "pseudo random". "True random" er når vi genererer tal på en måde således at det bliver indeterministiske udfald der ikke afhænger af tidligere udfald, men kun er baseret på sandsynlighed og held. True random har sin største styrke indenfor formål hvor det er meget vigtigt, at det er helt tilfældigt, hvad vi får, eksempelvis lotterier eller bingo så man ikke bare kan regne sig frem til den rigtige bingoplade.
-<<<<<<< Updated upstream
-Pseudo random har den fordel at det er yderst effektivt, når man skal lave mange simulationer, eller har brug for at kunne genskabe eller gendanne en simulation af udfald. 
-
-
-Pseudo random har den fordel at det er yderst effektivt, når man skal lave mange simulationer, eller har brug for at kunne genskabe eller gendanne en simulation af udfald.
-
-## Seeds 
-Et seed er et forudbestemt tal som gøres til startsstedet i formlen for generationen af de pseudotilfældige tal. man kan sætte seedet til et truly randomly generated number i.e. current time
-
 ## Box Muller 
-
-```{r}
-lcg.rand <- function(n=10) {
-  
-  rng <- vector(length = n)
-  
-  m <- 2 ** 32
-  a <- 1103515245
-  c <- 12345
-  # Set the seed using the current system time in microseconds
-  d <- as.numeric(Sys.time()) * 1000
-  
-  for (i in 1:n) {
-    d <- (a * d + c) %% m
-    rng[i] <- d / m
-  }
-  
-  
-  return(rng)
-}
-```
 
 # 
 The Box-Muller transform (George Box and Mervin Muller, 1958) is a method to transform two uniform random variables into a pair of independent standard normal random variables. The main idea is to change coordinates from Cartesian to polar coordinates.
