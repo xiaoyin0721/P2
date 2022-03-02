@@ -9,101 +9,9 @@ output:
       theme: united
 ---
 
-## P2 Overordnet Plan 
-
-![](pikachu.jpg){width=50%}
-
 ```{r include=FALSE}
 library(mosaic)
 ```
-
->General Formål
-
-* Datagenering ved hjælp af simulering
-  + Algoritme for Pseudo random number generator(PRNG)
-      - Hvordan kan vi bruge en computer, som er et fuldstændigt deterministisk              system, til at generere tilfældige tal?
-      - Hvis vi kan generere tilfældige heltal, hvodan kan vi s˚a bruge det til at           generere reele tal?
-  + Modelantagelser for statistiske metoder
-      - Antalgelser for [Linear Regression](https://statisticsbyjim.com/regression/ols-linear-regression-assumptions/), t-test, Anova 
-      - Hvad sker der når antagelser i klassiske hypotese test ikke er opfyldt? fx.          data fordeling af population er skæv, test-størrelse er ikke stor nok
-      - Vælg af konfidnesintervallers ift. Type I, type II fejl
-
-* Statistik analyse 
-  + Descriptive statistics, Modelling, Stastisk inference
-* Simulation som alternativer til klassiske hypotese test:
-  - permutationstest
-  - Boostrap
-
-
-## Ugesplan & Dagsplan
-* 08-02 -- 13-02
-** 08-02:
-- Tidsplanlægning og delegering af opgaver
-- Undersøg Mersenne / lineær cogruence
-- Forståelse af GIT
-- (Begynd at skrive om PRNG + begynd at implementere PRNG)
-** 09-02:
-- Algoritmer + datastrukturer
-- Skrive om PRNG
-- Implementere PRNG
-** 10-02:
-- Skrive om PRNG
-- Implementere PRNG
-- Lineær algebruh
-** 11-02:
-- Skrive om PRNG
-- Implementere PRNG
-** 12-02:
-- Weekend
-** 13-02:
-- Weekend
-* 14-02 -- 20-02
-** 14-02:
-- Skrive om PRNG
-- Implementere PRNG
-- Anvendt statistik
-** 15-02:
-- Skrive om PRNG
-- Implementere PRNG
-** 16-02:
-- Skrive om PRNG
-- Implementere PRNG
-- DAT REEKSAMEN FORBEREDELSE
-** 17-02:
-- Algoritmer + datastrukturer
-- Anvendt statistik
-** 18-02:
-- Færdiggør at skrive om PRNG
-- Færdiggør implementeringen af PRNG
-** 19-02:
-- Weekend
-** 20-02:
-- Weekend
-* 21-02 -- 22-02
-TID TIL AT HAVE DET FEDT
-
-NO WAY NO GO
-
-## Tidsplan
-* 05/04 2022 - Statusseminar
-* 25/05 2022 - Aflevering af projekt
-* 22/02 2022 - Færdiggørelse af implementering og forståelse af PRNG.
-
-mit navn er mogens
-
-
-## 08-02 Vejledermøde
-
-* PRNG generate data, simuleration(bootstrap) to generate the population data
-
-* linær kongurence(twisted) // uniform fordeling
-
-* selv implementere algoritme for PRNG and boostrap
-
-* parameter linear model, statistics 
-
-
-
 
 
 # Introduction
@@ -132,7 +40,7 @@ Her vil man starte med at indsætte X0 på Xn’s plads, og ud fra dette kan man
 Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler 2^31. 
 De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Ved at omhyggeligt vælge sine a, c og m værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. Linear congruential generators er generelt også hurtige og kræver ikke særlig meget plads. En ulempe ved LCG er at dens state ikke er stor nok, se nedenstående billede.
 
-
+![](PRNG_Forklaring.jpg){width=50%}
 
 Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en irreversibel funktion f. For at få et random tal ud, kan man bruge en irreversibel funktion g på staten. Dette kan dog kun gøres en gang per state, hvorimod andre PRNG’er kan have flere states på en gang. Et eksempel er Mersenne twister, som vil gennemgås forneden.
 
