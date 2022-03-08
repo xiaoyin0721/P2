@@ -25,7 +25,7 @@ Den største forskel der er på pseudorandom tal og true random tal, er at de ps
 
 Det er også muligt at generere true random tal. For eksempel, kan der ud fra atmosfærisk støj genereres true random tal. I modsætning til PRNG'er kan TRNG'er ikke lige så effektivt spytte tilfældige tal ud. Dette betyder altså at PRNG'er er meget bedre egnet til simulationer end TRNG'er er. TRNG'er er derimod bedre til ting som skal være tilfældige, såsom lotteriet eller gambling. De er også uden tvivl mere sikre indenfor krytografi end PRNG'er er. 
 
-I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Boxmuller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
+I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Box-Muller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
 
 # Linear congruential generator
 Målet ved en linear congruential generator er at genere et tilfældigt tal mellem 0 og 1. Linear congruential generator er en PRNG, så tallene der fås fra generatoren, vil ikke være fuldstændigt tilfældige. 
@@ -76,12 +76,12 @@ gf_histogram(~v1, breaks = seq(0, 100, by=10), fill="black", col="grey", xlim = 
 linear_congruence(i=100000)
 ```
 
-# Boxmuller
+# Box-Muller
 Box-Muller transformationen er en metode, hvori to uniforme random variabler transformeres til et par uafhængige standard normal random variabler. Den primære ide er at ændre koordinatorne fra kartetiske til polære koordinator.
 Sammenhænget mellem kartetiske og polære-koordinator er:
 $x = cos(\theta)*r$
 $y = sin(\theta)*r$
-Ifølge boxmuller erstattes $\theta$ med $2\pi*U_2$ og $r$ erstattes med $\sqrt V$
+Ifølge Box-Muller erstattes $\theta$ med $2\pi*U_2$ og $r$ erstattes med $\sqrt V$
 hvor V er $-2*ln*U_1$
 Her skal der altså bruges to værdier, $U_1$ og $U_2$. Disse værdier er de uniform random tal.
 Det man får ud af dette, er to tal x og y, som i dette tilfælde er uafhængige random variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
@@ -108,7 +108,7 @@ Box_muller_transform <- function(){
   print(plt)
 }
 
-Box_muller_transform()
+Box_Muller_transform()
 
 
 ```
