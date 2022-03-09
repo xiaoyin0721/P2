@@ -39,21 +39,12 @@ De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Ved at
 
 ![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
 
-Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en irreversibel funktion f. For at få et random tal ud, kan man bruge en irreversibel funktion g på staten. Dette kan dog kun gøres en gang per state, hvorimod andre PRNG’er kan have flere states på en gang. Et eksempel er Mersenne twister, som vil gennemgås forneden.
-
-# Mersenne twister
-Mersenne twisters mål er det samme som LCG. Dog er det en af de mere respekteret PRNG’er, da den er meget mindre forudsigelig. Når en mersenne twister bliver initialiseret, vil man få en state, som man ikke bruger til noget. Først efter at twiste state 0, med en irreversibel funktion, får man state 1, som ved hjælp af en anden reversibel funktion, kan lave op til 624 tilfældige tal. Dernæst kan man twiste staten igen, og få en ny state, som også kan lave op til 624 tilfældige tal. Dette gør at perioden af PRNG’en er meget længere, og dette er som sagt en stor fordel af PRNG’er. Da der bliver brugt en reversibel funktion fra state til de tilfældige tal, betyder det, at denne PRNG ikke kan bruges til kryptografi.
+Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en irreversibel funktion f. For at få et random tal ud, kan man bruge en irreversibel funktion g på staten. Dette kan dog kun gøres en gang per state, hvorimod andre PRNG’er kan have flere states på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgåes i rapporten.
 
 # Implementering af linear congruential generator
-
-Efter at have undersøgt både mersenne twister og linear congruential generator, blev det besluttet at implementere LCG. For at gøre dette, blev der oprettet en funktion med en parameter i, som besluttede hvor mange tilfædlige tal man ville have ud. Hernæst blev x0 (seed'et) sat til 2000. Dernæst skulle der genereres et tilfældigt tal ud fra $X_{(n+1)}=(a*X_n+c)mod(m)$, hvilket betød at a, c og m skulle bestemmes. For at sørge for at få en PRNG med en lang periode, blev a sat til 11.102.357. C blev sat til 21.353 og m blev sat til 2^32. Der blev også lavet en variabel, t, som steg med en hver gang funktionen havde kørt rekursivt. Når t ikke længere var mindre end i, ville funktionen stoppe, og det ønskede antal tilfældige tal ville være genereret.
-
-Sidst men ikke mindst, blev disse tal plottet i et histogram, for at sikre at outputtet var uniformt fordelt. Resultaterne af programmet kan ses forneden.
-
-```{r Linear Congruence, echo=FALSE}
-
-set.seed(1)
-x0 = 1576
+Nedenstående blok kode blev brugt til at lave den lineære kongruentiale generator (LCG)
+```{r}
+X_0 = 1576
 
 linear_congruence <- function(i) {
 t <- 0
@@ -62,12 +53,18 @@ c <- 21353
 m <- 2**32
 v1 <- c()
 while(t < i){
-  x0 <- (a*x0+c)%%m
-  v1 <- c(v1 , as.integer((x0/(m-1))*100))
+  X_0 <- (a*X_0+c)%%m
+  v1 <- c(v1 , as.integer(((X_0)/m)*100))
   t <- t + 1
 }
 return(v1)
 }
+```
+
+Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sættes $X_0$ lig med et tilfældigt tal, som i dette tilfælde er $1576$. Der skulle også bruges en $a$, $c$ og $m$ værdi, som i denne kode er sat til henholdsvis $11,102,357$, $21,353$ og $2^{32}$. Der er også oprettet to variabler: $t$ og $i$, som bruges i programmet, hvor $i$ er en parameter for funktionen, som svarer til det ønskede antal tilfældigt genererede tal, og $t$ har en startsværdi på 0, og øges med 1, hvert gang et tilfældigt tal genereres. Funktionen er sat op således, at så længe $t$ er mindre end $i$, vil $X_0$ blive brugt til at udregne en ny $X_0$ værdi. Værdien bliver dernæst tilføjet til en vektor $v1$, dog ikke før at værdien bliver divideret med $m$ og ganget med 100. Dernæst bliver $1$ adderet til $t$, og så loop'er funktionen. Resultatet af denne funktion, kan ses forneden:  
+
+
+```{r Linear Congruence, echo=FALSE}
 
 #linear_congruence(i=100000)
 gf_histogram(~linear_congruence(i=100000), breaks = seq(0, 100, by=10), fill="black", col="grey", xlim = c(0, 100), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller", title = "Resultaterne af den implementerede PRNG")
