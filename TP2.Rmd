@@ -11,14 +11,25 @@ library(mosaic)
 ```
 
 
-# Introduction
+# Introduktion
 I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en Box-Muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.
 
 
-# PRNG og TRNG
-Indenfor tilfældige tal, findes der to termer. PRNG og TRNG, som står for "Pseudo Random Number Generator" og "True Random Number Generator". For at kunne generere tilfædlige tal ud fra deterministiske computere,er det nødvendigt at bearbejde et input ved hjælp af en algoritme, og derved få et tilfældigt tal (også kaldet output) ud.
+# Pseudo-Random Number Generators
+For at kunne generere tilfældige tal ud fra deterministiske computere,er det nødvendigt at bearbejde et input ved hjælp af en algoritme, således at det genererede tal tilsyneladende er tilfældigt. Et sådanne genereret tal kaldes et "Pseudo-Random Number", og disse bliver genereret ved hjælp af Pseudo-Random Number Generators (også kaldet PRNG'er). PRNG'er benytter et seed, som kan bestemmes af brugeren, til at generere de tilfældige tal. Et eksempel på en kendt PRNG, er en Lineære Kongruentiel Generator (Også kaldet LCG). 
 
-Den største forskel der er på pseudorandom tal og true random tal, er at de pseudorandom tal er blevet genereret til at ligne true random tal. De er altså ikke tilfældige, og deres output afhænger af et seed. Dette gør altså at resultaterne fra en PRNG kan reproduceres, hvis seed'et sættes til en bestemt værdi. Dette gør PRNG'er godt egnet til simulationer. Derved kan resultaterne deles fra en simulation med andre, hvis også der er sat et seed, og dette gør det utroligt nemt at undersøge forskellige videnskabenlige fund. Siden at alt PRNG'er gør er at køre tal igennem en matematisk algoritme, betyder det, at de meget hurtigt og effektivt kan generere tusinde af pseudotilfældige tal. 
+#True-Random Number Generators
+I modsætning til PRNG'er, eksisterer der også True-Random Number Generators (også kaldet TRNG'er). Disse generators genererer tilfældige tal, uden nødvendigvis at afhænge af algoritmer. Et eksempel på en kendt TRNG, er at generere tilfældige tal ved hjælp af atmosfærisk støj.
+
+#Sammenligning af PRNG'er og TRNG'er
+
+En PRNG er meget velegnet til simulationer, da det er muligt at reproducere dataet ved at sætte seed'et til en bestemt værdi. Dette gør det muligt for andre indenfor samme område, at kunne få dataet fra en given simulation, og derved er det nemmere at diskutere fund og eller problemer med den givne simulation.
+
+TRNG'er kan også benyttes til simulationer, og siden tallene er mere tilfældige i forhold til PRNG'erne, kan de være mere velegnet til simulationer. Problemet er dog, at siden seedets værdi ikke kan bestemme, er det umuligt at reproducere dataet. Grundet dette, er PRNG i adskillige situationer foretrukket indenfor simulationer. 
+
+
+ 
+ Dette gør altså at resultaterne fra en PRNG kan reproduceres, hvis seed'et sættes til en bestemt værdi. Dette gør PRNG'er godt egnet til simulationer. Derved kan resultaterne deles fra en simulation med andre, hvis også der er sat et seed, og dette gør det utroligt nemt at undersøge forskellige videnskabenlige fund. Siden at alt PRNG'er gør er at køre tal igennem en matematisk algoritme, betyder det, at de meget hurtigt og effektivt kan generere tusinde af pseudotilfældige tal. 
 
 Det er også muligt at generere true random tal. For eksempel, kan der ud fra atmosfærisk støj genereres true random tal. I modsætning til PRNG'er kan TRNG'er ikke lige så effektivt generere tilfældige tal. Dette betyder altså at PRNG'er er meget bedre egnet til simulationer end TRNG'er er. TRNG'er er derimod bedre til ting som skal være tilfældige, såsom lotteriet eller gambling. De er også uden tvivl mere sikre indenfor krytografi end PRNG'er er. 
 
@@ -71,15 +82,15 @@ gf_histogram(~linear_congruence(i=100000), breaks = seq(0, 100, by=10), fill="bl
     
 ```
 
-# Boxmuller
+# Box-Muller transformation
 Box-Muller transformationen er en metode, hvori to uniforme random variabler transformeres til et par uafhængige standard normal random variabler. Den primære ide er at ændre koordinatorne fra kartetiske til polære koordinator.
 Sammenhænget mellem kartetiske og polære-koordinator er:
 $x = cos(\theta)*r$
 $y = sin(\theta)*r$
-Ifølge Box-Muller erstattes $\theta$ med $2\pi*U_2$ og $r$ erstattes med $\sqrt V$
-hvor $V$ er $-2*ln*U_1$
-Her skal der altså bruges to værdier, $U_1$ og $U_2$. Disse værdier er de uniform random tal.
-Det man får ud af dette, er to tal $x$ og $y$, som i dette tilfælde er uafhængige random variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
+Ifølge Box-Muller erstattes $\theta$ med $2\pi*U_2$. Dette svarer til at generere en tilfældig vinkel mellem 0 og 2 pi. Yderligere erstattes $r$ med $\sqrt V$
+hvor $V$ er $-2*ln*U_1$. Dette svarer til at generere en tilfældig radius. 
+Her skal der altså bruges to værdier, $U_1$ og $U_2$. Disse værdier er de uniformfordelte tilfældige tal.
+Ud af dette, fås der to tal $x$ og $y$, som i dette tilfælde er uafhængige tilfældige variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
 
 ```{r echo=FALSE}
 
