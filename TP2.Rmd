@@ -12,30 +12,30 @@ library(mosaic)
 
 
 # Introduction
-I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en box muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.
+I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en Box-Muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.
 
 
 # PRNG og TRNG
-Indenfor tilfældige tal, findes der to termer. PRNG og TRNG, som står for "Pseudo Random Number Generator" og "True Random Number Generator". For at kunne generere tilfædlige tal ud fra deterministiske computere, har man brug for at bearbejde et input ved hjælp af en algoritme, og derved få et tilfældigt tal (også kaldet output) ud.
+Indenfor tilfældige tal, findes der to termer. PRNG og TRNG, som står for "Pseudo Random Number Generator" og "True Random Number Generator". For at kunne generere tilfædlige tal ud fra deterministiske computere,er det nødvendigt at bearbejde et input ved hjælp af en algoritme, og derved få et tilfældigt tal (også kaldet output) ud.
 
-Den største forskel der er på pseudorandom tal og true random tal, er at de pseudorandom tal er blevet genereret til at ligne true random tal. De er altså ikke tilfældige, og deres output afhænger af et seed. Dette gør altså at resultaterne fra en PRNG kan reproduceres, hvis man sætter seed'et til en bestemt værdi. Dette gør PRNG'er godt egnet til simulationer. Man kan dele sine resultater fra en simulation med andre, hvis de også har sat seed'et, og dette gør det utroligt nemt at undersøge forskellige videnskabenlige fund. Siden at alt PRNG'er gør er at køre tal igennem en matematisk algoritme, betyder det, at de meget hurtigt og effektivt kan spytte tusinde af pseudotilfældige tal ud. 
+Den største forskel der er på pseudorandom tal og true random tal, er at de pseudorandom tal er blevet genereret til at ligne true random tal. De er altså ikke tilfældige, og deres output afhænger af et seed. Dette gør altså at resultaterne fra en PRNG kan reproduceres, hvis seed'et sættes til en bestemt værdi. Dette gør PRNG'er godt egnet til simulationer. Derved kan resultaterne deles fra en simulation med andre, hvis også der er sat et seed, og dette gør det utroligt nemt at undersøge forskellige videnskabenlige fund. Siden at alt PRNG'er gør er at køre tal igennem en matematisk algoritme, betyder det, at de meget hurtigt og effektivt kan generere tusinde af pseudotilfældige tal. 
 
-Det er også muligt at generere true random tal. For eksempel, kan der ud fra atmosfærisk støj genereres true random tal. I modsætning til PRNG'er kan TRNG'er ikke lige så effektivt spytte tilfældige tal ud. Dette betyder altså at PRNG'er er meget bedre egnet til simulationer end TRNG'er er. TRNG'er er derimod bedre til ting som skal være tilfældige, såsom lotteriet eller gambling. De er også uden tvivl mere sikre indenfor krytografi end PRNG'er er. 
+Det er også muligt at generere true random tal. For eksempel, kan der ud fra atmosfærisk støj genereres true random tal. I modsætning til PRNG'er kan TRNG'er ikke lige så effektivt generere tilfældige tal. Dette betyder altså at PRNG'er er meget bedre egnet til simulationer end TRNG'er er. TRNG'er er derimod bedre til ting som skal være tilfældige, såsom lotteriet eller gambling. De er også uden tvivl mere sikre indenfor krytografi end PRNG'er er. 
 
-I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Boxmuller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
+I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Box-Muller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
 
-# Linear congruential generator
-Målet ved en linear congruential generator er at genere et tilfældigt tal mellem 0 og 1. Linear congruential generator er en PRNG, så tallene der fås fra generatoren, vil ikke være fuldstændigt tilfældige. 
-Der er 4 vigtige værdier indenfor en linear congruential generator.:  
-	X0, som svarer til denne generators seed; X0 $\leq$ 0.  
-	a, som bliver ganget på X0; a $\leq$ 0.  
-	c, som bliver adderet til X0; c $\leq$ 0.  
-	m, kaldet modulus; m > X0, m > a, m > c.  
+# Lineær kongruens generator
+Målet ved en lineær kongruens generator er at genere et tilfældigt tal mellem $0$ og $1$. Linear congruential generator er en PRNG, så tallene der fås fra generatoren, vil ikke være fuldstændigt tilfældige. 
+Der er 4 vigtige værdier indenfor en lineær kongruens generator.:  
+	$X_0$, som svarer til denne generators seed; $X_0$ $\leq$ 0.  
+	$a$, som bliver ganget på $X_0$; $a$ $\leq$ 0.  
+	$c$, som bliver adderet til $X_0$; $c$ $\leq$ 0.  
+	$m$, kaldet modulus; $m > X_0$, $m > a$, $m > c$.  
 Disse værdier vil blive brugt i den nedenstående ligning.:  
       $X_{(n+1)}=(a*X_n+c)mod(m)$  
-Her vil man starte med at indsætte X0 på Xn’s plads, og ud fra dette kan man finde X1. Derefter kan man indsætte X1 på Xn’s plads og derefter få X2. Denne proces kan gentages så mange gange som man har brug for.
-Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler 2^31. 
-De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Ved at omhyggeligt vælge sine a, c og m værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. Linear congruential generators er generelt også hurtige og kræver ikke særlig meget plads. En ulempe ved LCG er at dens state ikke er stor nok, se nedenstående billede.
+Her vil man starte med at indsætte $X_0$ på $X_{n}$'s plads, og ud fra dette kan man finde $X_1$. Derefter kan man indsætte $X_1$ på $X_n$’s plads og derefter få $X_2$. Denne proces kan gentages så mange gange som man har brug for.
+Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
+De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. Lineær kongruens generatorer er generelt også hurtige og kræver ikke særlig meget plads. En ulempe ved LCG er at dens state ikke er stor nok, se nedenstående billede.
 
 ![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
 
@@ -76,10 +76,10 @@ Box-Muller transformationen er en metode, hvori to uniforme random variabler tra
 Sammenhænget mellem kartetiske og polære-koordinator er:
 $x = cos(\theta)*r$
 $y = sin(\theta)*r$
-Ifølge boxmuller erstattes $\theta$ med $2\pi*U_2$ og $r$ erstattes med $\sqrt V$
-hvor V er $-2*ln*U_1$
+Ifølge Box-Muller erstattes $\theta$ med $2\pi*U_2$ og $r$ erstattes med $\sqrt V$
+hvor $V$ er $-2*ln*U_1$
 Her skal der altså bruges to værdier, $U_1$ og $U_2$. Disse værdier er de uniform random tal.
-Det man får ud af dette, er to tal x og y, som i dette tilfælde er uafhængige random variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
+Det man får ud af dette, er to tal $x$ og $y$, som i dette tilfælde er uafhængige random variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
 
 ```{r echo=FALSE}
 

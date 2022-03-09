@@ -84,7 +84,7 @@ $y = sin(\theta)*r$
 Ifølge Box-Muller erstattes $\theta$ med $2\pi*U_2$ og $r$ erstattes med $\sqrt V$
 hvor V er $-2*ln*U_1$
 Her skal der altså bruges to værdier, $U_1$ og $U_2$. Disse værdier er de uniform random tal.
-Det man får ud af dette, er to tal x og y, som i dette tilfælde er uafhængige random variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
+Udfaldet af dette, er to tal x og y, som i dette tilfælde er uafhængige random variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
 
 ```{r echo=FALSE}
 
