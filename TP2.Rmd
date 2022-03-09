@@ -12,17 +12,17 @@ library(mosaic)
 
 
 # Introduction
-I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en box muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.
+I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en Box-Muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.
 
 
 # PRNG og TRNG
-Indenfor tilfældige tal, findes der to termer. PRNG og TRNG, som står for "Pseudo Random Number Generator" og "True Random Number Generator". For at kunne generere tilfædlige tal ud fra deterministiske computere, har man brug for at bearbejde et input ved hjælp af en algoritme, og derved få et tilfældigt tal (også kaldet output) ud.
+Indenfor tilfældige tal, findes der to termer. PRNG og TRNG, som står for "Pseudo Random Number Generator" og "True Random Number Generator". For at kunne generere tilfædlige tal ud fra deterministiske computere,er det nødvendigt at bearbejde et input ved hjælp af en algoritme, og derved få et tilfældigt tal (også kaldet output) ud.
 
-Den største forskel der er på pseudorandom tal og true random tal, er at de pseudorandom tal er blevet genereret til at ligne true random tal. De er altså ikke tilfældige, og deres output afhænger af et seed. Dette gør altså at resultaterne fra en PRNG kan reproduceres, hvis man sætter seed'et til en bestemt værdi. Dette gør PRNG'er godt egnet til simulationer. Man kan dele sine resultater fra en simulation med andre, hvis de også har sat seed'et, og dette gør det utroligt nemt at undersøge forskellige videnskabenlige fund. Siden at alt PRNG'er gør er at køre tal igennem en matematisk algoritme, betyder det, at de meget hurtigt og effektivt kan spytte tusinde af pseudotilfældige tal ud. 
+Den største forskel der er på pseudorandom tal og true random tal, er at de pseudorandom tal er blevet genereret til at ligne true random tal. De er altså ikke tilfældige, og deres output afhænger af et seed. Dette gør altså at resultaterne fra en PRNG kan reproduceres, hvis seed'et sættes til en bestemt værdi. Dette gør PRNG'er godt egnet til simulationer. Derved kan resultaterne deles fra en simulation med andre, hvis også der er sat et seed, og dette gør det utroligt nemt at undersøge forskellige videnskabenlige fund. Siden at alt PRNG'er gør er at køre tal igennem en matematisk algoritme, betyder det, at de meget hurtigt og effektivt kan generere tusinde af pseudotilfældige tal. 
 
-Det er også muligt at generere true random tal. For eksempel, kan der ud fra atmosfærisk støj genereres true random tal. I modsætning til PRNG'er kan TRNG'er ikke lige så effektivt spytte tilfældige tal ud. Dette betyder altså at PRNG'er er meget bedre egnet til simulationer end TRNG'er er. TRNG'er er derimod bedre til ting som skal være tilfældige, såsom lotteriet eller gambling. De er også uden tvivl mere sikre indenfor krytografi end PRNG'er er. 
+Det er også muligt at generere true random tal. For eksempel, kan der ud fra atmosfærisk støj genereres true random tal. I modsætning til PRNG'er kan TRNG'er ikke lige så effektivt generere tilfældige tal. Dette betyder altså at PRNG'er er meget bedre egnet til simulationer end TRNG'er er. TRNG'er er derimod bedre til ting som skal være tilfældige, såsom lotteriet eller gambling. De er også uden tvivl mere sikre indenfor krytografi end PRNG'er er. 
 
-I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Boxmuller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
+I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Box-Muller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
 
 # Linear congruential generator
 Målet ved en linear congruential generator er at genere et tilfældigt tal mellem 0 og 1. Linear congruential generator er en PRNG, så tallene der fås fra generatoren, vil ikke være fuldstændigt tilfældige. 
