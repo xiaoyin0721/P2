@@ -25,13 +25,7 @@ I modsætning til PRNG'er, eksisterer der også True-Random Number Generators (o
 
 En PRNG er meget velegnet til simulationer, da det er muligt at reproducere dataet ved at sætte seed'et til en bestemt værdi. Dette gør det muligt for andre indenfor samme område, at kunne få dataet fra en given simulation, og derved er det nemmere at diskutere fund og eller problemer med den givne simulation.
 
-TRNG'er kan også benyttes til simulationer, og siden tallene er mere tilfældige i forhold til PRNG'erne, kan de være mere velegnet til simulationer. Problemet er dog, at siden seedets værdi ikke kan bestemme, er det umuligt at reproducere dataet. Grundet dette, er PRNG i adskillige situationer foretrukket indenfor simulationer. 
-
-
- 
- Dette gør altså at resultaterne fra en PRNG kan reproduceres, hvis seed'et sættes til en bestemt værdi. Dette gør PRNG'er godt egnet til simulationer. Derved kan resultaterne deles fra en simulation med andre, hvis også der er sat et seed, og dette gør det utroligt nemt at undersøge forskellige videnskabenlige fund. Siden at alt PRNG'er gør er at køre tal igennem en matematisk algoritme, betyder det, at de meget hurtigt og effektivt kan generere tusinde af pseudotilfældige tal. 
-
-Det er også muligt at generere true random tal. For eksempel, kan der ud fra atmosfærisk støj genereres true random tal. I modsætning til PRNG'er kan TRNG'er ikke lige så effektivt generere tilfældige tal. Dette betyder altså at PRNG'er er meget bedre egnet til simulationer end TRNG'er er. TRNG'er er derimod bedre til ting som skal være tilfældige, såsom lotteriet eller gambling. De er også uden tvivl mere sikre indenfor krytografi end PRNG'er er. 
+TRNG'er kan også benyttes til simulationer, og siden tallene er mere tilfældige i forhold til PRNG'erne, kan de være mere velegnet til simulationer. Problemet er dog, at siden seedets værdi ikke kan bestemme, er det umuligt at reproducere dataet. Grundet dette, er PRNG i adskillige situationer foretrukket indenfor simulationer. Dog er det værd at nævne, at siden dataet fra en TRNG ikke kan reproduceres, er det optimalt for ting som skal være tilfældige, såsom lotteriet, gambling eller kryptering.
 
 I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Box-Muller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
 
@@ -50,10 +44,10 @@ De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Ved at
 
 ![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
 
-Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en irreversibel funktion f. For at få et random tal ud, kan man bruge en irreversibel funktion g på staten. Dette kan dog kun gøres en gang per state, hvorimod andre PRNG’er kan have flere states på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgåes i rapporten.
+Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en irreversibel funktion f. For at få et random tal ud, kan man bruge en irreversibel funktion g på staten. Dette kan dog kun gøres en gang per state, hvorimod andre PRNG’er kan have flere states på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgås i rapporten.
 
 # Implementering af linear congruential generator
-Nedenstående blok kode blev brugt til at lave den lineære kongruentiale generator (LCG)
+Nedenstående blok kode blev brugt til at lave den lineære kongruentiale generator (LCG):
 ```{r}
 X_0 = 1576
 
@@ -118,6 +112,140 @@ Box_muller_transform()
 
 
 ```
+
+```{r}
+
+u1 <- runif(10^5)
+u2 <- runif(10^5)
+
+theta <- u1 * 2 * pi
+v <- -2*log(u2)
+r <- sqrt(v)
+
+x <- r*cos(theta)
+y <- r*sin(theta)
+
+shapiro.test(x[1:5000])
+
+hist(x, breaks = 50)
+hist(y, breaks = 50)
+?hist
+
+plot(x,y,pch=19, cex=0.4, asp=1, las=1)
+
+
+```
+```{r}
+#plot PDF curves
+curve(dexp(x, rate = .5), from=0, to=10, col='blue')
+curve(dexp(x, rate = 1), from=0, to=10, col='red', add=TRUE)
+curve(dexp(x, rate = 1.5), from=0, to=10, col='purple', add=TRUE)
+
+#add legend
+legend(7, .5, legend=c("rate=.5", "rate=1", "rate=1.5"),
+       col=c("blue", "red", "purple"), lty=1, cex=1.2)
+```
+```{r}
+p <- ggplot(data.frame(x = c(-3,3)), aes(x = x)) +
+  stat_function(fun = dnorm)
+
+p +
+  annotate("text", x = 2, y = 0.3, parse = TRUE,
+           label = "frac(1, sqrt(2 * pi)) * e ^ {-x^2 / 2}")
+```
+
+
+
+
+## Box Muller 
+
+
+The Box-Muller transform (George Box and Mervin Muller, 1958) is a method to transform two uniform random variables into a pair of independent standard normal random variables. The main idea is to change coordinates from Cartesian to polar coordinates.
+
+
+
+
+Input: 
+  $U_{i}$: $\Omega \to (0,1) ,(i = 1, 2) $
+  
+  Output:$(\Omega, F, P)$, probability space
+
+
+#Probability density function of X and Y 
+X, Y are standard normal (standard Gaussian) random variables, shown as $X, Y \sim {\sf N(0,1)}$, X and Y are independent variables.
+
+A continuous random variable Z is said to be a standard normal (standard Gaussian) random variable, shown as $X∼N(0,1)$, if its PDF is given by
+
+$f_X(x)=1/ \sqrt{2\pi} \exp{(−x^2)/2}$ for all $z∈R$
+  
+```{r}
+p <- ggplot(data.frame(x = c(-3,3)), aes(x = x)) +
+  stat_function(fun = dnorm)
+
+p +
+  annotate("text", x = 2, y = 0.3, parse = TRUE,
+           label = "frac(1, sqrt(2 * pi)) * e ^ {-x^2 / 2}")
+```
+
+
+
+#Joint Probability Density function of X, Y 
+
+The joint probability Density function (PDF) of two random variables will form a normal distribution, will prove that how X and Y can be sampled from two uniform random distributions to form a joint normal distribution.
+
+The joint Probability Density Function (også kaldet PDF) tager to uniform variabler og former en normal fordeling
+
+
+#Transform to polar coordiantes, Jacobian Matrix 
+
+The key idea is to transform the joint PDF from a function of x, y to a function of R, $\theta$. $f_XY(x,y) = f(x)f(y) = 1/2\pi\exp{-(x^2+y^2)/2}$ Transforming to polar cooridnates
+$f_XY(x,y)dxdy= f_R\theta(r,\theta)rdrd\theta$
+  
+  The relationship between Cartesian coordinates(x,y)and polar coordinates(r, $\theta$) is 
+
+$x = cos(\theta)r$
+  $y = sin(\theta)r$
+  
+  $f_R\theta(r,\theta)rdrd\theta = f_XY(x,y)dxdy/drd\theta =  f_XY(x,y)|d(x,y)/d(r,\theta)|$
+  
+  $|d(x,y)/d(r,\theta)|$ is Jacobian matrix, which can be resolved as r
+
+
+#Rewrite the R, $\theta$ function
+
+Using substitution method, the $r, \theta$ function is transformed to pdf in terms of $r^2, \theta$
+  
+  
+  $\int_0^2\pi  \int_0^\infty (1/2\pi) \mathrm{e}^{-r^2/2} r\mathrm{d}r\mathrm{d}\theta$
+  
+  $1/2\mathrm{d}r^2 = r\mathrm{d}r$ 
+  
+  It is transformed to $(1/2e^(-r^2/2) \mathrm{d}r^2) 1/2\pi\mathrm{d}\theta$
+  It can be seen as joint function of r^2 and theta
+
+Therefore, we just need to sample values from a uniform random distribution and multiply with 2\pi for \theta values $(U1 \sim{(0, 2\pi)})$, and sample from a exponential distribution (\lamda = 1/2) for r^2 values, then R can be computed by $r = \sqrt(V)$
+  
+  
+  
+  #Exponential funktion
+  
+  
+  
+  For an exponential distribution, 
+$f(x) = \lambda e^(-\lambda x)$
+  
+  The cumulative probability function(cdf) of exponential distribution is given as 
+
+$\int_\infty^0 \lambda e^(-\lambda x)$
+  
+  By applying inverse transformtion, the value of $R^2$ can be 
+sampled as $-2log(U2) \sim{Exp(\lambda = 1/2 )}$ 
+  
+  Then the joint pdf of X, Y can be expressed in polar coordinates by
+
+$x = cos(\theta)r$
+  $y = sin(\theta)r$
+  
 
 
 
