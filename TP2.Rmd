@@ -18,10 +18,10 @@ I denne del af projektet, skabes en PRNG, med det formål, at simulere  og gener
 # Pseudo-Random Number Generators
 For at kunne generere tilfældige tal ud fra deterministiske computere,er det nødvendigt at bearbejde et input ved hjælp af en algoritme, således at det genererede tal tilsyneladende er tilfældigt. Et sådanne genereret tal kaldes et "Pseudo-Random Number", og disse bliver genereret ved hjælp af Pseudo-Random Number Generators (også kaldet PRNG'er). PRNG'er benytter et seed, som kan bestemmes af brugeren, til at generere de tilfældige tal. Et eksempel på en kendt PRNG, er en Lineære Kongruentiel Generator (Også kaldet LCG). 
 
-#True-Random Number Generators
+# True-Random Number Generators
 I modsætning til PRNG'er, eksisterer der også True-Random Number Generators (også kaldet TRNG'er). Disse generators genererer tilfældige tal, uden nødvendigvis at afhænge af algoritmer. Et eksempel på en kendt TRNG, er at generere tilfældige tal ved hjælp af atmosfærisk støj.
 
-#Sammenligning af PRNG'er og TRNG'er
+# Sammenligning af PRNG'er og TRNG'er
 
 En PRNG er meget velegnet til simulationer, da det er muligt at reproducere dataet ved at sætte seed'et til en bestemt værdi. Dette gør det muligt for andre indenfor samme område, at kunne få dataet fra en given simulation, og derved er det nemmere at diskutere fund og eller problemer med den givne simulation.
 
@@ -30,17 +30,20 @@ TRNG'er kan også benyttes til simulationer, og siden tallene er mere tilfældig
 I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Box-Muller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
 
 # Lineær kongruens generator
-Målet ved en lineær kongruens generator er at genere et tilfældigt tal mellem $0$ og $1$. Linear congruential generator er en PRNG, så tallene der fås fra generatoren, vil ikke være fuldstændigt tilfældige. 
-Der er 4 vigtige værdier indenfor en lineær kongruens generator.:  
-	$X_0$, som svarer til denne generators seed; $X_0$ $\leq$ 0.  
-	$a$, som bliver ganget på $X_0$; $a$ $\leq$ 0.  
-	$c$, som bliver adderet til $X_0$; $c$ $\leq$ 0.  
-	$m$, kaldet modulus; $m > X_0$, $m > a$, $m > c$.  
-Disse værdier vil blive brugt i den nedenstående ligning.:  
-      $X_{(n+1)}=(a*X_n+c)mod(m)$  
+I en lineær kongruens generator (LCG) er det muligt at generere tilfældige tal. LCG er en PRNG, så tallene der fås fra generatoren, vil ikke være fuldstændigt tilfældige. For LCG'en benyttes følgende formel, for at generere de tilfældige tal: 
+$$
+\begin{aligned}
+      X_{(n+1)}=(a*X_n+c)\;mod\;m
+\end{aligned}      
+$$
+	- $X_0$, som svarer til denne generators seed, $X_0$ $\geq$ 0.  
+	- $a$, som bliver ganget på $X_0$, $a$ $\geq$ 0.  
+	- $c$, som bliver adderet til $X_0$, $c$ $\geq$ 0.  
+	- $m$, kaldet modulus, $m > X_0$, $m > a$, $m > c$.  
+
 Her vil man starte med at indsætte $X_0$ på $X_{n}$'s plads, og ud fra dette kan man finde $X_1$. Derefter kan man indsætte $X_1$ på $X_n$’s plads og derefter få $X_2$. Denne proces kan gentages så mange gange som man har brug for.
-Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
-De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. Lineær kongruens generatorer er generelt også hurtige og kræver ikke særlig meget plads. En ulempe ved LCG er at dens state ikke er stor nok, se nedenstående billede.
+Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv, længden fra det første tal i generatoren frem til det første gentagende tal kaldes for en periode, og perioden afhænger meget af de valgte værdier af $a$, $c$ og $m$. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
+De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er diskret med 2 decimalers præcision. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. 
 
 ![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
 
@@ -49,9 +52,8 @@ Når ens program startes op får man en state ud fra det seed man bruger. Denne 
 # Implementering af linear congruential generator
 Nedenstående blok kode blev brugt til at lave den lineære kongruentiale generator (LCG):
 ```{r}
-X_0 = 1576
 
-linear_congruence <- function(i) {
+linear_congruence <- function(i, X_0) {
 t <- 0
 a <- 11102357
 c <- 21353
@@ -59,11 +61,12 @@ m <- 2**32
 v1 <- c()
 while(t < i){
   X_0 <- (a*X_0+c)%%m
-  v1 <- c(v1 , as.integer(((X_0)/m)*100))
+  v1 <- c(v1 , as.numeric(((X_0)/m)))
   t <- t + 1
 }
 return(v1)
 }
+linear_congruence(i=10)
 ```
 
 Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sættes $X_0$ lig med et tilfældigt tal, som i dette tilfælde er $1576$. Der skulle også bruges en $a$, $c$ og $m$ værdi, som i denne kode er sat til henholdsvis $11,102,357$, $21,353$ og $2^{32}$. Der er også oprettet to variabler: $t$ og $i$, som bruges i programmet, hvor $i$ er en parameter for funktionen, som svarer til det ønskede antal tilfældigt genererede tal, og $t$ har en startsværdi på 0, og øges med 1, hvert gang et tilfældigt tal genereres. Funktionen er sat op således, at så længe $t$ er mindre end $i$, vil $X_0$ blive brugt til at udregne en ny $X_0$ værdi. Værdien bliver dernæst tilføjet til en vektor $v1$, dog ikke før at værdien bliver divideret med $m$ og ganget med 100. Dernæst bliver $1$ adderet til $t$, og så loop'er funktionen. Resultatet af denne funktion, kan ses forneden:  
@@ -72,7 +75,7 @@ Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sæt
 ```{r Linear Congruence, echo=FALSE}
 
 #linear_congruence(i=100000)
-gf_histogram(~linear_congruence(i=100000), breaks = seq(0, 100, by=10), fill="black", col="grey", xlim = c(0, 100), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller", title = "Resultaterne af den implementerede PRNG")
+gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller", title = "Resultaterne af den implementerede PRNG")
     
 ```
 
@@ -91,8 +94,8 @@ Ud af dette, fås der to tal $x$ og $y$, som i dette tilfælde er uafhængige ti
 Box_muller_transform <- function(){
   n <- 10^4
   samples <- matrix(ncol = 2, nrow = n)
-  uni_rand_num1 <- runif(10^4, 0, 1)
-  uni_rand_num2 <- runif(10^4, 0, 1)
+  uni_rand_num1 <- linear_congruence(i=10000, X_0 = 145)
+  uni_rand_num2 <- linear_congruence(i=10000, X_0 = 7346)
   R <- sqrt(-2*log(uni_rand_num1))
   theta <- 2*pi*uni_rand_num2
   X <- R*cos(theta)
@@ -112,7 +115,6 @@ Box_muller_transform()
 
 
 ```
-
 ```{r}
 
 u1 <- runif(10^5)
@@ -178,7 +180,7 @@ A continuous random variable Z is said to be a standard normal (standard Gaussia
 
 $f_X(x)=1/ \sqrt{2\pi} \exp{(−x^2)/2}$ for all $z∈R$
   
-```{r}
+  ```{r}
 p <- ggplot(data.frame(x = c(-3,3)), aes(x = x)) +
   stat_function(fun = dnorm)
 
@@ -245,6 +247,12 @@ sampled as $-2log(U2) \sim{Exp(\lambda = 1/2 )}$
 
 $x = cos(\theta)r$
   $y = sin(\theta)r$
+  
+  
+  toc: true
+number_sections: true
+theme: united
+
   
 
 
