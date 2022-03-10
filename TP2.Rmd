@@ -43,11 +43,11 @@ $$
 
 Her vil man starte med at indsætte $X_0$ på $X_{n}$'s plads, og ud fra dette kan man finde $X_1$. Derefter kan man indsætte $X_1$ på $X_n$’s plads og derefter få $X_2$. Denne proces kan gentages så mange gange som man har brug for.
 Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv, længden fra det første tal i generatoren frem til det første gentagende tal kaldes for en periode, og perioden afhænger meget af de valgte værdier af $a$, $c$ og $m$. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
-De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er diskret med 2 decimalers præcision. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. 
+De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. GØR DET HER TOBIAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 
 ![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
 
-Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en irreversibel funktion f. For at få et random tal ud, kan man bruge en irreversibel funktion g på staten. Dette kan dog kun gøres en gang per state, hvorimod andre PRNG’er kan have flere states på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgås i rapporten.
+Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en funktion f, som ikke har en invers funktion. Dette kan dog kun gøres en gang per tilstand, hvorimod andre PRNG’er kan have flere tilstande på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgås i rapporten.
 
 # Implementering af linear congruential generator
 Nedenstående blok kode blev brugt til at lave den lineære kongruentiale generator (LCG):
@@ -66,7 +66,7 @@ while(t < i){
 }
 return(v1)
 }
-linear_congruence(i=10)
+linear_congruence(i=10, X_0 = 234)
 ```
 
 Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sættes $X_0$ lig med et tilfældigt tal, som i dette tilfælde er $1576$. Der skulle også bruges en $a$, $c$ og $m$ værdi, som i denne kode er sat til henholdsvis $11,102,357$, $21,353$ og $2^{32}$. Der er også oprettet to variabler: $t$ og $i$, som bruges i programmet, hvor $i$ er en parameter for funktionen, som svarer til det ønskede antal tilfældigt genererede tal, og $t$ har en startsværdi på 0, og øges med 1, hvert gang et tilfældigt tal genereres. Funktionen er sat op således, at så længe $t$ er mindre end $i$, vil $X_0$ blive brugt til at udregne en ny $X_0$ værdi. Værdien bliver dernæst tilføjet til en vektor $v1$, dog ikke før at værdien bliver divideret med $m$ og ganget med 100. Dernæst bliver $1$ adderet til $t$, og så loop'er funktionen. Resultatet af denne funktion, kan ses forneden:  
@@ -74,7 +74,6 @@ Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sæt
 
 ```{r Linear Congruence, echo=FALSE}
 
-#linear_congruence(i=100000)
 gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller", title = "Resultaterne af den implementerede PRNG")
     
 ```
@@ -103,18 +102,20 @@ Box_muller_transform <- function(){
   samples[,1] <- X
   samples[,2] <- Y 
   
-  label <- rep(c("x", "y"),n)
+  Label <- rep(c("x", "y"),n)
   value <- c(samples[,1],samples[,2])
-  df <- data.frame(value, label)
+  df <- data.frame(value, Label)
   library(ggplot2)
-  plt <- ggplot(df, aes(x=value, color=label, fill=label)) + geom_histogram(aes(y=..density..), bins = 60, position= "identity", alpha =0.3) + labs(x="Value", y="Density") + theme_bw()
+  plt <- ggplot(df, aes(x=value, color=Label, fill=Label)) + geom_histogram(aes(y=..density..), bins = 60, position= "identity", alpha =0.3) + labs(title = "X & Y efter Box-Muller transformationen", x="Value", y="Density", ) + theme_bw()
   print(plt)
 }
-
+?labs
 Box_muller_transform()
 
 
 ```
+
+
 ```{r}
 
 u1 <- runif(10^5)
@@ -252,8 +253,3 @@ $x = cos(\theta)r$
   toc: true
 number_sections: true
 theme: united
-
-  
-
-
-
