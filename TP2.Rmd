@@ -12,7 +12,7 @@ library(mosaic)
 
 
 # Introduktion
-I denne del af projektet, skabes en PRNG, med det formål, at simulere  og generere noget data, som først uniformfordeles. Dernæst bliver dataet så udsat for en Box-Muller transformation så det bliver normalfordelt, og bedre kan analyseres statistisk interferentielt og deskriptivt.
+I denne del af projektet, skabes der en Pseudo-Random Number generator, hvis formål er at generere tilfældige tal. Fordelingen af disse tal vil være uniform, og ved hjælp af en Box-Muller transformation vil der opnås en normalfordeling. Grunden til dette er at undersøge stikprøver fra en normalfordeling i forhold til Central Limit Theorem, da der er adskillige interessante statistiske spørgsmål herinden under.
 
 
 # Pseudo-Random Number Generators
@@ -109,7 +109,6 @@ Box_muller_transform <- function(){
   plt <- ggplot(df, aes(x=value, color=Label, fill=Label)) + geom_histogram(aes(y=..density..), bins = 60, position= "identity", alpha =0.3) + labs(title = "X & Y efter Box-Muller transformationen", x="Value", y="Density", ) + theme_bw()
   print(plt)
 }
-?labs
 Box_muller_transform()
 
 
@@ -156,8 +155,6 @@ p +
   annotate("text", x = 2, y = 0.3, parse = TRUE,
            label = "frac(1, sqrt(2 * pi)) * e ^ {-x^2 / 2}")
 ```
-
-
 
 
 ## Box Muller 
@@ -247,9 +244,23 @@ sampled as $-2log(U2) \sim{Exp(\lambda = 1/2 )}$
   Then the joint pdf of X, Y can be expressed in polar coordinates by
 
 $x = cos(\theta)r$
-  $y = sin(\theta)r$
-  
-  
-  toc: true
-number_sections: true
-theme: united
+$y = sin(\theta)r$
+
+
+
+
+# Teori
+
+## Middelværdi og standardafvigelse
+
+## Fordelinger
+
+## CLT
+
+## Statistisk inferens
+
+### Estimation
+
+### Konfidens Interval
+
+
