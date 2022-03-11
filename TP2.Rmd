@@ -8,6 +8,7 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(mosaic)
+library(ggplot2)
 ```
 
 
@@ -79,14 +80,73 @@ gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1
 ```
 
 # Box-Muller transformation
-Box-Muller transformationen er en metode, hvori to uniforme random variabler transformeres til et par uafhængige standard normal random variabler. Den primære ide er at ændre koordinatorne fra kartetiske til polære koordinator.
+Box-Muller transformationen er en metode, hvori to uniforme random variabler transformeres til en normal fordeling. Den primære ide er at ændre fra koordinatorne fra kartetiske til polære koordinator. 
+
+The principle idea is..instead of sampling independent Gaussians for the x and y coordinates of the samples, we sample their independent uniform angles and exponential squared distances to origin.
+
+For two independent random variables x and y, the joint probability density function $f(x,y)$ is simply the product of density functions f(x) and f(y). 
+
+
 Sammenhænget mellem kartetiske og polære-koordinator er:
 $x = cos(\theta)*r$
 $y = sin(\theta)*r$
-Ifølge Box-Muller erstattes $\theta$ med $2\pi*U_2$. Dette svarer til at generere en tilfældig vinkel mellem 0 og 2 pi. Yderligere erstattes $r$ med $\sqrt V$
-hvor $V$ er $-2*ln*U_1$. Dette svarer til at generere en tilfældig radius. 
-Her skal der altså bruges to værdier, $U_1$ og $U_2$. Disse værdier er de uniformfordelte tilfældige tal.
+
+By writing the joint density function in polar cooridnates, 'the joint PDF is the product of a constant $1/2\pi$ and an exponential decay of $r^2$ with the parameter $\lambda = 1/2$. 
+
+In pratices, $U_1$ and $U_2$ are uniform random variables, $R^2$ is calculated by applying the inverse CDF method to sample from an exponential decay distribution with $\lambda = 1/2$, which is $-2ln(U_1)$. $\Theta$ is calculated from muliply $2\pi$ on $U_2$
+
+
+Dette svarer til at generere en tilfærdig vikel og en tilfældig radius, som følger en ekponential fordeling, which means it is more likely to generate distances closer to the origin, which is shown as
+
+
+```{r}
+uni_rand_num1 <- linear_congruence(i=10000, X_0 = 145)
+uni_rand_num2 <- linear_congruence(i=10000, X_0 = 7346)
+R <- sqrt(-2*log(uni_rand_num1))
+theta <- 2*pi*uni_rand_num2
+X <- R*cos(theta)
+Y <- R*sin(theta)
+
+plot(X,Y,pch=19, cex=0.4, asp=1, las=1)
+
+
+```
+
+
+
+#Quantile-quantile plot
+
+A Q–Q plot is a probability plot, which is a graphical method for comparing two probability distributions by plotting their quantiles against each other. we use qqplot to check the generated data X, Y follows a normal distribution. 
+
+The result is most data points fall along a straight line, which means data points of X,Y appears to be normally distributed. 
+
+
+```{r}
+
+
+qqplot(X,Y)
+
+
+```
+
+#Uafhængig Test 
+
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
 Ud af dette, fås der to tal $x$ og $y$, som i dette tilfælde er uafhængige tilfældige variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
+
+
 
 ```{r echo=FALSE}
 
@@ -106,58 +166,13 @@ Box_muller_transform <- function(){
   value <- c(samples[,1],samples[,2])
   df <- data.frame(value, Label)
   library(ggplot2)
-  plt <- ggplot(df, aes(x=value, color=Label, fill=Label)) + geom_histogram(aes(y=..density..), bins = 60, position= "identity", alpha =0.3) + labs(title = "X & Y efter Box-Muller transformationen", x="Value", y="Density", ) + theme_bw()
+  plt <- ggplot(df, aes(x=value, color=Label, fill=Label)) + geom_histogram(aes(y=..density..), bins = 60, position= "identity", alpha =0.3) + labs(title = "Box-Muller Transformationen", x="Value", y="Density", ) + theme_bw()
   print(plt)
 }
 Box_muller_transform()
 
 
 ```
-
-
-```{r}
-
-u1 <- runif(10^5)
-u2 <- runif(10^5)
-
-theta <- u1 * 2 * pi
-v <- -2*log(u2)
-r <- sqrt(v)
-
-x <- r*cos(theta)
-y <- r*sin(theta)
-
-shapiro.test(x[1:5000])
-
-hist(x, breaks = 50)
-hist(y, breaks = 50)
-?hist
-
-plot(x,y,pch=19, cex=0.4, asp=1, las=1)
-
-
-```
-```{r}
-#plot PDF curves
-curve(dexp(x, rate = .5), from=0, to=10, col='blue')
-curve(dexp(x, rate = 1), from=0, to=10, col='red', add=TRUE)
-curve(dexp(x, rate = 1.5), from=0, to=10, col='purple', add=TRUE)
-
-#add legend
-legend(7, .5, legend=c("rate=.5", "rate=1", "rate=1.5"),
-       col=c("blue", "red", "purple"), lty=1, cex=1.2)
-```
-```{r}
-p <- ggplot(data.frame(x = c(-3,3)), aes(x = x)) +
-  stat_function(fun = dnorm)
-
-p +
-  annotate("text", x = 2, y = 0.3, parse = TRUE,
-           label = "frac(1, sqrt(2 * pi)) * e ^ {-x^2 / 2}")
-```
-
-
-
 
 
 
@@ -167,6 +182,7 @@ p +
 I en population findes der to værdier, $\mu$ og $\sigma$, som er interessante at kigge nærmere på. Gennemsnittet af en population kaldes $\mu$, mens at populationens standardafvigelse kaldes $\sigma$.
 
 Populations standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser hvordan variansen for en stikprøve kan udregnes:
+
 
 $$
 \begin{aligned}
