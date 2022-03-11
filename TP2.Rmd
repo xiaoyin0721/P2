@@ -8,6 +8,7 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(mosaic)
+library(ggplot2)
 ```
 
 
@@ -79,7 +80,13 @@ gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1
 ```
 
 # Box-Muller transformation
-Box-Muller transformationen er en metode, hvori to uniforme random variabler transformeres til et par uafhængige standard normal random variabler. Den primære ide er at ændre koordinatorne fra kartetiske til polære koordinator.
+Box-Muller transformationen er en metode, hvori to uniforme random variabler transformeres til en normal fordeling. Den primære ide er at ændre koordinatorne fra kartetiske til polære koordinator. 
+
+
+
+Instead of sampling independent Gaussians for the x and y coordinates of the samples, we sample their independent uniform angles and exponential half-of-squared distances to origin.
+
+
 Sammenhænget mellem kartetiske og polære-koordinator er:
 $x = cos(\theta)*r$
 $y = sin(\theta)*r$
@@ -87,6 +94,50 @@ Ifølge Box-Muller erstattes $\theta$ med $2\pi*U_2$. Dette svarer til at genere
 hvor $V$ er $-2*ln*U_1$. Dette svarer til at generere en tilfældig radius. 
 Her skal der altså bruges to værdier, $U_1$ og $U_2$. Disse værdier er de uniformfordelte tilfældige tal.
 Ud af dette, fås der to tal $x$ og $y$, som i dette tilfælde er uafhængige tilfældige variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
+
+#Quantile-quantile plot
+
+A Q–Q plot is a probability plot, which is a graphical method for comparing two probability distributions by plotting their quantiles against each other. 
+
+
+
+
+```{r}
+
+
+x_y_qqplot <- function(){
+  n <- 10^4
+  samples <- matrix(ncol = 2, nrow = n)
+  uni_rand_num1 <- linear_congruence(i=10000, X_0 = 145)
+  uni_rand_num2 <- linear_congruence(i=10000, X_0 = 7346)
+  R <- sqrt(-2*log(uni_rand_num1))
+  theta <- 2*pi*uni_rand_num2
+  X <- R*cos(theta)
+  Y <- R*sin(theta)
+  samples[,1] <- X
+  samples[,2] <- Y 
+  
+  label <- rep(c("x", "y"),n)
+  value <- c(samples[,1],samples[,2])
+  df <- data.frame(value, label)
+  
+  ggplot(data = df, mapping = aes(x = value, color = label, fill = label)) +
+  stat_qq_band(alpha=0.5, conf=0.95, qtype=1, bandType = "ts") +
+  stat_qq_line(identity=TRUE) +
+  stat_qq_point(col="black") +
+  facet_wrap(~ value, scales = "free") +
+  labs(x = "Theoretical Quantiles", y = "Sample Quantiles") + theme_bw() 
+ 
+}
+
+x_y_qqplot()
+
+```
+
+
+
+
+
 
 ```{r echo=FALSE}
 
@@ -106,7 +157,7 @@ Box_muller_transform <- function(){
   value <- c(samples[,1],samples[,2])
   df <- data.frame(value, Label)
   library(ggplot2)
-  plt <- ggplot(df, aes(x=value, color=Label, fill=Label)) + geom_histogram(aes(y=..density..), bins = 60, position= "identity", alpha =0.3) + labs(title = "X & Y efter Box-Muller transformationen", x="Value", y="Density", ) + theme_bw()
+  plt <- ggplot(df, aes(x=value, color=Label, fill=Label)) + geom_histogram(aes(y=..density..), bins = 60, position= "identity", alpha =0.3) + labs(title = "Box-Muller Transformationen", x="Value", y="Density", ) + theme_bw()
   print(plt)
 }
 ?labs
@@ -138,117 +189,8 @@ plot(x,y,pch=19, cex=0.4, asp=1, las=1)
 
 
 ```
-```{r}
-#plot PDF curves
-curve(dexp(x, rate = .5), from=0, to=10, col='blue')
-curve(dexp(x, rate = 1), from=0, to=10, col='red', add=TRUE)
-curve(dexp(x, rate = 1.5), from=0, to=10, col='purple', add=TRUE)
-
-#add legend
-legend(7, .5, legend=c("rate=.5", "rate=1", "rate=1.5"),
-       col=c("blue", "red", "purple"), lty=1, cex=1.2)
-```
-```{r}
-p <- ggplot(data.frame(x = c(-3,3)), aes(x = x)) +
-  stat_function(fun = dnorm)
-
-p +
-  annotate("text", x = 2, y = 0.3, parse = TRUE,
-           label = "frac(1, sqrt(2 * pi)) * e ^ {-x^2 / 2}")
-```
 
 
-
-
-## Box Muller 
-
-
-The Box-Muller transform (George Box and Mervin Muller, 1958) is a method to transform two uniform random variables into a pair of independent standard normal random variables. The main idea is to change coordinates from Cartesian to polar coordinates.
-
-
-
-
-Input: 
-  $U_{i}$: $\Omega \to (0,1) ,(i = 1, 2) $
-  
-  Output:$(\Omega, F, P)$, probability space
-
-
-#Probability density function of X and Y 
-X, Y are standard normal (standard Gaussian) random variables, shown as $X, Y \sim {\sf N(0,1)}$, X and Y are independent variables.
-
-A continuous random variable Z is said to be a standard normal (standard Gaussian) random variable, shown as $X∼N(0,1)$, if its PDF is given by
-
-$f_X(x)=1/ \sqrt{2\pi} \exp{(−x^2)/2}$ for all $z∈R$
-  
-  ```{r}
-p <- ggplot(data.frame(x = c(-3,3)), aes(x = x)) +
-  stat_function(fun = dnorm)
-
-p +
-  annotate("text", x = 2, y = 0.3, parse = TRUE,
-           label = "frac(1, sqrt(2 * pi)) * e ^ {-x^2 / 2}")
-```
-
-
-
-#Joint Probability Density function of X, Y 
-
-The joint probability Density function (PDF) of two random variables will form a normal distribution, will prove that how X and Y can be sampled from two uniform random distributions to form a joint normal distribution.
-
-The joint Probability Density Function (også kaldet PDF) tager to uniform variabler og former en normal fordeling
-
-
-#Transform to polar coordiantes, Jacobian Matrix 
-
-The key idea is to transform the joint PDF from a function of x, y to a function of R, $\theta$. $f_XY(x,y) = f(x)f(y) = 1/2\pi\exp{-(x^2+y^2)/2}$ Transforming to polar cooridnates
-$f_XY(x,y)dxdy= f_R\theta(r,\theta)rdrd\theta$
-  
-  The relationship between Cartesian coordinates(x,y)and polar coordinates(r, $\theta$) is 
-
-$x = cos(\theta)r$
-  $y = sin(\theta)r$
-  
-  $f_R\theta(r,\theta)rdrd\theta = f_XY(x,y)dxdy/drd\theta =  f_XY(x,y)|d(x,y)/d(r,\theta)|$
-  
-  $|d(x,y)/d(r,\theta)|$ is Jacobian matrix, which can be resolved as r
-
-
-#Rewrite the R, $\theta$ function
-
-Using substitution method, the $r, \theta$ function is transformed to pdf in terms of $r^2, \theta$
-  
-  
-  $\int_0^2\pi  \int_0^\infty (1/2\pi) \mathrm{e}^{-r^2/2} r\mathrm{d}r\mathrm{d}\theta$
-  
-  $1/2\mathrm{d}r^2 = r\mathrm{d}r$ 
-  
-  It is transformed to $(1/2e^(-r^2/2) \mathrm{d}r^2) 1/2\pi\mathrm{d}\theta$
-  It can be seen as joint function of r^2 and theta
-
-Therefore, we just need to sample values from a uniform random distribution and multiply with 2\pi for \theta values $(U1 \sim{(0, 2\pi)})$, and sample from a exponential distribution (\lamda = 1/2) for r^2 values, then R can be computed by $r = \sqrt(V)$
-  
-  
-  
-  #Exponential funktion
-  
-  
-  
-  For an exponential distribution, 
-$f(x) = \lambda e^(-\lambda x)$
-  
-  The cumulative probability function(cdf) of exponential distribution is given as 
-
-$\int_\infty^0 \lambda e^(-\lambda x)$
-  
-  By applying inverse transformtion, the value of $R^2$ can be 
-sampled as $-2log(U2) \sim{Exp(\lambda = 1/2 )}$ 
-  
-  Then the joint pdf of X, Y can be expressed in polar coordinates by
-
-$x = cos(\theta)r$
-  $y = sin(\theta)r$
-  
   
   toc: true
 number_sections: true
