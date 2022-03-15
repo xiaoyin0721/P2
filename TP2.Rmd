@@ -213,5 +213,28 @@ Populationen bliver her betegnet som X.
 ### Konfidens Interval
 
 ### Hypoteser
+Hver signifikanstest har to hypoteser. En hypotese er et udsagn omkring værdien af population parameter. Hypotese forudsiger hvorvidt en parameter påvirker en numerisk værdi eller falder inden for en specifik værdimængde. Det gør det så muligt at beregne om en hypotese er sand eller falsk.  
+
+For at sørge for at man anvender en pålidelig analysemetode på en stikprøve, så opsættes en hypotese omkring sammenhængen af ens data så opstilles en hypotesetest. Det er en metode til at teste en hypotese (Alternativ hypotese - $H_a$) hvor den sættes op mod en konkurrence hypotese som er nulhypotesen ($H_0$). En stikprøve tages ud af en population, hvor H0 testes imod H1 ved brug af et signifikansniveau ($a$) og en $p$-værdi.
+
+Et klassisk eksempel på dette kunne være at opstille:
+$$
+\begin{aligned}
+H_0 : \mu = \mu_0
+\\
+H_a : \mu \not= \mu_0
+\end{aligned}
+$$
+Hvor $\mu$ er den ene stikprøves populations middelværdi og $\mu_0$ er er den andens stikprøves populations middelværdi.
+
+For at tjekke hvilken af hypoteserne er sand eller falsk, vælges et signifikansniveau som ofte er $a$ = 5% eller $a$ = 1%. Ud fra dette signifikansniveau bliver der udregnet en kritisk værdi på en sandsynlighedsfordeling.
+
+$p$ > $a$ så forkastes man ikke $H_0$.
+\
+$p$ ≤ $a$ så forkastes $H_0$ imod $H_1$. 
+
+For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en række hypotesetest, som vil være relevante i forskellige sammenhænge.
+
+# Metoder
 
 
