@@ -217,6 +217,16 @@ En af anveldeserne for en standarnormalfordeling er at den kan benyttes til en Z
 
 
 ####Z-fordeling
+For at finde z-scoren, skal $$\mu,\sigma$$ være kendt. 
+Z-scoren kan udregnes for normalfordelinger ved formlen:
+$$\begin{aligned}
+  z_i = \frac{y_i-\mu}\sigma
+  \end{aligned}$$
+,hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
+Desuden, kan det udledes, at hvis $$z>0$$ er y-værdien på højre side af $\mu$, og omvendt, hvis  $$z<0$$, er y-værdien på venstre side af $\mu$.
+
+####T-fordeling
+
 
 ####T-fordeling
 En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en population vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling.  
@@ -229,6 +239,7 @@ En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder o
 
 
 ### Uniform fordeling
+En uniform fordeling, er hvor dataet bliver indelt i lige store intervaller, og alle intervaller, har lige antal observationer.
 
 
 ## CLT
