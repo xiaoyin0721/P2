@@ -202,6 +202,30 @@ $$
 Populationen bliver her betegnet som X.
 
 ## Fordelinger
+Der findes en lang række sandynlighedsfordelinger og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
+### Standardnormalfordeling
+- Billede: 
+En standardnormalfordeling er kendetegnet ved at $$\mu=0$$, og at $$\sigma = 1$$,Plottet af standardnormalfordelingen vises nedenunder.
+```{r}
+qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4))
+qdist("norm",p=0.5,mean = 0, sd = 1,xlim = c(-4,4))
+```
+Der er en høj sandsynlighed for at få et værdi tæt på 0. Jo længere man afviger fra $$\mu$$, jo mindre er densiteten,som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sansynligheden for at få 0. 
+En af anveldeserne for en standarnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
+
+
+####Z-score , ####T-score
+
+### Binomialfordeling
+- Beskrivelse
+- 100 mønter
+- kvalitativ    
+
+### Poisson Fordeling
+
+
+### Uniform fordeling
+
 
 ## CLT
 
