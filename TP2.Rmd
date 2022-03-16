@@ -9,6 +9,8 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 library(mosaic)
 library(ggplot2)
+library(cowplot)
+require(gridExtra)
 #tinytex::install_tinytex()
 ```
 
@@ -311,3 +313,9 @@ For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en ræk
 # Metoder
 
 
+```{r, fig.height = 3, fig.width = 8} 
+p1 <- qdist(mean = 0, sd = 1, p = 1, return = "plot")
+p2 <- qdist(mean = 0, sd = 1, p = 0.5, return = "plot")
+#p3 <- qdist(mean = 0, sd = 1, p = 0, return="plot")
+grid.arrange(p1, p2, ncol=2)
+```
