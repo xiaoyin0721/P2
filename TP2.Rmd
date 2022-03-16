@@ -215,7 +215,19 @@ Der er en høj sandsynlighed for at få et værdi tæt på 0. Jo længere man af
 En af anveldeserne for en standarnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
 
 
-####Z-score , ####T-score
+####Z-score ,
+For at finde z-scoren, skal $$\mu,\sigma$$ være kendt. 
+Z-scoren kan udregnes for normalfordelinger ved formlen:
+$$\begin{aligned}
+  z_i = \frac{y_i-\mu}\sigma
+  \end{aligned}$$
+,hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
+Desuden, kan det udledes, at hvis $$z>0$$ er y-værdien på højre side af $\mu$, og omvendt, hvis  $$z<0$$, er y-værdien på venstre side af $\mu$.
+
+####T-fordeling
+
+
+
 
 ### Binomialfordeling
 - Beskrivelse
@@ -226,6 +238,7 @@ En af anveldeserne for en standarnormalfordeling er at den kan benyttes til en Z
 
 
 ### Uniform fordeling
+En uniform fordeling, er hvor dataet bliver indelt i lige store intervaller, og alle intervaller, har lige antal observationer.
 
 
 ## CLT
