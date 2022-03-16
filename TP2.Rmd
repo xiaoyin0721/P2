@@ -9,6 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 library(mosaic)
 library(ggplot2)
+#tinytex::install_tinytex()
 ```
 
 
@@ -211,11 +212,83 @@ Populationen bliver her betegnet som X.
 ### Estimation
 
 ### Konfidens Interval
+### Konfidensinterval
+
+Når der indenfor statistik estimeres på en populations parameter ud fra en stikprøve, vil resultatet aldrig være perfekt. Dette skyldes at der er en fejlmargin, som der skal tages højde fra. En måde hvorpå man kan tage højde for denne fejlmargin er et konfidensinterval.
+
+Et konfidensinterval for en givet parameter er et interval mellem to tal, hvori det estimeres at parameteren ligger i.
+Sandsynligheden for at producere et interval som indeholder parameteren kaldes for et konfidensniveau. Denne værdi er valgt til et tal tæt på 1, som regel enten 0.95 eller 0.99.
+
+En konfidensinterval skabes på baggrund af et punktestimat og fejlmarginen. Måden dette gøres på, kan ses forneden:
+$$
+\begin{aligned}
+KI = Punktestimat \; \pm \; fejlmargin
+\end{aligned}
+$$
+Måden at finde konfidensintervallet varierer baseret på hvilket fordeling man bruger. I de følgende afsnit vil der forklares hvordan konfidensintervallet for kvalitative og kvantitative variabler findes og opstilles ved hjælp af eksempler.
+
+#### Kvalitative variabler
+
+Hvis man spurgte en population hvorvidt de kunne lide deres job eller ej, ville en andel svare "ja" og en andel svare "nej". Er man interesseret i hvor mange procent svarede "ja" til spørgsmålet, ville man dividere antallet der svarede "ja" med antallet af observation. Se følgende:
+$$
+\begin{aligned}
+\hat{\pi}_{ja} = \frac{n_{ja}}{n{_{total}}}
+\end{aligned}
+$$
+Før selve konfidensintervallet kan opstilles, skal standardfejlen ($sf$) findes. Følgende formel bruges for at finde standardfejlen for kvalitative variabler:
+$$
+\begin{aligned}
+sf(\hat{\pi}) = \sqrt{\frac{\hat{\pi}(1-\hat{\pi})}n{}}
+\end{aligned}
+$$
+Når standardfejlen er fundet, kan denne ganges med en værdi som afhænger af signifikansniveauet. Denne værdi kaldes $z_{crit}$. For at finde ud af hvilken værdi $z_{crit}$ skal være, benyttes en z-test. En z-test er i realiteten bare en standardnormalfordeling. For at finde $z_{crit}$ for signifikansniveauet 95%, findes x-værdien ved 97.5% og 2.5%.
+```{r}
+qdist("norm", mean = 0, sd = 1, p = c(0.025,0.975))
+```
+Denne værdi aflæses til at være ~1.96. Nu kan konfidensintervallet opstilles via følgende ligning:
+$$
+\begin{aligned}
+KI = \hat{\pi}\; \pm 1.96\cdot sf(\hat{\pi})
+\end{aligned}
+$$
+Da dette blev lavet udfra signifikansniveauet 95%, kan der altså med 95%'s sikkerhed siges at $\hat\pi$ ligger indenfor intervallet:
+$$
+\begin{aligned}
+(\hat\pi\;-1.96\;\cdot sf(\hat\pi) \ \ ,\ \  \hat\pi \; + 1.96\;\cdot sf(\hat\pi))
+\end{aligned}
+$$
+#### Kvantitative variabler
+
+Konfidensintervallet for kvantitative variabler har næsten samme formel som ved kvalitative variabler. Dog er måden hvorpå standardfejlen findes anderledes. Desuden skal der bruges en anden slags test ved hjælp af signifikansniveauet. 
+
+$$
+\begin{aligned}
+KI = \overline{y}\;\pm t_{crit} \;\cdot sf(\overline{y})
+\end{aligned}
+$$
+Herunder er standardfejlen udregnet ved: 
+$$
+\begin{aligned}
+sf(\overline{y}) = \frac{s}{\sqrt{n}}
+\end{aligned}
+$$
+hvor s er standardafvigelsen for stikprøven og n er antallet af observationer i stikprøven.
+
+For at finde $t_{crit}$ benyttes der en t-test. Hvis det ønskede signifikansniveau igen er 95% hvor der igen aflæses x-værdien ved $2.5\%$ og $97.5\%$. Nedenstående er der et eksempel, hvor en t-test med 50 frihedsgrader benyttes til at finde 95% signifikansniveauet:
+```{r}
+qdist("t", df = 50, p = c(0.025,0.975))
+```
+Denne værdi aflæses til at være ~2.01. Nu kan konfidensintervallet igen opstilles:
+$$
+\begin{aligned}
+(\overline{x}\;-2.01 \;\cdot sf(\overline{x}) \ \ , \ \ \overline{x}\;+2.01 \;\cdot sf(\overline{x})
+\end{aligned}
+$$
 
 ### Hypoteser
 Hver signifikanstest har to hypoteser. En hypotese er et udsagn omkring værdien af population parameter. Hypotese forudsiger hvorvidt en parameter påvirker en numerisk værdi eller falder inden for en specifik værdimængde. Det gør det så muligt at beregne om en hypotese er sand eller falsk.  
 
-For at sørge for at man anvender en pålidelig analysemetode på en stikprøve, så opsættes en hypotese omkring sammenhængen af ens data så opstilles en hypotesetest. Det er en metode til at teste en hypotese (Alternativ hypotese - $H_a$) hvor den sættes op mod en konkurrence hypotese som er nulhypotesen ($H_0$). En stikprøve tages ud af en population, hvor H0 testes imod H1 ved brug af et signifikansniveau ($a$) og en $p$-værdi.
+For at sørge for at man anvender en pålidelig analysemetode på en stikprøve, så opsættes en hypotese omkring sammenhængen af ens data så opstilles en hypotesetest. Det er en metode til at teste en hypotese (Alternativ hypotese - $H_a$) hvor den sættes op mod en konkurrence hypotese som er nulhypotesen ($H_0$). En stikprøve tages ud af en population, hvor $H_0$ testes imod $H_a$ ved brug af et signifikansniveau ($\alpha$) og en $p$-værdi.
 
 Et klassisk eksempel på dette kunne være at opstille:
 $$
@@ -227,11 +300,11 @@ H_a : \mu \not= \mu_0
 $$
 Hvor $\mu$ er den ene stikprøves populations middelværdi og $\mu_0$ er er den andens stikprøves populations middelværdi.
 
-For at tjekke hvilken af hypoteserne er sand eller falsk, vælges et signifikansniveau som ofte er $a$ = 5% eller $a$ = 1%. Ud fra dette signifikansniveau bliver der udregnet en kritisk værdi på en sandsynlighedsfordeling.
+For at tjekke hvilken af hypoteserne er sand eller falsk, vælges et signifikansniveau som ofte er $\alpha$ = 5% eller $\alpha$ = 1%. Ud fra dette signifikansniveau bliver der udregnet en kritisk værdi på en sandsynlighedsfordeling.
 
-$p$ > $a$ så forkastes man ikke $H_0$.
+$p$ > $\alpha$ så forkastes man ikke $H_0$.
 \
-$p$ ≤ $a$ så forkastes $H_0$ imod $H_1$. 
+$p$ $\le$ $\alpha$ så forkastes $H_0$ imod $H_1$. 
 
 For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en række hypotesetest, som vil være relevante i forskellige sammenhænge.
 
