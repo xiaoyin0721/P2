@@ -246,7 +246,7 @@ grid.arrange(p1, p2, ncol=2)
 ### Uniform fordeling
 En uniform fordeling, er hvor dataet bliver indelt i lige store intervaller, og alle intervaller, har lige antal observationer. Det er vigtigt at notere at hvis antallet af observationer er lavt, vil fordelingen ikke tilsyneladende være uniform. Dette vises ved at lave to uniformfordelinger på det samme seed,hvor den eneste forskel er antallet af observationer. Dette kan ses i de nedenstående grafer. 
 
-```{r}
+```{r, fig.height=7}
 
 set.seed(1234)
 unifx <- runif(50,min = 0, max =1)
@@ -311,6 +311,7 @@ $$
 (\hat\pi\;-1.96\;\cdot sf(\hat\pi) \ \ ,\ \  \hat\pi \; + 1.96\;\cdot sf(\hat\pi))
 \end{aligned}
 $$
+
 #### Kvantitative variabler
 
 Konfidensintervallet for kvantitative variabler har næsten samme formel som ved kvalitative variabler. Dog er måden hvorpå standardfejlen findes anderledes. Desuden skal der bruges en anden slags test ved hjælp af signifikansniveauet. 
