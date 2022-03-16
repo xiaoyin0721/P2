@@ -78,7 +78,7 @@ Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sæt
 
 ```{r Linear Congruence, echo=FALSE}
 
-gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller", title = "Resultaterne af den implementerede PRNG")
+gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller",title = "Resultaterne af den implementerede PRNG")
     
 ```
 
@@ -226,10 +226,14 @@ $$\begin{aligned}
 Desuden, kan det udledes, at hvis $$z>0$$ er y-værdien på højre side af $\mu$, og omvendt, hvis  $$z<0$$, er y-værdien på venstre side af $\mu$.
 
 ####T-fordeling
+En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en stikprøve vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
+```{r, fig.height = 3, fig.width = 8} 
+p1 <- qdist("t", df = 5, p = 1, return = "plot")
+p2 <- qdist("t", df = 100, p = 1, return = "plot")
+#p3 <- qdist(mean = 0, sd = 1, p = 0, return="plot")
+grid.arrange(p1, p2, ncol=2)
+```
 
-
-####T-fordeling
-En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en population vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling.  
 ### Binomialfordeling
 - Beskrivelse
 - 100 mønter
