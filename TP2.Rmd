@@ -245,24 +245,24 @@ Der tages et eksempel, som simulerer plat eller krone.
 
 ```{r}
 set.seed(987)
-v1 <- c(rbinom(100, 20, 0.5))
-p1 <- gf_histogram(~ v1, fill="black", col="grey", breaks = seq(2,18, by=1)) #Test 1: Grundtest,(20 mønter kastes 100 gange)
+rbino1 <- c(rbinom(100, 20, 0.5))
+p1 <- gf_histogram(~ rbino1, fill="black", col="grey", breaks = seq(2,18, by=1)) #Test 1: Grundtest,(20 mønter kastes 100 gange)
 
 
 #Test 2: Antallet af test forøges
 set.seed(987)
-v2 <- c(rbinom(10000,20,0.5))
-p2 <- gf_histogram(~ v2, fill = "black", col = "grey", breaks = seq(2,18, by =1)) 
+rbino2 <- c(rbinom(10000,20,0.5))
+p2 <- gf_histogram(~ rbino2, fill = "black", col = "grey", breaks = seq(2,18, by =1)) 
 
 #Test 3: Antallet af kroner forøges
 set.seed(987)
-v3 <- c(rbinom(100,100,0.5))
-p3 <- gf_histogram(~ v3, fill = "black", col = "grey", breaks = seq(40,60, by =1)) 
+rbino3 <- c(rbinom(100,30,0.5))
+p3 <- gf_histogram(~ rbino3, fill = "black", col = "grey", breaks = seq(5,25, by =1)) 
 
 #Test 4: Sandsynligheden ændres fra 50%
 set.seed(987)
-v4 <- c(rbinom(100,20,0.3))
-p4 <- gf_histogram(~ v4, fill = "black", col = "grey", breaks = seq(0,12, by =1)) 
+rbino4 <- c(rbinom(100,20,0.3))
+p4 <- gf_histogram(~ rbino4, fill = "black", col = "grey", breaks = seq(0,11, by =1)) 
 
 grid.arrange(p1, p2, p3, p4,ncol=2,nrow = 2)
 
