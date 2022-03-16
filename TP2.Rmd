@@ -49,8 +49,9 @@ Her vil man starte med at indsætte $X_0$ på $X_{n}$'s plads, og ud fra dette k
 Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv, længden fra det første tal i generatoren frem til det første gentagende tal kaldes for en periode, og perioden afhænger meget af de valgte værdier af $a$, $c$ og $m$. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
 De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. GØR DET HER TOBIAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
 
-![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
-
+```{r}
+#![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
+```
 Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en funktion f, som ikke har en invers funktion. Dette kan dog kun gøres en gang per tilstand, hvorimod andre PRNG’er kan have flere tilstande på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgås i rapporten.
 
 # Implementering af linear congruential generator
@@ -240,7 +241,19 @@ Desuden, kan det udledes, at hvis $$z>0$$ er y-værdien på højre side af $\mu$
 
 
 ### Uniform fordeling
-En uniform fordeling, er hvor dataet bliver indelt i lige store intervaller, og alle intervaller, har lige antal observationer.
+En uniform fordeling, er hvor dataet bliver indelt i lige store intervaller, og alle intervaller, har lige antal observationer. Det er vigtigt at notere at hvis antallet af observationer er lavt, vil fordelingen ikke tilsyneladende være uniform. Dette vises ved at lave to uniformfordelinger på det samme seed,hvor den eneste forskel er antallet af observationer. Dette kan ses i de nedenstående grafer. 
+
+```{r}
+
+set.seed(1234)
+unifx <- runif(50,min = 0, max =1)
+set.seed(1234)
+unifx1 <- runif(5000, min = 0, max = 1)
+
+p1 <- gf_histogram(~unifx,breaks = seq(0,1,by=0.1), fill="black", col="grey",xlab = "tilfældige tal inddelt i intervaller", ylab = "antal", title = "Uniform fordeling ved 50 observationer")
+p2 <- gf_histogram(~unifx1,breaks = seq(0,1,by=0.1), fill="black", col="grey",xlab = "tilfældige tal inddelt i intervaller", ylab = "antal", title = "Uniform fordeling ved 5000 observationer")
+grid.arrange(p1, p2, nrow=2)
+```
 
 
 ## CLT
