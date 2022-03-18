@@ -240,7 +240,7 @@ grid.arrange(p1, p2, ncol=2)
 En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en population vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling.  
 
 ### Binomialfordeling
-Binomialfordelingen benyttes i sammenhænge med kvalitative data. Specifikt er der kun to mulige udfald. Hvis der er lige stor chance for hvert af udfaldene, altså $ \pi = 0.50$ , og en stor stikprøve, vil en binomialfordeling vise sig at være symmetrisk.
+Binomialfordelingen benyttes i sammenhænge med kvalitative data. Specifikt er der kun to mulige udfald. Hvis der er lige stor chance for hvert af udfaldene, altså $\pi = 0.50$ , og en stor stikprøve, vil en binomialfordeling vise sig at være symmetrisk.
 Der tages et eksempel, som simulerer plat eller krone. 
 
 ```{r}
@@ -319,8 +319,15 @@ grid.arrange(p1, p2, nrow=2)
 
 
 ## Statistisk inferens
+<<<<<<< HEAD
+
+
+### Estimation
+=======
 Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus at lave forudsigelser om et element på baggrund af data og tendenser dertil.
 I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså et gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er meget meget lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat, eller et konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
+>>>>>>> a706e120c821c6f8e2813a1511540acf0be6a33a
+
 
 ### Konfidensinterval
 
@@ -397,9 +404,7 @@ $$
 $$
 
 ### Hypoteser
-Hver signifikanstest har to hypoteser. En hypotese er et udsagn omkring værdien af population parameter. Hypotese forudsiger hvorvidt en parameter påvirker en numerisk værdi eller falder inden for en specifik værdimængde. Det gør det så muligt at beregne om en hypotese er sand eller falsk.  
-
-For at sørge for at man anvender en pålidelig analysemetode på en stikprøve, så opsættes en hypotese omkring sammenhængen af ens data så opstilles en hypotesetest. Det er en metode til at teste en hypotese (Alternativ hypotese - $H_a$) hvor den sættes op mod en konkurrence hypotese som er nulhypotesen ($H_0$). En stikprøve tages ud af en population, hvor $H_0$ testes imod $H_a$ ved brug af et signifikansniveau ($\alpha$) og en $p$-værdi.
+En hypotese er et udsagn om en given population. Den er også angivet som en populations parameter som har en given værdi eller er indenfor et bestemt interval. Det gør det så muligt at beregne om en hypotese er sand eller falsk. For at kunne sørge for at man anvender en korrekt analyse metode på en stikprøve, så opsættes en hypotese omkring sammenhængen af ens data. Der kan så opstilles en hypotese test, hvilket er en metode hvor man sætter en hypotese mod en anden hypotese. Metoden sætter man den alternativ hypotese ($H_a$) mod en konkurrence hypotese som er nulhypotesen ($H_0$). En stikprøves vil så tages ud af en population, hvor $H_0$ testes imod $H_a$ ved brug af et signifikansniveau ($\alpha$) og en $p$-værdi. 
 
 Et klassisk eksempel på dette kunne være at opstille:
 $$
@@ -411,8 +416,9 @@ H_a : \mu \not= \mu_0
 $$
 Hvor $\mu$ er den ene stikprøves populations middelværdi og $\mu_0$ er er den andens stikprøves populations middelværdi.
 
-For at tjekke hvilken af hypoteserne er sand eller falsk, vælges et signifikansniveau som ofte er $\alpha$ = 5% eller $\alpha$ = 1%. Ud fra dette signifikansniveau bliver der udregnet en kritisk værdi på en sandsynlighedsfordeling.
+For at tjekke hvilken af hypoteserne er sand eller falsk, vælges et signifikansniveau som ofte er $\alpha$ = 5%. Ud fra dette signifikansniveau bliver der udregnet en kritisk værdi på en sandsynlighedsfordeling.
 
+Hvis:
 $p$ > $\alpha$ så forkastes man ikke $H_0$.
 \
 $p$ $\le$ $\alpha$ så forkastes $H_0$ imod $H_1$. 
