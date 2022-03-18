@@ -87,33 +87,30 @@ gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1
 
 #Uafhængige test
 
-We use Pearson's Chi-squared Test of Independence to test if  $U{i}$ og $U{i + 1}$ in PRNG generated sequences are independent of each other.Furthermore, the test result will be visualized by a spectral test.
+We use Pearson's Chi-squared Test of Independence to test if  $U{i}$ og $U{i + 1}$ in PRNG generated sequences are independent of each other.
+Comparing observed frequencies is 
+$D=\sum_{i=1}^{k}(o_i-e_i)^2/e_i$
+k = the number of bins 
+$o_i$ = Observed frequency for ith bin 
+$e_i$ = Expected frequency
+
+When $D$ score equals to zero, we will have an exact fit, D has a chi-square distribution with k-1 degrees of freedom. Comparing $D$ score with $\chi_[1-\alpha, k-1]$, if $D$ is less we can pass with confidence $\alpha$
+
+Furthermore, the test result will be visualized by a spectral test.
 
 
 ```{r}
 
-linear_congruence_heltal <- function(i, X_0) {
-t <- 0
-a <- 11102357
-c <- 21353
-m <- 2**32
-v1 <- c()
-while(t < i){
-  X_0 <- (a*X_0+c)%%m
-  v1 <- c(v1 , trunc(as.numeric(((X_0)/m))*10))
-  t <- t + 1
-}
-return(v1)
-}
-obs <- linear_congruence_heltal(i=100, X_0 = 1029)
-exp <- 10
+obs <- hist(linear_congruence(i=10000, X_0 = 1576))$counts
+exp <-  10000/20
+X_squared <- sum((obs-exp)^2)/exp
 
-sum((obs-exp)^2)/exp
-#sum(power(obs-exp, 2)/e)
-
-qchisq(0.95, 99, ncp = 0, lower.tail = TRUE)
+X_signifinance <- qchisq(0.95, 19, ncp = 0, lower.tail = TRUE)
 
 ```
+
+It is observed that the observed difference is less than chi-squared value, therefore the LCG generated values follows a uniform distribution with 95% confidence. 
+
 
 
 
