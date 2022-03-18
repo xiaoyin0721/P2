@@ -240,7 +240,7 @@ grid.arrange(p1, p2, ncol=2)
 En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en population vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling.  
 
 ### Binomialfordeling
-Binomialfordelingen benyttes i sammenhænge med kvalitative data. Specifikt er der kun to mulige udfald. Hvis der er lige stor chance for hvert af udfaldene, altså $ \pi = 0.50$ , og en stor stikprøve, vil en binomialfordeling vise sig at være symmetrisk.
+Binomialfordelingen benyttes i sammenhænge med kvalitative data. Specifikt er der kun to mulige udfald. Hvis der er lige stor chance for hvert af udfaldene, altså $\pi = 0.50$ , og en stor stikprøve, vil en binomialfordeling vise sig at være symmetrisk.
 Der tages et eksempel, som simulerer plat eller krone. 
 
 ```{r}
@@ -319,9 +319,14 @@ grid.arrange(p1, p2, nrow=2)
 
 
 ## Statistisk inferens
+<<<<<<< HEAD
 
 
 ### Estimation
+=======
+Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus at lave forudsigelser om et element på baggrund af data og tendenser dertil.
+I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså et gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er meget meget lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat, eller et konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
+>>>>>>> a706e120c821c6f8e2813a1511540acf0be6a33a
 
 
 ### Konfidensinterval
