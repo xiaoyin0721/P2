@@ -96,8 +96,6 @@ $e_i$ = Expected frequency
 
 When $D$ score equals to zero, we will have an exact fit, D has a chi-square distribution with k-1 degrees of freedom. Comparing $D$ score with $\chi_[1-\alpha, k-1]$, if $D$ is less we can pass with confidence $\alpha$
 
-Furthermore, the test result will be visualized by a spectral test.
-
 
 ```{r}
 
@@ -112,10 +110,28 @@ X_signifinance <- qchisq(0.95, 19, ncp = 0, lower.tail = TRUE)
 It is observed that the observed difference is less than chi-squared value, therefore the LCG generated values follows a uniform distribution with 95% confidence. 
 
 
+#Spektral test
+
+Furthermore, the test result will be visualized by a spectral test.
+
 
 
 ```{r}
 
+
+spectrual_test <- function() {
+a <- 11164
+c <- 2156
+m <- 23987
+
+X=rep(0,m)
+for (i in 2:m){
+    X[i] = (a*X[i-1]+c)%%m 
+}
+plot(X[-1],X[-m],col="blue",type="p",pch="x",lwd=2)
+}
+
+spectrual_test()
 
 
 ```
@@ -167,25 +183,62 @@ The result is most data points fall along a straight line, which means data poin
 ```{r}
 
 
-qqplot(X,Y)
+qqplot(X, Y)
 
 
 ```
 
 #Kolmogorov-Smirnov Test
 
-Kolmogorov-Smirnov Test can be used to test sample of n observations is from a continuous distribution. If the generated X, Y follows a normal distribution, the principle is that the difference between observed CDF $F_0(X)$ and expected CDF $F_e(X)$ should be small.
+Kolmogorov-Smirnov Test can be used to test sample of n observations is from a continuous distribution. If the generated X, Y all follows a normal distribution, the principle is that the difference between observed CDF $F_0(X)$ and expected CDF $F_e(X)$ should be small. 
 
+The test statistics are $K^+$, maximum observed deviation below the expected cdf and $K^-$, the minimum observed deviation below the expected cdf. 
+
+$K^+ = \sqrt(n)max(F_0(x) - F_e(x))$
+
+$K^- = \sqrt(n)max(F_e(x) - F_0(x))$
+
+if $K^+ < K[1-\alpha, n]$ and $K^- < K[1-\alpha, n]$, test is passed at $\alpha$ level of significance. 
+
+The normal distribution cdf is $F_X(x) = $
+
+
+We can firstly compare two cdfs visually
 
 ```{r}
 
+KS_compare_cdf <- function(){
+  n <- 10^4
+  samples <- matrix(ncol = 2, nrow = n)
+  samples[,1] <- X
+  samples[,2] <- Y 
+  label <- rep(c("x", "y"),n)
+  value <- c(samples[,1],samples[,2])
+  df <- data.frame(value, label)
+  ggplot(df, aes(x=value)) + stat_ecdf(aes(color=label))
+  
+  
+  
+}
+
+KS_compare_cdf()
 
 ```
 
+It can be observed that X,Y follows the cdf function for normal distribution. However it could still be in our interest to run a Kolmogorov-Smirnov test. 
+
+```{r}
+
+ks.test(X,'pnorm')
+ks.test(X,Y)
+
+```
+
+We firstly run KS test to examine if X is from a normal distribution, then run KS test to check if the two distributions are critical values for KS test is 0.04301, D score is smaller than the critical score, therefore we confirm that data are normally distributed. 
 
 
 
-Ud af dette, fås der to tal $x$ og $y$, som i dette tilfælde er uafhængige tilfældige variabler med en normalfordeling. Forneden kan resultaterne af Box-Muller transformationen ses:
+Ud af dette, fås der to tal $x$ og $y$, som i dette tilfælde er uafhængige tilfældige variabler med en normalfordeling. Resultater X,Y er to uafhægige normal fordelinger. Forneden kan resultaterne af Box-Muller transformationen ses:
 
 
 
