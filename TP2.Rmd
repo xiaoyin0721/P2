@@ -91,7 +91,7 @@ The principle idea is..instead of sampling independent Gaussians for the x and y
 For two independent random variables x and y, the joint probability density function $f(x,y)$ is simply the product of density functions f(x) and f(y). 
 
 
-Sammenhænget mellem kartetiske og polære-koordinator er:
+Sammenhængen mellem kartetiske og polære-koordinator er:
 $x = cos(\theta)*r$
 $y = sin(\theta)*r$
 
@@ -100,7 +100,7 @@ By writing the joint density function in polar cooridnates, 'the joint PDF is th
 In pratices, $U_1$ and $U_2$ are uniform random variables, $R^2$ is calculated by applying the inverse CDF method to sample from an exponential decay distribution with $\lambda = 1/2$, which is $-2ln(U_1)$. $\Theta$ is calculated from muliply $2\pi$ on $U_2$
 
 
-Dette svarer til at generere en tilfærdig vikel og en tilfældig radius, som følger en ekponential fordeling, which means it is more likely to generate distances closer to the origin, which is shown as
+Dette svarer til at generere en tilfærdig vinkel og en tilfældig radius, som følger en ekponential fordeling, which means it is more likely to generate distances closer to the origin, which is shown as
 
 
 ```{r}
@@ -183,9 +183,9 @@ Box_muller_transform()
 # Teori
 
 ## Middelværdi og standardafvigelse
-I en population findes der to værdier, $\mu$ og $\sigma$, som er interessante at kigge nærmere på. Gennemsnittet af en population kaldes $\mu$, mens at populationens standardafvigelse kaldes $\sigma$.
+I en population findes der to værdier, $\mu$ og $\sigma$, som er interessante at kigge nærmere på. Middelværdien af en population kaldes $\mu$, imens populationens standardafvigelse kaldes $\sigma$.
 
-Populations standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser hvordan variansen for en stikprøve kan udregnes:
+Populationens standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser, hvordan variansen for en stikprøve kan udregnes:
 
 
 $$
@@ -197,7 +197,7 @@ Herunder er der:
 - $x_i$, som svarer til den enkelte observation i stikprøven.
 - $\overline{x}$, som svarer til gennemsnittet af stikprøven.
 
-Sammenhænget mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning.:
+Sammenhængen mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning.:
 $$
 \begin{aligned}
 \sigma=\sqrt{var(X)}=\sqrt{\sigma^2}
@@ -206,15 +206,16 @@ $$
 Populationen bliver her betegnet som X.
 
 ## Fordelinger
-Der findes en lang række sandynlighedsfordelinger og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
+Der findes en lang række sandynlighedsfordelinger, og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
+
 ### Standardnormalfordeling
 - Billede: 
-En standardnormalfordeling er kendetegnet ved at $$\mu=0$$, og at $$\sigma = 1$$. Desuden har en standardnormalfordeling et klokkeformet udseende. Nedenstående er der plottet en standardnormalfordeling:
+En standardnormalfordeling er kendetegnet ved at $$\mu=0$$, og at $$\sigma = 1$$. Desuden har en standardnormalfordeling et klokkeformet udseende. Nedenfor er der plottet en standardnormalfordeling:
 ```{r}
 qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4))
 ```
-Der er en høj sandsynlighed for at få et værdi tæt på 0. Jo længere man afviger fra $$\mu$$, jo mindre er densiteten,som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sansynligheden for at få 0. 
-En af anveldeserne for en standarnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
+Der er en høj sandsynlighed for at få en værdi tæt på 0. Jo længere man afviger fra $$\mu$$, jo mindre er densiteten, som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sansynligheden for at få 0. 
+En af anvendelserne for en standardnormalfordeling er, at den kan benyttes til en Z-test, som benyttes senere i projektet.
 
 
 ####Z-fordeling
@@ -223,11 +224,11 @@ Z-scoren kan udregnes for normalfordelinger ved formlen:
 $$\begin{aligned}
   z = \frac{y-\mu}\sigma
   \end{aligned}$$
-,hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
+, hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
 Desuden, kan det udledes, at hvis $z>0$ er y-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er y-værdien på venstre side af $\mu$.
 
 ####T-fordeling
-En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en stikprøve vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
+En T-fordeling laves ud fra en standardnormalfordeling, og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en stikprøve vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist("t", df = 5, p = 1, return = "plot")
 p2 <- qdist("t", df = 100, p = 1, return = "plot")
@@ -277,7 +278,7 @@ $$ \hat\pi = \frac{x}n$$
 - kvalitativ    
 
 ### Poisson Fordeling
-En poisson fordeling beskriver chancen for at en begivenhed sker et givet antal gange over et kendt tidsinterval. Dette kunne være hvor mange gange der har været stormvejr indenfor det sidste år. Fordelingen laves ud fra følgende formel:
+En poisson fordeling beskriver chancen for, at en begivenhed sker et givet antal gange over et kendt tidsinterval. Dette kunne være hvor mange gange der har været stormvejr indenfor det sidste år. Fordelingen laves ud fra følgende formel:
 $$
 \begin{aligned}
 P(x;\lambda) = \frac{(e^{-\lambda}\cdot\lambda^x)}{x!}
