@@ -79,7 +79,7 @@ Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sæt
 
 ```{r Linear Congruence, echo=FALSE}
 
-gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller",title = "Resultaterne af den implementerede PRNG")
+gf_histogram(~linear_congruence(i=1000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller",title = "Resultaterne af den implementerede PRNG")
     
 ```
 
@@ -207,26 +207,31 @@ Populationen bliver her betegnet som X.
 
 ## Fordelinger
 Der findes en lang række sandynlighedsfordelinger og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
+
 ### Standardnormalfordeling
+
 - Billede: 
-En standardnormalfordeling er kendetegnet ved at $$\mu=0$$, og at $$\sigma = 1$$. Desuden har en standardnormalfordeling et klokkeformet udseende. Nedenstående er der plottet en standardnormalfordeling:
+En standardnormalfordeling er kendetegnet ved at $\mu=0$, og at $\sigma = 1$. Desuden har en standardnormalfordeling et klokkeformet udseende. Nedenstående er der plottet en standardnormalfordeling:
 ```{r}
 qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4))
 ```
-Der er en høj sandsynlighed for at få et værdi tæt på 0. Jo længere man afviger fra $$\mu$$, jo mindre er densiteten,som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sansynligheden for at få 0. 
+Der er en høj sandsynlighed for at få et værdi tæt på 0. Jo længere man afviger fra $\mu$, jo mindre er densiteten,som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sansynligheden for at få 0. 
 En af anveldeserne for en standarnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
 
 
-####Z-fordeling
-For at finde z-scoren, skal $$\mu,\sigma$$ være kendt. 
+#### Z-fordeling
+
+For at finde z-scoren, skal $\mu,\sigma$ være kendt. 
 Z-scoren kan udregnes for normalfordelinger ved formlen:
-$$\begin{aligned}
-  z = \frac{y-\mu}\sigma
-  \end{aligned}$$
+$$
+\begin{aligned}
+z = \frac{y-\mu}\sigma
+\end{aligned}
+$$
 ,hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
 Desuden, kan det udledes, at hvis $z>0$ er y-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er y-værdien på venstre side af $\mu$.
 
-####T-fordeling
+#### T-fordeling
 En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en stikprøve vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist("t", df = 5, p = 1, return = "plot")
@@ -240,7 +245,7 @@ grid.arrange(p1, p2, ncol=2)
 En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en population vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling.  
 
 ### Binomialfordeling
-Binomialfordelingen benyttes i sammenhænge med kvalitative data. Specifikt er der kun to mulige udfald. Hvis der er lige stor chance for hvert af udfaldene, altså $ \pi = 0.50$ , og en stor stikprøve, vil en binomialfordeling vise sig at være symmetrisk.
+Binomialfordelingen benyttes i sammenhænge med kvalitative data. Specifikt er der kun to mulige udfald. Hvis der er lige stor chance for hvert af udfaldene, altså $\pi = 0.50$, og en stor stikprøve, vil en binomialfordeling vise sig at være symmetrisk.
 Der tages et eksempel, som simulerer plat eller krone. 
 
 ```{r}
@@ -268,7 +273,7 @@ grid.arrange(p1, p2, p3, p4,ncol=2,nrow = 2)
 
 ```
 
-$$ \hat\pi = \frac{x}n$$
+$$\hat\pi = \frac{x}n$$
 
 
 
