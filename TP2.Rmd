@@ -79,7 +79,7 @@ Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sæt
 
 ```{r Linear Congruence, echo=FALSE}
 
-gf_histogram(~linear_congruence(i=1000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller",title = "Resultaterne af den implementerede PRNG")
+gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller",title = "Resultaterne af den implementerede PRNG")
     
 ```
 
@@ -210,7 +210,7 @@ if $K^+ < K[1-\alpha, n]$ and $K^- < K[1-\alpha, n]$, test is passed at $\alpha$
 Test Statistics $D = Max|K^+, K^-|$
 
 $F_e(x)$ is the theoretical freqency distribution, the normal distribution cdf is $F_X(x) = 1/2(1+erf(x-\mu/\sqrt2\sigma)$, while the error funtion is defined as
-$erf(x) = 2/\sqrt\pi \int_{0}^{x}exp(-t^2)dt $
+$erf(x) = 2/\sqrt\pi \int_{0}^{x}exp(-t^2)dt$
 
 
 We can firstly compare two cdfs visually
@@ -339,7 +339,7 @@ $$
 z = \frac{y-\mu}\sigma
 \end{aligned}
 $$
-,hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
+hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
 Desuden, kan det udledes, at hvis $z>0$ er y-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er y-værdien på venstre side af $\mu$.
 
 #### T-fordeling
@@ -352,45 +352,42 @@ grid.arrange(p1, p2, ncol=2)
 ```
 
 
-####T-fordeling
-En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en population vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling.  
-
 ### Binomialfordeling
 Binomialfordelingen benyttes i sammenhænge med kvalitative data. Specifikt er der kun to mulige udfald. Hvis der er lige stor chance for hvert af udfaldene, altså $\pi = 0.50$, og en stor stikprøve, vil en binomialfordeling vise sig at være symmetrisk.
-Der tages et eksempel, som simulerer plat eller krone. 
+Nedenstående er et eksempel på 4 binomialfordelinger.
 
 ```{r}
 set.seed(987)
 rbino1 <- c(rbinom(100, 20, 0.5))
-p1 <- gf_histogram(~ rbino1, fill="black", col="grey", breaks = seq(2,18, by=1)) #Test 1: Grundtest,(20 mønter kastes 100 gange)
+p1 <- gf_histogram(~ rbino1, fill="black", col="grey", breaks = seq(2,18, by=1), title = "Kontrol", xlab = "") #Test 1: Grundtest,(20 mønter kastes 100 gange)
 
 
 #Test 2: Antallet af test forøges
 set.seed(987)
 rbino2 <- c(rbinom(10000,20,0.5))
-p2 <- gf_histogram(~ rbino2, fill = "black", col = "grey", breaks = seq(2,18, by =1)) 
+p2 <- gf_histogram(~ rbino2, fill = "black", col = "grey", breaks = seq(2,18, by =1), title = "T1", xlab = "") 
 
 #Test 3: Antallet af kroner forøges
 set.seed(987)
 rbino3 <- c(rbinom(100,30,0.5))
-p3 <- gf_histogram(~ rbino3, fill = "black", col = "grey", breaks = seq(5,25, by =1)) 
+p3 <- gf_histogram(~ rbino3, fill = "black", col = "grey", breaks = seq(5,25, by =1), title = "T2", xlab = "") 
 
 #Test 4: Sandsynligheden ændres fra 50%
 set.seed(987)
 rbino4 <- c(rbinom(100,20,0.3))
-p4 <- gf_histogram(~ rbino4, fill = "black", col = "grey", breaks = seq(0,11, by =1)) 
+p4 <- gf_histogram(~ rbino4, fill = "black", col = "grey", breaks = seq(0,11, by =1), title = "T3", xlab = "") 
 
 grid.arrange(p1, p2, p3, p4,ncol=2,nrow = 2)
 
 ```
+I ovenstående figur er der altså fire grafer, som er lavet ud fra binomialfordelingen. Der er en kontrolgraf, hvor 100 observationer hver bliver testet 20 gange med en $50\%$ chance for success. Yderligere er der T1, T2 og T3, hvor der ved hver graf er ændret en af parameterene fra kontrol grafen. T1 har flere observationer, som gør at grafen får et udseende af en normalfordeling, her kan det aflæses at $\overline{x} = 10$. Ved T2 bliver hver observation testet 30 gange i stedet for 20 gange, og dette resulterer i at middelværdien (hvis antallet af observationer er stort nok) i stedet vil være $\overline{x} = 15$. I T3 er sandsynligheden for success ændret fra $50\%$ til $30\%$. Dette ændrer igen udseendet på grafen, hvor middelværdien bliver lavere, da hver test har en mindre sandsynlighed for at være en success. 
+$$
+\begin{aligned}
+\hat\pi = \frac{x}n
+\end{aligned}
+$$
 
-$$\hat\pi = \frac{x}n$$
 
-
-
-
-- 100 mønter
-- kvalitativ    
 
 ### Poisson Fordeling
 En poisson fordeling beskriver chancen for at en begivenhed sker et givet antal gange over et kendt tidsinterval. Dette kunne være hvor mange gange der har været stormvejr indenfor det sidste år. Fordelingen laves ud fra følgende formel:
@@ -407,12 +404,11 @@ Hvis $lambda$ er 5, og der ndersøges hvad chancen for at begivenheden sker 7 ga
 ```{r}
 (exp(1)^-5*5^7)/factorial(7)
 ```
-Der er altså en $10.4\%$ chance for at en begivenhed sker 7 gange, hvis begivenhedsraten er 5.
-
+Der er altså en $10.4\%$ chance for at en begivenhed sker 7 gange, hvis begivenhedsraten er 5. Nedenstående er resultaterne af denne poissonfordeling plottet:
 ```{r}
-xvalue <- 0:20
+sucess <- 0:20
 dpois(7, 5)
-plot(xvalue, dpois(0:20, 5), type = "h")
+plot(sucess, dpois(0:20, 5), type = "h", xlab = "", ylab = "")
 ```
 
 ### Uniform fordeling
