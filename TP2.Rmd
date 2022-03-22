@@ -47,7 +47,7 @@ $$
 
 Her vil man starte med at indsætte $X_0$ på $X_{n}$'s plads, og ud fra dette kan man finde $X_1$. Derefter kan man indsætte $X_1$ på $X_n$’s plads og derefter få $X_2$. Denne proces kan gentages så mange gange som man har brug for.
 Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv, længden fra det første tal i generatoren frem til det første gentagende tal kaldes for en periode, og perioden afhænger meget af de valgte værdier af $a$, $c$ og $m$. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
-De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. GØR DET HER TOBIAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. I en undersøgelse af RNG'er blev det påvist at den optimale periode kan opnås på to måder. Enten skal 2 være opløftet i $m$, eller 10 skal være opløftet i $m$. I denne rapport vælges $2^m$, og dertil er der yderligere nogle krav. Først og fremmest skal $c$ være et ulige tal, samt at $a-1\; mod\;4  = 0$, så længe $m$'s værdi kan divideres med 4. Dette er grunden til at de valgte værdier 
 
 ```{r}
 #![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
@@ -60,7 +60,7 @@ Nedenstående blok kode blev brugt til at lave den lineære kongruentiale genera
 
 linear_congruence <- function(i, X_0) {
 t <- 0
-a <- 11102357
+a <- 11102361
 c <- 21353
 m <- 2**32
 v1 <- c()
@@ -72,6 +72,7 @@ while(t < i){
 return(v1)
 }
 linear_congruence(i=10, X_0 = 234)
+
 ```
 
 Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sættes $X_0$ lig med et tilfældigt tal, som i dette tilfælde er $1576$. Der skulle også bruges en $a$, $c$ og $m$ værdi, som i denne kode er sat til henholdsvis $11,102,357$, $21,353$ og $2^{32}$. Der er også oprettet to variabler: $t$ og $i$, som bruges i programmet, hvor $i$ er en parameter for funktionen, som svarer til det ønskede antal tilfældigt genererede tal, og $t$ har en startsværdi på 0, og øges med 1, hvert gang et tilfældigt tal genereres. Funktionen er sat op således, at så længe $t$ er mindre end $i$, vil $X_0$ blive brugt til at udregne en ny $X_0$ værdi. Værdien bliver dernæst tilføjet til en vektor $v1$, dog ikke før at værdien bliver divideret med $m$ og ganget med 100. Dernæst bliver $1$ adderet til $t$, og så loop'er funktionen. Resultatet af denne funktion, kan ses forneden:  
