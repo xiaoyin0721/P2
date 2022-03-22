@@ -102,7 +102,7 @@ When $D$ score equals to zero, we will have an exact fit, D has a chi-square dis
 obs <- hist(linear_congruence(i=10000, X_0 = 1576))$counts
 exp <-  10000/20
 X_squared <- sum((obs-exp)^2)/exp
-X_significance <- qchisq(0.95, 19, ncp = 0, lower.tail = TRUE)
+X_significance <- ?qchisq(0.95, 19, ncp = 0, lower.tail = TRUE)
 X_squared 
 X_significance
 
@@ -152,7 +152,7 @@ By writing the joint density function in polar cooridnates, 'the joint PDF is th
 In pratices, $U_1$ and $U_2$ are uniform random variables, $R^2$ is calculated by applying the inverse CDF method to sample from an exponential decay distribution with $\lambda = 1/2$, which is $-2ln(U_1)$. $\Theta$ is calculated from multiplying $2\pi$ on $U_2$. 
 
 
-Dette svarer til at generere en tilfærdig vikel og en tilfældig radius, som følger en ekponential fordeling, which means it is more likely to generate distances closer to the origin, which is shown as
+Dette svarer til at generere en tilfærdig vinkel og en tilfældig radius, som følger en ekponential fordeling, which means it is more likely to generate distances closer to the origin, which is shown as
 
 
 ```{r}
