@@ -91,7 +91,7 @@ Indenfor PRNG'er er det vigtigt at de tilfældige tal der fås ikke afhænger af
 Til denne test skal der opstilles en nulhypotese. Denne er vist forneden:
 $$
 \begin{aligned}
-H_0: Tallene \ der \ fås \ ved \ hjælp \ af \ LCG'en \ er \ uafhængige \ af \ hinanden.
+H_0: Tallene \ der \ fås \ via \ LCG'en \ er \ uafhaengige \ af \ hinanden.
 \end{aligned}
 $$
 Med $H_0$ opstillet, skal en score kaldet $\chi^2$-scoren nu findes. Nedenstående formel viser hvordan man udregner $\chi^2$-scoren:
@@ -100,9 +100,9 @@ $$
 \chi^2=\sum_{i=1}^{k}\frac{(O_i-F_i)^2}{F_i}
 \end{aligned}
 $$
-- $k$ betyder antallet af søjler.
-- $O_i$ er den observet frekvens for den i'ende søjle. 
-- $F_i$ er den forventet frekvens.
+- $k$ betyder antallet af søjler.  
+- $O_i$ er den observet frekvens for den i'ende søjle.    
+- $F_i$ er den forventet frekvens.   
 
 På grund af dette vil en lav $\chi^2$-score betyde at de observerede værdier ligger tæt på de forventede værdier. Nedenstående er $\chi^2$-scoren udregnet:
 ```{r Udregning af chi i anden}
@@ -121,9 +121,9 @@ Siden at $\chi^2$-scoren er lavere end den kritiske værdi, kan $H_0$ ikke forka
 ```{r udregning af p-værdi for chi i anden-test}
 pchisq(17.332, 19)
 ```
-Dette betyder altså at hvis nulhypotesen er sand, så er der en $43\%$ chance for at dette data optræder. Siden $43\%$ er højere end signifikansniveauet på $5\%$, accepteres $H_0$
+Dette betyder altså at hvis nulhypotesen er sand, så er der en $43\%$ chance for at dette data optræder. Siden $43\%$ er højere end signifikansniveauet på $5\%$, accepteres $H_0$.
 
-Grundet alt dette følger LCG'en altså en uniform fordeling med $95\%$.
+Grundet alt dette følger LCG'en altså en uniform fordeling med $95\%$ konfidens.
 
 
 #Spektral test
