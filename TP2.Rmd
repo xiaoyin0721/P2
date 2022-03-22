@@ -383,12 +383,18 @@ p4 <- gf_histogram(~ rbino4, fill = "black", col = "grey", breaks = seq(0,11, by
 grid.arrange(p1, p2, p3, p4,ncol=2,nrow = 2)
 
 ```
+
+Binomialfordeling 1(Rbino1), viser Basisprøven,som er udfaldet af $20$ mønter,der kastes 100 gange, med en sandsynlighed for hvert udfald på $50%$. Det kan ses at de fleste af histogrammets værdier er centreret omkring $\mu=n \cdot p$ , som i tilfældet er $$\mu = 20 \cdot0.5 =10$$
+Binomialfordeling 2 viser,hvad der sker, hvis vi øger antallet af simulationer med 100, og det kan ses, at $\mu$-værdien er det samme, men forskellen ligger i at det histogrammet, ligner en normalfordeling mere.
+#   Skriv om fordeling 3 og 4 hvis det er relevant
+
 I ovenstående figur er der altså fire grafer, som er lavet ud fra binomialfordelingen. Der er en kontrolgraf, hvor 100 observationer hver bliver testet 20 gange med en $50\%$ chance for success. Yderligere er der T1, T2 og T3, hvor der ved hver graf er ændret en af parameterene fra kontrol grafen. T1 har flere observationer, som gør at grafen får et udseende af en normalfordeling, her kan det aflæses at $\overline{x} = 10$. Ved T2 bliver hver observation testet 30 gange i stedet for 20 gange, og dette resulterer i at middelværdien (hvis antallet af observationer er stort nok) i stedet vil være $\overline{x} = 15$. I T3 er sandsynligheden for success ændret fra $50\%$ til $30\%$. Dette ændrer igen udseendet på grafen, hvor middelværdien bliver lavere, da hver test har en mindre sandsynlighed for at være en success. 
 $$
 \begin{aligned}
 \hat\pi = \frac{x}n
 \end{aligned}
 $$
+
 
 
 
