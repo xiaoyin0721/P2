@@ -88,8 +88,12 @@ gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1
 #Uafhængige test
 
 We use Pearson's Chi-squared Test of Independence to test if  $U{i}$ og $U{i + 1}$ in PRNG generated sequences are independent of each other.
-Comparing observed frequencies is 
-$D=\sum_{i=1}^{k}(o_i-e_i)^2/e_i$
+Comparing observed frequencies is:
+$$
+\begin{aligned}
+D=\sum_{i=1}^{k}\frac{(o_i-e_i)^2}{e_i}
+\end{aligned}
+$$
 k = the number of bins 
 $o_i$ = Observed frequency for ith bin 
 $e_i$ = Expected frequency
@@ -101,10 +105,11 @@ When $D$ score equals to zero, we will have an exact fit, D has a chi-square dis
 
 obs <- hist(linear_congruence(i=10000, X_0 = 1576))$counts
 exp <-  10000/20
-X_squared <- sum((obs-exp)^2)/exp
-X_significance <- ?qchisq(0.95, 19, ncp = 0, lower.tail = TRUE)
-X_squared 
-X_significance
+D_score <- sum((obs-exp)^2)/exp
+Chi_significance <- qchisq(0.95, 19, ncp = 0) 
+D_score 
+Chi_significance
+
 
 ```
 
@@ -129,7 +134,6 @@ plot(X[-1]/nSim,X[-nSim]/nSim,col="blue", type="p",pch=20,lwd=2)
     
 }
 spectral_test()
-
 
 ```
 
