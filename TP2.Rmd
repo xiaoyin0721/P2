@@ -553,30 +553,27 @@ For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en ræk
 
 ###Hypotesetest sammenligning af to grupper
 - Hvorfor laver man hypotesetest
-  - Test af om 2 populationer har samme my værdi
-  - 
+  - Test af om 2 populationer har samme my værdi    
 
 
 - Hvordan, proportion/mean
   - for kvantitative variabler, benyttes formlen Nulhypotesen $ H_0: \mu = \mu_0$, hvor, $\mu_0$ er kendt, og hypotesen passer, hvis $\mu$ er lig $\mu_0$. Den alternative hypotese $H_a: \mu \not= \mu_0$ peger på at den kendte middelværdi ikke er gældende for observationen. For at teste hypotesen,benyttes en t-test. 
   
   $$\begin{aligned}
-  t = \frac{\overline{y}-\mu_0}{se} \ \ \ \ \ ,\ se=\frac{a}{\sqrt{n}}, \ \ \ df = n-1 
+  t = \frac{\overline{y}-\mu_0}{se} \ \ \ \ \ ,\ se=\frac{s}{\sqrt{n}}, \ \ \ df = n-1 
   \end{aligned}
   $$
-Det kan ses at t-scoren afhænger af y-gennemsnit, og den estimerede $\mu_0$ værdi
+Det kan ses at t-scoren afhænger af y-gennemsnit, og den estimerede $\mu_0$ værd. Desuden har frihedsgraden en effekt på den kritiske t-score. Den minimale interval, afgrænset af den kritiske t-score kan findes i intervallet $[-2\sigma, 2 \sigma]$, med 95 % konfidens. Ved lavere frihedsgrader, bliver intervallet større.
+Det vil medføre at hypotesen om at 
 ```{r}
-qdist("t", p = c(0.025,0.975), df = 2)
+qdist("t", p = c(0.025,0.975), df = 100)
 ```
 
-  
-  - For kategoriske variabler, denoterer man middelværdien $\pi$
-    
-  
     
 - Proportion/ mean
 
 # Metoder
+
 
 ##Fejl i signifikanstest
 
