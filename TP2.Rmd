@@ -397,7 +397,7 @@ grid.arrange(p1, p2, p3, p4,ncol=2,nrow = 2)
 
 ```
 
-Binomialfordeling 1(Rbino1), viser Basisprøven,som er udfaldet af $20$ mønter,der kastes 100 gange, med en sandsynlighed for hvert udfald på $50%$. Det kan ses at de fleste af histogrammets værdier er centreret omkring $\mu=n \cdot p$ , som i tilfældet er $$\mu = 20 \cdot0.5 =10$$
+Binomialfordeling 1(Rbino1), viser Basisprøven,som er udfaldet af $20$ mønter,der kastes 100 gange, med en sandsynlighed for hvert udfald på $50%$. Det kan ses at de fleste af histogrammets værdier er centreret omkring $\mu=n \cdot p$ , som i tilfældet er $\mu = 20 \cdot0.5 =10$
 Binomialfordeling 2 viser,hvad der sker, hvis vi øger antallet af simulationer med 100, og det kan ses, at $\mu$-værdien er det samme, men forskellen ligger i at det histogrammet, ligner en normalfordeling mere.
 #   Skriv om fordeling 3 og 4 hvis det er relevant
 
@@ -553,35 +553,43 @@ $p$ $\le$ $\alpha$ så forkastes $H_0$, og $H_1$ foretrækkes.
 
 For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en række hypotesetest, som vil være relevante i forskellige sammenhænge.
 
-###Hypotesetest sammenligning af to grupper
-- Hvorfor laver man hypotesetest
-  - Test af om 2 populationer har samme my værdi    
-
-
-- Hvordan, proportion/mean
-  - for kvantitative variabler, benyttes formlen Nulhypotesen $ H_0: \mu = \mu_0$, hvor, $\mu_0$ er kendt, og hypotesen passer, hvis $\mu$ er lig $\mu_0$. Den alternative hypotese $H_a: \mu \not= \mu_0$ peger på at den kendte middelværdi ikke er gældende for observationen. For at teste hypotesen,benyttes en t-test. 
+### Hypotesetest for kvantitative variabler
+For hypotesetester for kvantitative variabler, er der et par nødvendige antagelser. Først og fremmest antages det at populationen er normalfordelt, samt at stikprøven som der undersøges ud fra er taget ud fra populationen tilfældigt.   
   
-  $$\begin{aligned}
-  t = \frac{\overline{y}-\mu_0}{se} \ \ \ \ \ ,\ se=\frac{s}{\sqrt{n}}, \ \ \ df = n-1 
-  \end{aligned}
-  $$
-Det kan ses at t-scoren afhænger af y-gennemsnit, og den estimerede $\mu_0$ værd. Desuden har frihedsgraden en effekt på den kritiske t-score. Den minimale interval, afgrænset af den kritiske t-score kan findes i intervallet $[-2\sigma, 2 \sigma]$, med 95 % konfidens. Ved lavere frihedsgrader, bliver intervallet større.
-Det vil medføre at hypotesen om at 
+Det  næste der skal gøres, er at opsætte nogle hypoteser, altså en $H_0$ og en $H_a$:
+$$
+\begin{aligned}
+H_0: \mu = \mu_0
+\\
+H_a: \mu  \ne \mu_0
+\end{aligned}
+$$
+Det næste der skal gøres, er at udregne en $t$-score, som kan gøres ved hjælp af følgende formel:
+$$
+\begin{aligned}
+t = \frac{\overline{y}-\mu_0}{sf}, \ \ \ sf=\frac{s}{\sqrt{n}} 
+\end{aligned}
+$$
+Det kan ses at $t$-scoren afhænger af $\overline{y}$, og den estimerede $\mu_0$ værdi. Yderligere afhænger $t$-scoren også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer. Nu kan $t_{crit}$ udregnes ved hjælp af en T-fordeling med $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $95\%$. 
 ```{r}
-qdist("t", p = c(0.025,0.975), df = 100)
+qdist("t", p = c(0.025, 0.975), df = 99)
 ```
+Nu kan $t_{crit}$ aflæses til at være $\pm 1.984$. 
+Hernæst skal den udregnede $t$-score benyttes i en T-fordeling med $n-1$ frihedsgrader. Dette vil give $p$-scoren. Nedenstående er der 2 eksempler hvor $t$-scoren henholdsvis er 1 og 2.5:
+```{r, fig.height = 3, fig.width = 8}
+p1 <- pdist("t", q = 1, df = 99, return = "plot", title = "P1")
+p2 <- pdist("t", q = 2.5, df = 99, return = "plot", title = "P2")
+grid.arrange(p1, p2, ncol=2)
+```
+I figur P1 er $p$-scoren $2\cdot0.16=0.32$, mens at figur P2 har en $p$-score på $2\cdot0.007=0.014$. Da signifikansniveauet $\alpha=0.05$, betyder det altså for P1 at $p\ge\alpha$. Dette betyder at der ikke er nok evidens til at forkaste $H_0$. For P2 betyder det at $p\le\alpha$. Dette betyder at der er nok evidens til at forkaste $H_0$, og at $H_a$ er mere sandsynlig.
 
     
 - Proportion/ mean
 
 # Metoder
 
-<<<<<<< HEAD
 
-##Fejl i signifikanstest
-=======
 ## Fejl i signifikanstest
->>>>>>> f0f5c7819b786df4b7b4dbfe734a30de525e9a11
 
 Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor man har ret og to, hvor man tager fejl. De to fejltyper hedder type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand. Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså "probability" er under 0,05 forkastes hypotesen. Det har den virkning at der i 5 procent af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
@@ -602,9 +610,9 @@ E(y) = \alpha + \beta \ \cdot x
 \end{aligned}
 $$
 hvor:  
-- $E(y)$ er den forventede værdi af $y$.
-- $\alpha$ er skæringen i y-aksen.
-- $\beta$ bestemmer hældningen af regressionslinjen baseret på $x$'s værdi.
+- $E(y)$ er den forventede værdi af $y$.  
+- $\alpha$ er skæringen i y-aksen.  
+- $\beta$ bestemmer hældningen af regressionslinjen baseret på $x$'s værdi.  
 
 ```{r dataframe for lineær regression, include = FALSE}
 set.seed(1)
@@ -650,9 +658,9 @@ Med disse 3 værdier kan det udregnes hvor god $x$ er til at forudsige $y$. Måd
 $$
 \begin{aligned}
 R^2 = \frac{SSR}{TSS}
-\end{aligned}
 \\
 R^2=\frac{TSS-SSE}{TSS}
+\end{aligned}
 $$
 Denne $R^2$-værdi altid være imellem 0 og 1, hvor 1 betyder at $y$ kan forudsiges ud fra $x$ alene, og hvor 0 betyder at $y$ slet ikke kan forudsiges ud fra $x$.
 
