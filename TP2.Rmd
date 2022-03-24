@@ -9,8 +9,10 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 library(mosaic)
 library(ggplot2)
+library(ggpubr)
 library(cowplot)
 require(gridExtra)
+#install.packages("ggpubr")
 #tinytex::install_tinytex()
 ```
 
@@ -574,8 +576,12 @@ qdist("t", p = c(0.025,0.975), df = 100)
 
 # Metoder
 
+<<<<<<< HEAD
 
 ##Fejl i signifikanstest
+=======
+## Fejl i signifikanstest
+>>>>>>> f0f5c7819b786df4b7b4dbfe734a30de525e9a11
 
 Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor man har ret og to, hvor man tager fejl. De to fejltyper hedder type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand. Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså "probability" er under 0,05 forkastes hypotesen. Det har den virkning at der i 5 procent af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
@@ -586,3 +592,74 @@ p2 <- qdist(mean = 0, sd = 1, p = 0.5, return = "plot")
 #p3 <- qdist(mean = 0, sd = 1, p = 0, return="plot")
 grid.arrange(p1, p2, ncol=2)
 ```
+
+## Lineær regression
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 9 I BOGEN
+Lineær regression er en model, hvori det ønskes at forudsige $y$ (en respons variabel), ud fra $x$ (en forklarende variabel). Ud fra denne undersøgelse vil der opnås en graf, med en regressionslinje. En regressionslinje er en ret linje som minimerer den vertikale afstand mellem alle punkterne og linjen. Der vil desuden også være en ligning for denne regressionslinje, se nedenstående:
+$$
+\begin{aligned}
+E(y) = \alpha + \beta \ \cdot x
+\end{aligned}
+$$
+hvor:  
+- $E(y)$ er den forventede værdi af $y$.
+- $\alpha$ er skæringen i y-aksen.
+- $\beta$ bestemmer hældningen af regressionslinjen baseret på $x$'s værdi.
+
+```{r dataframe for lineær regression, include = FALSE}
+set.seed(1)
+df <- data.frame(x = c(0:20))
+df$y <- 2*df$x + rnorm(20, sd = 5)
+```
+Nedenstående er der plottet et eksempel på en lineær model. Desuden er der indskrevet ligningen for regressionslinjen:
+```{r eksempel på lineær regression}
+ggplot(data = df, aes(x = x, y = y)) +
+  geom_smooth(method = "lm") +
+  geom_point() +
+  stat_regline_equation(label.x = 5, label.y = 35) +
+  ggtitle("Eksempel på lineær regression")
+  
+```
+Som det kan ses på figuren, er der få punkter som ligger tæt på regressionslinjen. Dette skyldes at denne regressionslinje er den "bedste" rette linje, altså den rette linje, hvor den vertikale afstand mellem punkterne og den er mindst.
+
+For at undersøge hvad den vertikale afstand mellem punkterne og regressionslinjen, benyttes en metode kaldes "Sum of Squares Error" (også kaldet $SSE$), som udregnes på følgende måde:
+$$
+\begin{aligned}
+SSE = \sum (y_i-\hat{y_i})^2
+\end{aligned}
+$$
+Jo lavere $SSE$ er, jo bedre passer punkterne altså på regressionslinjen, den forklarer yderligere hvor langt hvert datapunkt er fra de forudsagte datapunkter. Yderligere kan "Total Sum of Squares" (også kaldet $TSS$) udregnes på følgende måde:
+$$
+\begin{aligned}
+TSS = \sum (y_i-\overline{y})^2
+\end{aligned}
+$$
+Denne formel forklarer forskellen mellem hvert punkt og $y$'s gennemsnit. Endnu en formel man kan udregne kaldes "Sum of Squared Regression" (også kaldet $SSR$) og udregnes på følgende måde:
+$$
+\begin{aligned}
+SSR = \sum (\hat{y_i}-\overline{y})^2
+\end{aligned}
+$$
+Denne formel forklarer forskellen mellem de forudsagte datapunkter og $y$'s gennemsnit. Der er et sammenhæng mellem disse tre formler, nemlig at:
+$$
+\begin{aligned}
+TSS = SSE + SSR
+\end{aligned}
+$$
+Med disse 3 værdier kan det udregnes hvor god $x$ er til at forudsige $y$. Måden hvorpå dette kan udregnes, står forneden:
+$$
+\begin{aligned}
+R^2 = \frac{SSR}{TSS}
+\end{aligned}
+\\
+R^2=\frac{TSS-SSE}{TSS}
+$$
+Denne $R^2$-værdi altid være imellem 0 og 1, hvor 1 betyder at $y$ kan forudsiges ud fra $x$ alene, og hvor 0 betyder at $y$ slet ikke kan forudsiges ud fra $x$.
+
+## Multipel lineær regression
+En multipel lienær regression minder meget om en lineær regression, dog med den forskel at der her er flere forklarende variabler. Dette vil altså sige at ligningen for regressionslinjen fra tidligere her vil se ud på denne måde:
+$$
+\begin{aligned}
+E(y) = \alpha + \beta_1 \cdot x_1 + \beta_2 \cdot x_2 + ... + \beta_n \cdot x_n
+\end{aligned}
+$$
