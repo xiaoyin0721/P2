@@ -535,11 +535,36 @@ Hvor $\mu$ er den ene stikprøves populations middelværdi og $\mu_0$ er er den 
 
 For at tjekke hvilken af hypoteserne er sand eller falsk, vælges et signifikansniveau som ofte er $\alpha$ = 5% eller $\alpha$ = 1%. Ud fra dette signifikansniveau bliver der udregnet en kritisk værdi på en sandsynlighedsfordeling.
 
-$p$ > $\alpha$ så forkastes man ikke $H_0$.
+$p$ > $\alpha$ så forkastes $H_0$ ikke.
 \
-$p$ $\le$ $\alpha$ så forkastes $H_0$ imod $H_1$. 
+$p$ $\le$ $\alpha$ så forkastes $H_0$, og $H_1$ foretrækkes. 
 
 For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en række hypotesetest, som vil være relevante i forskellige sammenhænge.
+
+###Hypotesetest sammenligning af to grupper
+- Hvorfor laver man hypotesetest
+  - Test af om 2 populationer har samme my værdi
+  - 
+
+
+- Hvordan, proportion/mean
+  - for kvantitative variabler, benyttes formlen Nulhypotesen $ H_0: \mu = \mu_0$, hvor, $\mu_0$ er kendt, og hypotesen passer, hvis $\mu$ er lig $\mu_0$. Den alternative hypotese $H_a: \mu \not= \mu_0$ peger på at den kendte middelværdi ikke er gældende for observationen. For at teste hypotesen,benyttes en t-test. 
+  
+  $$\begin{aligned}
+  t = \frac{\overline{y}-\mu_0}{se} \ \ \ \ \ ,\ se=\frac{a}{\sqrt{n}}, \ \ \ df = n-1 
+  \end{aligned}
+  $$
+Det kan ses at t-scoren afhænger af y-gennemsnit, og den estimerede $\mu_0$ værdi
+```{r}
+qdist("t", p = c(0.025,0.975), df = 2)
+```
+
+  
+  - For kategoriske variabler, denoterer man middelværdien $\pi$
+    
+  
+    
+- Proportion/ mean
 
 # Metoder
 
