@@ -47,7 +47,7 @@ $$
 
 Her vil man starte med at indsætte $X_0$ på $X_{n}$'s plads, og ud fra dette kan man finde $X_1$. Derefter kan man indsætte $X_1$ på $X_n$’s plads og derefter få $X_2$. Denne proces kan gentages så mange gange som man har brug for.
 Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv, længden fra det første tal i generatoren frem til det første gentagende tal kaldes for en periode, og perioden afhænger meget af de valgte værdier af $a$, $c$ og $m$. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
-De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. GØR DET HER TOBIAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. I en undersøgelse af PRNG'er blev det påvist at den optimale periode kan opnås på to måder. Enten skal 2 være opløftet i $m$, eller 10 skal være opløftet i $m$. I denne rapport vælges $2^m$, og dertil er der yderligere nogle krav. Først og fremmest skal $c$ være et ulige tal, samt at $a-1\; mod\;4  = 0$, så længe $m$'s værdi kan divideres med 4. Dette er grunden til at de valgte værdier 
 
 ```{r}
 #![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
@@ -60,7 +60,7 @@ Nedenstående blok kode blev brugt til at lave den lineære kongruentiale genera
 
 linear_congruence <- function(i, X_0) {
 t <- 0
-a <- 11102357
+a <- 11102361
 c <- 21353
 m <- 2**32
 v1 <- c()
@@ -72,10 +72,11 @@ while(t < i){
 return(v1)
 }
 linear_congruence(i=10, X_0 = 234)
+
 ```
 
 Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sættes $X_0$ lig med et tilfældigt tal, som i dette tilfælde er $1576$. Der skulle også bruges en $a$, $c$ og $m$ værdi, som i denne kode er sat til henholdsvis $11,102,357$, $21,353$ og $2^{32}$. Der er også oprettet to variabler: $t$ og $i$, som bruges i programmet, hvor $i$ er en parameter for funktionen, som svarer til det ønskede antal tilfældigt genererede tal, og $t$ har en startsværdi på 0, og øges med 1, hvert gang et tilfældigt tal genereres. Funktionen er sat op således, at så længe $t$ er mindre end $i$, vil $X_0$ blive brugt til at udregne en ny $X_0$ værdi. Værdien bliver dernæst tilføjet til en vektor $v1$, dog ikke før at værdien bliver divideret med $m$ og ganget med 100. Dernæst bliver $1$ adderet til $t$, og så loop'er funktionen. Resultatet af denne funktion, kan ses forneden:  
-
+KILDE: https://dl.acm.org/doi/pdf/10.5555/2955239.2955463
 
 ```{r Linear Congruence, echo=FALSE}
 
@@ -85,35 +86,44 @@ gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1
 
 
 
-#Uafhængige test
-
-We use Pearson's Chi-squared Test of Independence to test if  $U{i}$ og $U{i + 1}$ in PRNG generated sequences are independent of each other.
-Comparing observed frequencies is:
+# Uafhængige test
+Indenfor PRNG'er er det vigtigt at de tilfældige tal der fås ikke afhænger af hinanden. Altså skal et tilfældigt tal $U_{i+1}$ ikke afhænge af $U_i$. Måden hvorpå man kan teste hvorvidt de afhænger af hinanden kaldes for Pearson's Chi i anden-test.
+Til denne test skal der opstilles en nulhypotese. Denne er vist forneden:
 $$
 \begin{aligned}
-D=\sum_{i=1}^{k}\frac{(o_i-e_i)^2}{e_i}
+H_0: Tallene \ der \ fås \ via \ LCG'en \ er \ uafhaengige \ af \ hinanden.
 \end{aligned}
 $$
-k = the number of bins 
-$o_i$ = Observed frequency for ith bin 
-$e_i$ = Expected frequency
+Med $H_0$ opstillet, skal en score kaldet $\chi^2$-scoren nu findes. Nedenstående formel viser hvordan man udregner $\chi^2$-scoren:
+$$
+\begin{aligned}
+\chi^2=\sum_{i=1}^{k}\frac{(O_i-F_i)^2}{F_i}
+\end{aligned}
+$$
+- $k$ betyder antallet af søjler.  
+- $O_i$ er den observet frekvens for den i'ende søjle.    
+- $F_i$ er den forventet frekvens.   
 
-When $D$ score equals to zero, we will have an exact fit, D has a chi-square distribution with k-1 degrees of freedom. Comparing $D$ score with $\chi_[1-\alpha, k-1]$, if $D$ is less we can pass with confidence $\alpha$
-
-
-```{r}
-
-obs <- hist(linear_congruence(i=10000, X_0 = 1576))$counts
+På grund af dette vil en lav $\chi^2$-score betyde at de observerede værdier ligger tæt på de forventede værdier. Nedenstående er $\chi^2$-scoren udregnet:
+```{r Udregning af chi i anden}
+obs <- hist(linear_congruence(i=10000, X_0 = 1576), ylab = "Frekvens", xlab = "Intervaller", main = paste("Histogram af implementeret PRNG"))$counts
 exp <-  10000/20
-D_score <- sum((obs-exp)^2)/exp
-Chi_significance <- qchisq(0.95, 19, ncp = 0) 
-D_score 
-Chi_significance
-
-
+Chi2_score <- sum((obs-exp)^2)/exp
+Chi2_score
 ```
+Det næste der skal gøres er at sammenligne resultatet af $\chi^2$-scoren med en kritisk værdi. Hvis $\chi^2$-scoren er højere end den kritiske værdi, skal $H_0$ nemlig forkastes. Den kritiske værdi findes ved hjælp af qchisq-funktionen. Heri skal der bruges et signifikansniveau, som sættes til $5\%$. Desuden skal der bruges et antal frihedsgrader, som svarer til $k-1$, altså vil det svare til de 20 søjler fra ovenstående graf minus 1, altså 19. Dette gøres i nedenstående blok:
+```{r udregning af kritisk værdi og sammenligning af de to}
+Chi_significance <- qchisq(0.95, 19)
+Chi2_score
+Chi_significance
+```
+Siden at $\chi^2$-scoren er lavere end den kritiske værdi, kan $H_0$ ikke forkastes, og der er derfor ikke nok bevis til at modbevise at tallene der fås ved hjælp af LCG'en er uafhængige fra hinanden. Yderligere kan en p-værdi findes, som gøres forneden:
+```{r udregning af p-værdi for chi i anden-test}
+pchisq(17.332, 19)
+```
+Dette betyder altså at hvis nulhypotesen er sand, så er der en $43\%$ chance for at dette data optræder. Siden $43\%$ er højere end signifikansniveauet på $5\%$, accepteres $H_0$.
 
-It is observed that the observed difference is much smaller than chi-squared value, therefore the LCG generated values follows a uniform distribution with 95% confidence. 
+Grundet alt dette følger LCG'en altså en uniform fordeling med $95\%$ konfidens.
 
 
 #Spektral test
@@ -567,6 +577,10 @@ qdist("t", p = c(0.025,0.975), df = 2)
 - Proportion/ mean
 
 # Metoder
+
+##Fejl i signifikanstest
+
+Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor man har ret og to, hvor man tager fejl. De to fejltyper hedder type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand. Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså "probability" er under 0,05 forkastes hypotesen. Det har den virkning at der i 5 procent af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
 
 ```{r, fig.height = 3, fig.width = 8} 
