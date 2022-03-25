@@ -225,7 +225,7 @@ if $K^+ < K[1-\alpha, n]$ and $K^- < K[1-\alpha, n]$, test is passed at $\alpha$
 
 Test Statistics $D = Max|K^+, K^-|$
 
-$F_e(x)$ is the theoretical freqency distribution, the normal distribution cdf is $F_X(x) = 1/2(1+erf(x-\mu/\sqrt2\sigma)$, while the error funtion is defined as
+$F_e(x)$ is the theoretical frequency distribution, the normal distribution cdf is $F_X(x) = 1/2(1+erf(x-\mu/\sqrt2\sigma)$, while the error funtion is defined as
 $erf(x) = 2/\sqrt\pi \int_{0}^{x}exp(-t^2)dt$
 
 
@@ -324,7 +324,7 @@ Box_muller_transform()
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 3 I BOGEN  
 I en population findes der to værdier, $\mu$ og $\sigma$, som er interessante at kigge nærmere på. Gennemsnittet af en population kaldes $\mu$ (middelværdi), mens at populationens standardafvigelse kaldes $\sigma$.
 
-Populations standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser hvordan variansen for en stikprøve kan udregnes:
+Populations standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser, hvordan variansen for en stikprøve kan udregnes:
 
 
 $$
@@ -332,11 +332,11 @@ $$
 var(x)=s^2 = \sum_{i=1}^{n} \frac{(x_i-\overline{x})^2}{n}
 \end{aligned}
 $$
-Herunder er der:
-- $x_i$, som svarer til den enkelte observation i stikprøven.
-- $\overline{x}$, som svarer til gennemsnittet af stikprøven.
+Herunder er der:  
+- $x_i$, som svarer til den enkelte observation i stikprøven.  
+- $\overline{x}$, som svarer til gennemsnittet af stikprøven.  
 
-Sammenhænget mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning.:
+Sammenhængen mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning.:
 $$
 \begin{aligned}
 \sigma=\sqrt{var(X)}=\sqrt{\sigma^2}
@@ -345,35 +345,34 @@ $$
 Populationen bliver her betegnet som X.
 
 ## Fordelinger
-Der findes en lang række sandynlighedsfordelinger og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
+Der findes en lang række sandsynlighedsfordelinger, og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
 
 ### Standardnormalfordeling
 Standardnormalfordeling: https://mse.redwoods.edu/darnold/math15/UsingRInStatistics/StandardNormal.php
 
-- Billede: 
 En standardnormalfordeling er kendetegnet ved at $\mu=0$, og at $\sigma = 1$. Desuden har en standardnormalfordeling et klokkeformet udseende. Nedenstående er der plottet en standardnormalfordeling:
 ```{r}
 qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4))
 ```
-Der er en høj sandsynlighed for at få et værdi tæt på 0. Jo længere man afviger fra $\mu$, jo mindre er densiteten, som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sandsynligheden for at få 0. 
-En af anveldeserne for en standardnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
+Der er en høj sandsynlighed for, at få en værdi tæt på 0. Jo længere man afviger fra $\mu$, jo mindre er densiteten, som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sandsynligheden for at få 0. 
+En af anveldeserne for en standardnormalfordeling er, at den kan benyttes til en Z-test, som benyttes senere i projektet.
 
-
-#### Z-fordeling
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 4 I BOGEN  
+#### Z-fordeling  
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 4 I BOGEN 
 
 For at finde z-scoren, skal $\mu,\sigma$ være kendt. 
-Z-scoren kan udregnes for normalfordelinger ved formlen:
+$z$-scoren kan udregnes for normalfordelinger ved formlen:
 $$
 \begin{aligned}
 z = \frac{y-\mu}\sigma
 \end{aligned}
 $$
-hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
-Desuden, kan det udledes, at hvis $z>0$ er y-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er y-værdien på venstre side af $\mu$.
+hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$.
+Desuden, kan det udledes, at hvis $z>0$ er $y$-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er $y$-værdien på venstre side af $\mu$.
 
-#### T-fordeling
+#### T-fordeling  
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
+
 En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en stikprøve vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist("t", df = 5, p = 1, return = "plot")
