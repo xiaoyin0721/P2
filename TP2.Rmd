@@ -587,8 +587,9 @@ $p$ $\le$ $\alpha$ så forkastes $H_0$, og $H_1$ foretrækkes.
 
 For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en række hypotesetest, som vil være relevante i forskellige sammenhænge.
 
-### Hypotesetest for kvantitative variabler
-For hypotesetester for kvantitative variabler, er der et par nødvendige antagelser. Først og fremmest antages det at populationen er normalfordelt, samt at stikprøven der undersøges ud fra er taget ud fra populationen tilfældigt.   
+
+### Hypotesetest
+For hypotesetester for kvantitative variabler, er der et par nødvendige antagelser. Først og fremmest antages det at populationen er normalfordelt, samt at stikprøven som der undersøges ud fra er taget ud fra populationen tilfældigt.   
   
 Det  næste der skal gøres, er at opsætte nogle hypoteser, altså en $H_0$ og en $H_a$:
 $$
@@ -619,7 +620,23 @@ I figur P1 er $p$-scoren $2\cdot0.16=0.32$, mens at figur P2 har en $p$-score p�
 
     
 - Proportion/ mean
+Fremgangsmåden til hypotesetest ved proportioner, er i stort omfang lig med hypotesetesten for kvantitative variabler. En af forskellene er at en antagelse for proportioner er at man forventer mindst 10 observationer. Hypotesen er for test er bygget op på fuldstændig samme måde, dog er forskellen denotationen, hvor der heri benyttes $\pi$ i stedet for $\mu$. Dvs. at Nulhypotesen ser således ud.
+$$
+\begin{aligned}
+H_0 : \pi = \pi_0
+\newline
+H_a : \pi \not= pi_0
+\end{aligned}
+$$
+Hvor $\pi_0$ er den forventede proportion.
+Desuden benyttes der nu z-score, hvor z-værdien får ud fra følgende ligning
+$$
+\begin{aligned}
+z = \frac{\hat{\pi}-\pi_0}{sf_0}, \ \ \ \ sf_0 = \sqrt{\pi_0\frac{(1-\pi_0)}n}
+\end{aligned}
+$$
 
+Det kan ses at z-testen indeholder en $\hat\pi$, som 
 # Metoder
 
 
