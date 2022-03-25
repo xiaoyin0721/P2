@@ -331,9 +331,9 @@ $$
 var(x)=s^2 = \sum_{i=1}^{n} \frac{(x_i-\overline{x})^2}{n}
 \end{aligned}
 $$
-Herunder er der:
-- $x_i$, som svarer til den enkelte observation i stikprøven.
-- $\overline{x}$, som svarer til gennemsnittet af stikprøven.
+Herunder er der:  
+- $x_i$, som svarer til den enkelte observation i stikprøven.  
+- $\overline{x}$, som svarer til gennemsnittet af stikprøven.  
 
 Sammenhænget mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning.:
 $$
@@ -347,8 +347,6 @@ Populationen bliver her betegnet som X.
 Der findes en lang række sandynlighedsfordelinger og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
 
 ### Standardnormalfordeling
-
-- Billede: 
 En standardnormalfordeling er kendetegnet ved at $\mu=0$, og at $\sigma = 1$. Desuden har en standardnormalfordeling et klokkeformet udseende. Nedenstående er der plottet en standardnormalfordeling:
 ```{r}
 qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4))
@@ -357,19 +355,18 @@ Der er en høj sandsynlighed for at få et værdi tæt på 0. Jo længere man af
 En af anveldeserne for en standardnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
 
 
-#### Z-fordeling
-
+#### Z-fordeling  
 For at finde z-scoren, skal $\mu,\sigma$ være kendt. 
-Z-scoren kan udregnes for normalfordelinger ved formlen:
+$z$-scoren kan udregnes for normalfordelinger ved formlen:
 $$
 \begin{aligned}
 z = \frac{y-\mu}\sigma
 \end{aligned}
 $$
-hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
-Desuden, kan det udledes, at hvis $z>0$ er y-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er y-værdien på venstre side af $\mu$.
+hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$.
+Desuden, kan det udledes, at hvis $z>0$ er $y$-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er $y$-værdien på venstre side af $\mu$.
 
-#### T-fordeling
+#### T-fordeling  
 En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en stikprøve vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist("t", df = 5, p = 1, return = "plot")
