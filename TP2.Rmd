@@ -494,20 +494,20 @@ I rapporten anvendes statistisk inferens, det gøres i form af estimation, der b
 
 Når der indenfor statistik estimeres på en populations parameter ud fra en stikprøve, vil resultatet aldrig være perfekt. Dette skyldes at der er en fejlmargin, som der skal tages højde fra. En måde hvorpå man kan tage højde for denne fejlmargin er et konfidensinterval.
 
-Et konfidensinterval for en givet parameter er et interval mellem to tal, hvori det estimeres at parameteren ligger i.
-Sandsynligheden for at producere et interval som indeholder parameteren kaldes for et konfidensniveau. Denne værdi er valgt til et tal tæt på 1, som regel enten 0.95 eller 0.99.
+Et konfidensinterval for en givet parameter, er et interval mellem to tal, hvori det estimeres at parameteren ligger.
+Sandsynligheden for at producere et interval, som indeholder parameteren kaldes for et konfidensniveau. Denne værdi er valgt til et tal tæt på 1, som regel enten 0.95 eller 0.99.
 
-En konfidensinterval skabes på baggrund af et punktestimat og fejlmarginen. Måden dette gøres på, kan ses forneden:
+En konfidensinterval skabes på baggrund, af et punktestimat og fejlmarginen. Måden dette gøres på, kan ses forneden:
 $$
 \begin{aligned}
 KI = Punktestimat \; \pm \; fejlmargin
 \end{aligned}
 $$
-Måden at finde konfidensintervallet varierer baseret på hvilket fordeling man bruger. I de følgende afsnit vil der forklares hvordan konfidensintervallet for kvalitative og kvantitative variabler findes og opstilles ved hjælp af eksempler.
+Måden at finde konfidensintervallet varierer baseret på, hvilken fordeling man bruger. I de følgende afsnit vil der forklares, hvordan konfidensintervallet for kvalitative og kvantitative variabler findes, og opstilles ved hjælp af eksempler.
 
 #### Kvalitative variabler
 
-Hvis man spurgte en population hvorvidt de kunne lide deres job eller ej, ville en andel svare "ja" og en andel svare "nej". Er man interesseret i hvor mange procent svarede "ja" til spørgsmålet, ville man dividere antallet der svarede "ja" med antallet af observation. Se følgende:
+Hvis man spurgte en population, hvorvidt de kunne lide deres job eller ej, ville en andel svare "ja", og en andel svare "nej". Er man interesseret i hvor mange procent svarede "ja" til spørgsmålet, ville man dividere antallet der svarede "ja" med antallet af observation. Se følgende:
 $$
 \begin{aligned}
 \hat{\pi}_{ja} = \frac{n_{ja}}{n{_{total}}}
@@ -551,9 +551,9 @@ $$
 sf(\overline{y}) = \frac{s}{\sqrt{n}}
 \end{aligned}
 $$
-hvor s er standardafvigelsen for stikprøven og n er antallet af observationer i stikprøven.
+hvor s er standardafvigelsen for stikprøven, og n er antallet af observationer i stikprøven.
 
-For at finde $t_{crit}$ benyttes der en t-test. Hvis det ønskede signifikansniveau igen er 95% hvor der igen aflæses x-værdien ved $2.5\%$ og $97.5\%$. Nedenstående er der et eksempel, hvor en t-test med 50 frihedsgrader benyttes til at finde 95% signifikansniveauet:
+For at finde $t_{crit}$ benyttes der en t-test. Hvis det ønskede signifikansniveau igen er 95%, hvor der igen aflæses x-værdien ved $2.5\%$ og $97.5\%$. Nedenstående er der et eksempel, hvor en t-test med 50 frihedsgrader benyttes til, at finde 95% signifikansniveauet:
 ```{r}
 qdist("t", df = 50, p = c(0.025,0.975))
 ```
@@ -565,9 +565,9 @@ $$
 $$
 
 ### Hypoteser
-Hver signifikanstest har to hypoteser. En hypotese er et udsagn omkring værdien af population parameter. Hypotese forudsiger hvorvidt en parameter påvirker en numerisk værdi eller falder inden for en specifik værdimængde. Det gør det så muligt at beregne om en hypotese er sand eller falsk.  
+Hver signifikanstest har to hypoteser. En hypotese er et udsagn omkring værdien af population parameter. En hypotese forudsiger, hvorvidt en parameter påvirker en numerisk værdi eller falder indenfor en specifik værdimængde. Det gør det så muligt at beregne, om en hypotese er sand eller falsk.  
 
-For at sørge for at man anvender en pålidelig analysemetode på en stikprøve, så opsættes en hypotese omkring sammenhængen af ens data så opstilles en hypotesetest. Det er en metode til at teste en hypotese (Alternativ hypotese - $H_a$) hvor den sættes op mod en konkurrence hypotese som er nulhypotesen ($H_0$). En stikprøve tages ud af en population, hvor $H_0$ testes imod $H_a$ ved brug af et signifikansniveau ($\alpha$) og en $p$-værdi.
+For at sørge for, at man anvender en pålidelig analysemetode på en stikprøve, så opsættes en hypotese omkring sammenhængen af ens data, hvorefter der opstilles en hypotesetest. Det er en metode til at teste en hypotese, (Alternativ hypotese - $H_a$) hvor den sættes op mod en konkurrerende hypotese, nulhypotesen ($H_0$). En stikprøve tages ud af en population, hvor $H_0$ testes imod $H_a$ ved brug af et signifikansniveau ($\alpha$) og en $p$-værdi.
 
 Et klassisk eksempel på dette kunne være at opstille:
 $$
