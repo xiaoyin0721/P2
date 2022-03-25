@@ -449,7 +449,7 @@ grid.arrange(p1, p2, nrow=2)
 
 #Population distribution 
 
-Data are generated from a continuous gamma distribution with parameters $ k = 9$, $\theta = 0.5$, for simulating a left-skewed population distribution. Gamma distribution describe continuous non-negative random variables. By transforming to R's  $\alpha-\beta$ parameterization, $\alpha = 9$, $ \beta = 2$.
+Data are generated from a continuous gamma distribution with parameters $k = 9$, $\theta = 0.5$, for simulating a left-skewed population distribution. Gamma distribution describe continuous non-negative random variables. By transforming to R's  $\alpha-\beta$ parameterization, $\alpha = 9$, $\beta = 2$.
 
 
 ```{r simulate population}
