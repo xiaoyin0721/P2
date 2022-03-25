@@ -142,7 +142,7 @@ spectral_test <- function(){
   for (i in 2:length(v1)){
    X[i] = v1[i]
   }
-plot(X[-1],X[-nSim],col="blue", type="p", pch=20,lwd=2)
+plot(X[-1],X[-nSim],col="blue", type="p", pch=20,lwd=2, xlab="", ylab="")
     
 }
 spectral_test()
@@ -205,7 +205,7 @@ qq_normality_check <- function(){
   X <- R*cos(theta)
   Y <- R*sin(theta)
   qqplot(X, Y) 
-  qqline(x, col = "red")
+  qqline(X, col = "red")
 }
 
 qq_normality_check()
