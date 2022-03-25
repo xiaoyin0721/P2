@@ -449,7 +449,7 @@ grid.arrange(p1, p2, nrow=2)
 
 #Population distribution 
 
-Data are generated from a continuous gamma distribution with parameters $ k = 9$, $\theta = 0.5$, for simulating a left-skewed population distribution. Gamma distribution describe continuous non-negative random variables. By transforming to R's  $\alpha-\beta$ parameterization, $\alpha = 9$, $ \beta = 2$.
+Data are generated from a continuous gamma distribution with parameters $k = 9$, $\theta = 0.5$, for simulating a left-skewed population distribution. Gamma distribution describe continuous non-negative random variables. By transforming to R's  $\alpha-\beta$ parameterization, $\alpha = 9$, $\beta = 2$.
 
 
 ```{r simulate population}
@@ -618,8 +618,8 @@ grid.arrange(p1, p2, ncol=2)
 ```
 I figur P1 er $p$-scoren $2\cdot0.16=0.32$, mens at figur P2 har en $p$-score på $2\cdot0.007=0.014$. Da signifikansniveauet $\alpha=0.05$, betyder det altså for P1 at $p\ge\alpha$. Dette betyder at der ikke er nok evidens til at forkaste $H_0$. For P2 betyder det at $p\le\alpha$. Dette betyder at der er nok evidens til at forkaste $H_0$, og at $H_a$ er mere sandsynlig.
 
-    
-- Proportion/ mean
+
+
 Fremgangsmåden til hypotesetest ved proportioner, er i stort omfang lig med hypotesetesten for kvantitative variabler. En af forskellene er at en antagelse for proportioner er at man forventer mindst 10 observationer. Hypotesen er for test er bygget op på fuldstændig samme måde, dog er forskellen denotationen, hvor der heri benyttes $\pi$ i stedet for $\mu$. Dvs. at Nulhypotesen ser således ud.
 $$
 \begin{aligned}
@@ -629,14 +629,29 @@ H_a : \pi \not= pi_0
 \end{aligned}
 $$
 Hvor $\pi_0$ er den forventede proportion.
-Desuden benyttes der nu z-score, hvor z-værdien får ud fra følgende ligning
+Desuden benyttes der nu z-score, hvor z-værdien får ud fra følgende ligning:
 $$
 \begin{aligned}
 z = \frac{\hat{\pi}-\pi_0}{sf_0}, \ \ \ \ sf_0 = \sqrt{\pi_0\frac{(1-\pi_0)}n}
 \end{aligned}
 $$
 
-Det kan ses at z-testen indeholder en $\hat\pi$, som 
+Det kan ses at z-testen indeholder en $\hat\pi$, som svarer til proportionen for stikprøven. Standardfejlen udregnes på en anden måde end ved $t$-test.
+
+Man kan finde $z_{crit}$ ved hjælp af en standardnormalfordeling, hvor man igen skal have et signifikansniveau. I nedenstående graf er $95\%$ brugt:
+
+```{r}
+qdist("norm", mean = 0, sd = 1, p = c(0.025, 0.975))
+```
+Ergo er $z_{crit}$ altså $\pm 1.96$. Nu kan $z$-scoren benyttes til at finde $p$-værdien. Nedenstående er der to eksempler, hvor $z$-scoren er henholdsvis 1 og 3:
+```{r, fig.height = 3, fig.width = 8}
+p1 <- pdist("norm", mean = 0, sd = 1, q = 1, return = "plot", title = "P1")
+p2 <- pdist("norm", mean = 0, sd = 1, q = 2.5, return = "plot", title = "P2")
+grid.arrange(p1, p2, ncol=2)
+```
+I figur P1 er $p$-scoren $2\cdot0.159=0.318$, mens at figur P2 har en $p$-score på $2\cdot0.006=0.012$. Da signifikansniveauet $\alpha=0.05$, betyder det altså for P1 at $p\ge\alpha$. Dette betyder at der ikke er nok evidens til at forkaste $H_0$. For P2 betyder det at $p\le\alpha$. Dette betyder at der er nok evidens til at forkaste $H_0$, og at $H_a$ er mere sandsynlig.
+
+
 # Metoder
 
 
