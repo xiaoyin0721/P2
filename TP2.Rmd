@@ -671,3 +671,53 @@ $$
 E(y) = \alpha + \beta_1 \cdot x_1 + \beta_2 \cdot x_2 + ... + \beta_n \cdot x_n
 \end{aligned}
 $$
+
+## F-test
+En F-test er en statistisk test som har en F fordelingen under nul hypotese. Den er mest ofte brugt når man sammenligner statistiske modeller i et datasæt til at identificere den model som passer bedst til populationen fra dataen. Det er en test som hæder statistikeren, Ronald A. Fisher, som opdagede F-fordelingen i 1922. F-fordelingen kan kun tage ikke negative værdier og den er noget skævt til højre, ligesom en chi i anden-fordelingen. Den nedenstående figur illustrerer dette. (CAP 11) I forhold til T-test som har til formål at sammenligne middelværdierne i to populationer, så vil F-test sammenligne spredninger (eller varianser. Principperne for denne test er identiske med principperne for t-testene. Blot beregnes tesetstørrelsen på en anden måde, og der skal bruges F-fordelingen til at beregnes testsandsynligheden.
+
+(Billed) TOBO INDSÆT MIT BILLED
+
+Denne figur viser F fordelingen og P-værdien for F test. Hvor højere F værdi giver et større evidens for at kunne forkaste $H_0$.
+
+For at udregne en f-score skal man opstille en f-brøk. En f-brøk udregnes på følgende måde:
+
+$$
+\begin{aligned}
+F = \frac{MSR}{MSE}
+\end{aligned}
+$$
+MSR og MSE er varianser fra variationerne SSR og SSE. Disse varianser står for MSR = Mean Square Regression og MSE = Mean Square Error. De bliver så udregnet på følgende måde:
+
+$$
+\begin{aligned}
+MSR = \frac{SSR}{k}
+\end{aligned}
+$$
+$$
+\begin{aligned}
+MSE = \frac{SSE}{n-k-1}
+\end{aligned}
+$$
+Varians udregnes ved at dividere variationen med dens frihedsgrad. Dette er bestemt af to frihedsgrader som er noteret som $df_1$ og $df_2$
+
+Dette er antallet af variabler i modellen.
+$$
+\begin{aligned}
+df_1 = k
+\end{aligned}
+$$
+Dette er n - antal af parameter i regressions udregningen.
+$$
+\begin{aligned}
+df_2 = n - (k+1)
+\end{aligned}
+$$
+
+Den første frihedsgrad, $df_1$ = $k$ er tælleren ($R^2$) i F testen. Den anden frihedsgrad $df_2$ = n - (k + 1) er nævneren (1- $R^2$).
+
+$$
+\begin{aligned}
+\frac{R^2}{(1-R^2)}
+\end{aligned}
+$$
+Det vil sige hvor højere $R^2$ er, des større er ratioen $\frac{R^2}{1-R^2}$, og des større er F test værdien. Ved en høj F test værdi hvor større evidens er der for at forkaste $H_0$.
