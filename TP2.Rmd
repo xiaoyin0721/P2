@@ -225,7 +225,7 @@ if $K^+ < K[1-\alpha, n]$ and $K^- < K[1-\alpha, n]$, test is passed at $\alpha$
 
 Test Statistics $D = Max|K^+, K^-|$
 
-$F_e(x)$ is the theoretical freqency distribution, the normal distribution cdf is $F_X(x) = 1/2(1+erf(x-\mu/\sqrt2\sigma)$, while the error funtion is defined as
+$F_e(x)$ is the theoretical frequency distribution, the normal distribution cdf is $F_X(x) = 1/2(1+erf(x-\mu/\sqrt2\sigma)$, while the error funtion is defined as
 $erf(x) = 2/\sqrt\pi \int_{0}^{x}exp(-t^2)dt$
 
 
@@ -321,9 +321,9 @@ Box_muller_transform()
 # Teori
 
 ## Middelværdi og standardafvigelse
-I en population findes der to værdier, $\mu$ og $\sigma$, som er interessante at kigge nærmere på. Gennemsnittet af en population kaldes $\mu$, mens at populationens standardafvigelse kaldes $\sigma$.
+I en population findes der to værdier, $\mu$ og $\sigma$, som er interessante at kigge nærmere på. Gennemsnittet af en population kaldes $\mu$ (middelværdi), mens at populationens standardafvigelse kaldes $\sigma$.
 
-Populations standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser hvordan variansen for en stikprøve kan udregnes:
+Populations standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser, hvordan variansen for en stikprøve kan udregnes:
 
 
 $$
@@ -331,11 +331,11 @@ $$
 var(x)=s^2 = \sum_{i=1}^{n} \frac{(x_i-\overline{x})^2}{n}
 \end{aligned}
 $$
-Herunder er der:
-- $x_i$, som svarer til den enkelte observation i stikprøven.
-- $\overline{x}$, som svarer til gennemsnittet af stikprøven.
+Herunder er der:  
+- $x_i$, som svarer til den enkelte observation i stikprøven.  
+- $\overline{x}$, som svarer til gennemsnittet af stikprøven.  
 
-Sammenhænget mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning.:
+Sammenhængen mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning.:
 $$
 \begin{aligned}
 \sigma=\sqrt{var(X)}=\sqrt{\sigma^2}
@@ -344,32 +344,30 @@ $$
 Populationen bliver her betegnet som X.
 
 ## Fordelinger
-Der findes en lang række sandynlighedsfordelinger og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
+Der findes en lang række sandsynlighedsfordelinger, og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
 
 ### Standardnormalfordeling
-
-- Billede: 
 En standardnormalfordeling er kendetegnet ved at $\mu=0$, og at $\sigma = 1$. Desuden har en standardnormalfordeling et klokkeformet udseende. Nedenstående er der plottet en standardnormalfordeling:
 ```{r}
 qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4))
 ```
-Der er en høj sandsynlighed for at få et værdi tæt på 0. Jo længere man afviger fra $\mu$, jo mindre er densiteten,som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sansynligheden for at få 0. 
-En af anveldeserne for en standarnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
+Der er en høj sandsynlighed for, at få en værdi tæt på 0. Jo længere man afviger fra $\mu$, jo mindre er densiteten, som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sandsynligheden for at få 0. 
+En af anveldeserne for en standardnormalfordeling er, at den kan benyttes til en Z-test, som benyttes senere i projektet.
 
 
-#### Z-fordeling
-
+#### Z-fordeling  
 For at finde z-scoren, skal $\mu,\sigma$ være kendt. 
-Z-scoren kan udregnes for normalfordelinger ved formlen:
+$z$-scoren kan udregnes for normalfordelinger ved formlen:
 $$
 \begin{aligned}
 z = \frac{y-\mu}\sigma
 \end{aligned}
 $$
-hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
-Desuden, kan det udledes, at hvis $z>0$ er y-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er y-værdien på venstre side af $\mu$.
+hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$.
+Desuden, kan det udledes, at hvis $z>0$ er $y$-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er $y$-værdien på venstre side af $\mu$.
 
-#### T-fordeling
+
+#### T-fordeling  
 En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en stikprøve vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist("t", df = 5, p = 1, return = "plot")
@@ -420,7 +418,7 @@ Hvor:
 - $e$ er eulers tal.
 - $\lambda$ er begivenhedsraten, altså det forventede antal gange begivenheden vil ske.
 
-Hvis $lambda$ er 5, og der ndersøges hvad chancen for at begivenheden sker 7 gange, så vil $x=7$. Dette eksempel kan ses forneden:
+Hvis $lambda$ er 5, og der undersøges hvad chancen for at begivenheden sker 7 gange, så vil $x=7$. Dette eksempel kan ses forneden:
 ```{r}
 (exp(1)^-5*5^7)/factorial(7)
 ```
@@ -432,7 +430,7 @@ plot(sucess, dpois(0:20, 5), type = "h", xlab = "", ylab = "")
 ```
 
 ### Uniform fordeling
-En uniform fordeling, er hvor dataet bliver indelt i lige store intervaller, og alle intervaller, har lige antal observationer. Det er vigtigt at notere at hvis antallet af observationer er lavt, vil fordelingen ikke tilsyneladende være uniform. Dette vises ved at lave to uniformfordelinger på det samme seed,hvor den eneste forskel er antallet af observationer. Dette kan ses i de nedenstående grafer. 
+En uniform fordeling, er hvor dataet bliver inddelt i lige store intervaller, og alle intervaller, har lige antal observationer. Det er vigtigt at notere at hvis antallet af observationer er lavt, vil fordelingen ikke tilsyneladende være uniform. Dette vises ved at lave to uniformfordelinger på det samme seed, hvor den eneste forskel er antallet af observationer. Dette kan ses i de nedenstående grafer. 
 
 ```{r, fig.height=7}
 
@@ -449,7 +447,7 @@ grid.arrange(p1, p2, nrow=2)
 
 #Population distribution 
 
-Data are generated from a continuous gamma distribution with parameters $ k = 9$, $\theta = 0.5$, for simulating a left-skewed population distribution. Gamma distribution describe continuous non-negative random variables. By transforming to R's  $\alpha-\beta $ parameterization, $\alpha = 9$, $ \beta = 2$.
+Data are generated from a continuous gamma distribution with parameters $k = 9$, $\theta = 0.5$, for simulating a left-skewed population distribution. Gamma distribution describe continuous non-negative random variables. By transforming to R's  $\alpha-\beta$ parameterization, $\alpha = 9$, $\beta = 2$.
 
 
 ```{r simulate population}
@@ -627,8 +625,8 @@ grid.arrange(p1, p2, ncol=2)
 ```
 I figur P1 er $p$-scoren $2\cdot0.16=0.32$, mens at figur P2 har en $p$-score på $2\cdot0.007=0.014$. Da signifikansniveauet $\alpha=0.05$, betyder det altså for P1 at $p\ge\alpha$. Dette betyder at der ikke er nok evidens til at forkaste $H_0$. For P2 betyder det at $p\le\alpha$. Dette betyder at der er nok evidens til at forkaste $H_0$, og at $H_a$ er mere sandsynlig.
 
-    
-- Proportion/ mean
+
+
 Fremgangsmåden til hypotesetest ved proportioner, er i stort omfang lig med hypotesetesten for kvantitative variabler. En af forskellene er at en antagelse for proportioner er at man forventer mindst 10 observationer. Hypotesen er for test er bygget op på fuldstændig samme måde, dog er forskellen denotationen, hvor der heri benyttes $\pi$ i stedet for $\mu$. Dvs. at Nulhypotesen ser således ud.
 $$
 \begin{aligned}
@@ -638,14 +636,29 @@ H_a : \pi \not= pi_0
 \end{aligned}
 $$
 Hvor $\pi_0$ er den forventede proportion.
-Desuden benyttes der nu z-score, hvor z-værdien får ud fra følgende ligning
+Desuden benyttes der nu z-score, hvor z-værdien får ud fra følgende ligning:
 $$
 \begin{aligned}
 z = \frac{\hat{\pi}-\pi_0}{sf_0}, \ \ \ \ sf_0 = \sqrt{\pi_0\frac{(1-\pi_0)}n}
 \end{aligned}
 $$
 
-Det kan ses at z-testen indeholder en $\hat\pi$, som 
+Det kan ses at z-testen indeholder en $\hat\pi$, som svarer til proportionen for stikprøven. Standardfejlen udregnes på en anden måde end ved $t$-test.
+
+Man kan finde $z_{crit}$ ved hjælp af en standardnormalfordeling, hvor man igen skal have et signifikansniveau. I nedenstående graf er $95\%$ brugt:
+
+```{r}
+qdist("norm", mean = 0, sd = 1, p = c(0.025, 0.975))
+```
+Ergo er $z_{crit}$ altså $\pm 1.96$. Nu kan $z$-scoren benyttes til at finde $p$-værdien. Nedenstående er der to eksempler, hvor $z$-scoren er henholdsvis 1 og 3:
+```{r, fig.height = 3, fig.width = 8}
+p1 <- pdist("norm", mean = 0, sd = 1, q = 1, return = "plot", title = "P1")
+p2 <- pdist("norm", mean = 0, sd = 1, q = 2.5, return = "plot", title = "P2")
+grid.arrange(p1, p2, ncol=2)
+```
+I figur P1 er $p$-scoren $2\cdot0.159=0.318$, mens at figur P2 har en $p$-score på $2\cdot0.006=0.012$. Da signifikansniveauet $\alpha=0.05$, betyder det altså for P1 at $p\ge\alpha$. Dette betyder at der ikke er nok evidens til at forkaste $H_0$. For P2 betyder det at $p\le\alpha$. Dette betyder at der er nok evidens til at forkaste $H_0$, og at $H_a$ er mere sandsynlig.
+
+
 # Metoder
 
 
@@ -779,4 +792,4 @@ $$
 \frac{R^2}{(1-R^2)}
 \end{aligned}
 $$
-Det vil sige hvor højere $R^2$ er, des større er ratioen $\frac{R^2}{1-R^2}$, og des større er F test værdien. Ved en høj F test værdi hvor større evidens er der for at forkaste $H_0$.
+Det vil sige hvor højere $R^2$ er, desto større er ratioen $\frac{R^2}{1-R^2}$, og desto større er F test værdien. Ved en høj F test værdi hvor større evidens er der for at forkaste $H_0$.
