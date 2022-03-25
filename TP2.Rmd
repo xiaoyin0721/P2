@@ -627,6 +627,7 @@ I figur P1 er $p$-scoren $2\cdot0.16=0.32$, mens at figur P2 har en $p$-score p�
 
 Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor man har ret og to, hvor man tager fejl. De to fejltyper hedder type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand. Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså "probability" er under 0,05 forkastes hypotesen. Det har den virkning at der i 5 procent af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
+![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
 
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist(mean = 0, sd = 1, p = 1, return = "plot")
@@ -707,18 +708,18 @@ $$
 ## F-test
 En F-test er en statistisk test som har en F fordelingen under nul hypotese. Den er mest ofte brugt når man sammenligner statistiske modeller i et datasæt til at identificere den model som passer bedst til populationen fra dataen. Det er en test som hæder statistikeren, Ronald A. Fisher, som opdagede F-fordelingen i 1922. F-fordelingen kan kun tage ikke negative værdier og den er noget skævt til højre, ligesom en chi i anden-fordelingen. Den nedenstående figur illustrerer dette. (CAP 11) I forhold til T-test som har til formål at sammenligne middelværdierne i to populationer, så vil F-test sammenligne spredninger (eller varianser. Principperne for denne test er identiske med principperne for t-testene. Blot beregnes tesetstørrelsen på en anden måde, og der skal bruges F-fordelingen til at beregnes testsandsynligheden.
 
-(Billed) TOBO INDSÆT MIT BILLED
+![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/F-model.png){width=50%}
 
-Denne figur viser F fordelingen og P-værdien for F test. Hvor højere F værdi giver et større evidens for at kunne forkaste $H_0$.
+Denne figur viser $F$ fordelingen og $P$-værdien for $F$ test. Hvor højere $F$-værdier betyder at der er større evidens for at kunne forkaste $H_0$.
 
-For at udregne en f-score skal man opstille en f-brøk. En f-brøk udregnes på følgende måde:
+For at udregne en f-score skal man opstille en $F$-brøk. En $F$-brøk udregnes på følgende måde:
 
 $$
 \begin{aligned}
 F = \frac{MSR}{MSE}
 \end{aligned}
 $$
-MSR og MSE er varianser fra variationerne SSR og SSE. Disse varianser står for MSR = Mean Square Regression og MSE = Mean Square Error. De bliver så udregnet på følgende måde:
+$MSR$ og $MSE$ er varianser fra variationerne $SSR$ og $SSE$. Disse varianser står for $MSR$ betyder "Mean Square Regression" og $MSE$ betyder "Mean Square Error". De bliver så udregnet på følgende måde:
 
 $$
 \begin{aligned}
