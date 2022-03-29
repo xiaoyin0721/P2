@@ -453,53 +453,6 @@ grid.arrange(p1, p2, nrow=2)
 ```
 
 
-#Population distribution 
-https://www.statisticshowto.com/probability-and-statistics/statistics-definitions/uniform-distribution/  
-Data are generated from a continuous gamma distribution with parameters $k = 9$, $\theta = 0.5$, for simulating a left-skewed population distribution. Gamma distribution describe continuous non-negative random variables. By transforming to R's  $\alpha-\beta$ parameterization, $\alpha = 9$, $\beta = 2$.
-
-
-```{r simulate population}
-simulate_population <- function(){
-  set.seed(199)
-  pop <- rgamma(10^5, shape=9, rate=2) 
-  hist(pop, breaks = 500, main="Plot of a left-skewed population") 
-}
-
-simulate_population()
-```
-
-
-## Sampling Distribution, CLT
-
-According to Central Limit Theorem, the sample mean $\bar{y}$ is normally distributed $\bar{y}\approx norm(\mu, \frac{\sigma}{\sqrt{n}})$. It is stated that population mean $\mu$ lies in the interval $[\bar{y} - 2\frac{\sigma}{\sqrt{n}}, \bar{y} + 2\frac{\sigma}{\sqrt{n}}]$  at a significance level at $\alpha = 0.05$.
-
-
-Below it is shown that taking sufficiently large random samples from a left-skewed population, the distribution of the sample means is observed to be approximately normally distributed, provided that the sample size is sufficiently large ($n>=30$).
-
-
-
-```{r}
-
-generate_sampling_distribution <- function(sample_size){
-  set.seed(199)
-  n = 10^5
-  sample_means = rep(0, n)
-  for (i in 1:n){
-   sample_means[i] = mean(rgamma(sample_size, shape=9, rate=2))
-  }
-  hist(sample_means, main="Central Limit Theorem", xlab="Sampling distribution with a sample size of 30")
-  
-  
-}
-
-generate_sampling_distribution(30)
-
-```
-
-
-
-
-
 
 ## Statistisk inferens
 Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus at lave forudsigelser om et element på baggrund af data og tendenser dertil.
