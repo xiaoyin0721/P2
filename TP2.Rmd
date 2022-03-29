@@ -197,8 +197,8 @@ The result is most data points fall along a straight line, which means data poin
 ```{r}
 
 qq_normality_check <- function(){
-  uni_rand_num1 <- linear_congruence(i=10000, X_0 = 145)
-  uni_rand_num2 <- linear_congruence(i=10000, X_0 = 7346)
+  uni_rand_num1 <- linear_congruence(i=1000, X_0 = 145)
+  uni_rand_num2 <- linear_congruence(i=1000, X_0 = 7346)
   R <- sqrt(-2*log(uni_rand_num1))
   theta <- 2*pi*uni_rand_num2
   X <- R*cos(theta)
@@ -321,6 +321,7 @@ Box_muller_transform()
 # Teori
 
 ## Middelværdi og standardafvigelse
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 3 I BOGEN  
 I en population findes der to værdier, $\mu$ og $\sigma$, som er interessante at kigge nærmere på. Gennemsnittet af en population kaldes $\mu$ (middelværdi), mens at populationens standardafvigelse kaldes $\sigma$.
 
 Populations standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser, hvordan variansen for en stikprøve kan udregnes:
@@ -331,9 +332,9 @@ $$
 var(x)=s^2 = \sum_{i=1}^{n} \frac{(x_i-\overline{x})^2}{n}
 \end{aligned}
 $$
-Herunder er der:
-- $x_i$, som svarer til den enkelte observation i stikprøven.
-- $\overline{x}$, som svarer til gennemsnittet af stikprøven.
+Herunder er der:  
+- $x_i$, som svarer til den enkelte observation i stikprøven.  
+- $\overline{x}$, som svarer til gennemsnittet af stikprøven.  
 
 Sammenhængen mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning.:
 $$
@@ -347,8 +348,8 @@ Populationen bliver her betegnet som X.
 Der findes en lang række sandsynlighedsfordelinger, og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
 
 ### Standardnormalfordeling
+Standardnormalfordeling: https://mse.redwoods.edu/darnold/math15/UsingRInStatistics/StandardNormal.php
 
-- Billede: 
 En standardnormalfordeling er kendetegnet ved at $\mu=0$, og at $\sigma = 1$. Desuden har en standardnormalfordeling et klokkeformet udseende. Nedenstående er der plottet en standardnormalfordeling:
 ```{r}
 qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4))
@@ -356,21 +357,23 @@ qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4))
 Der er en høj sandsynlighed for, at få en værdi tæt på 0. Jo længere man afviger fra $\mu$, jo mindre er densiteten, som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sandsynligheden for at få 0. 
 En af anveldeserne for en standardnormalfordeling er, at den kan benyttes til en Z-test, som benyttes senere i projektet.
 
-
-#### Z-fordeling
+#### Z-fordeling  
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 4 I BOGEN 
 
 For at finde z-scoren, skal $\mu,\sigma$ være kendt. 
-Z-scoren kan udregnes for normalfordelinger ved formlen:
+$z$-scoren kan udregnes for normalfordelinger ved formlen:
 $$
 \begin{aligned}
 z = \frac{y-\mu}\sigma
 \end{aligned}
 $$
-hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$
-Desuden, kan det udledes, at hvis $z>0$ er y-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er y-værdien på venstre side af $\mu$.
+hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$.
+Desuden, kan det udledes, at hvis $z>0$ er $y$-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er $y$-værdien på venstre side af $\mu$.
 
-#### T-fordeling
-En T-fordeling laves ud fra en standardnormalfordeling, og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en stikprøve vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
+#### T-fordeling  
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
+
+En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en stikprøve vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist("t", df = 5, p = 1, return = "plot")
 p2 <- qdist("t", df = 100, p = 1, return = "plot")
@@ -380,6 +383,7 @@ grid.arrange(p1, p2, ncol=2)
 
 
 ### Binomialfordeling
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
 Binomialfordelingen benyttes i sammenhænge med kvalitative data. Specifikt er der kun to mulige udfald. Hvis der er lige stor chance for hvert af udfaldene, altså $\pi = 0.50$, og en stor stikprøve, vil en binomialfordeling vise sig at være symmetrisk.
 Nedenstående er et eksempel på 4 binomialfordelinger.
 
@@ -410,6 +414,7 @@ grid.arrange(p1, p2, p3, p4,ncol=2,nrow = 2)
 I ovenstående figur er der altså fire grafer, som er lavet ud fra binomialfordelingen. Der er en kontrolgraf, hvor 100 observationer hver bliver testet 20 gange med en $50\%$ chance for success. Yderligere er der T1, T2 og T3, hvor der ved hver graf er ændret en af parameterene fra kontrol grafen. T1 har flere observationer, som gør at grafen får et udseende af en normalfordeling, her kan det aflæses at $\overline{x} = 10$. Ved T2 bliver hver observation testet 30 gange i stedet for 20 gange, og dette resulterer i at middelværdien (hvis antallet af observationer er stort nok) i stedet vil være $\overline{x} = 15$. I T3 er sandsynligheden for success ændret fra $50\%$ til $30\%$. Dette ændrer igen udseendet på grafen, hvor middelværdien bliver lavere, da hver test har en mindre sandsynlighed for at være en success. 
 
 ### Poisson Fordeling
+https://www.statology.org/plot-poisson-distribution-r/  
 En poisson fordeling beskriver chancen for at en begivenhed sker et givet antal gange over et kendt tidsinterval. Dette kunne være hvor mange gange der har været stormvejr indenfor det sidste år. Fordelingen laves ud fra følgende formel:
 $$
 \begin{aligned}
@@ -432,6 +437,7 @@ plot(sucess, dpois(0:20, 5), type = "h", xlab = "", ylab = "")
 ```
 
 ### Uniform fordeling
+
 En uniform fordeling, er hvor dataet bliver inddelt i lige store intervaller, og alle intervaller, har lige antal observationer. Det er vigtigt at notere at hvis antallet af observationer er lavt, vil fordelingen ikke tilsyneladende være uniform. Dette vises ved at lave to uniformfordelinger på det samme seed, hvor den eneste forskel er antallet af observationer. Dette kan ses i de nedenstående grafer. 
 
 ```{r, fig.height=7}
@@ -447,50 +453,13 @@ grid.arrange(p1, p2, nrow=2)
 ```
 
 
-#Population distribution 
-
-Data are generated from a continuous gamma distribution with parameters $k = 9$, $\theta = 0.5$, for simulating a left-skewed population distribution. Gamma distribution describe continuous non-negative random variables. By transforming to R's  $\alpha-\beta$ parameterization, $\alpha = 9$, $\beta = 2$.
-
-
-```{r simulate population}
-simulate_population <- function(){
-  set.seed(199)
-  pop <- rgamma(10^5, shape=9, rate=2) 
-  hist(pop, breaks = 500, main="Plot of a left-skewed population") 
-}
-
-simulate_population()
-```
-
-
-
-
-
-```{r}
-
-
-
-```
-
-
-
-
-
-
-
-## Sampling Distribution, CLT
-
-
-
-
-
-
 
 ## Statistisk inferens
 Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus at lave forudsigelser om et element på baggrund af data og tendenser dertil.
 I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså et gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er meget meget lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat, eller et konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
 
 ### Konfidensinterval
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
 
 Når der indenfor statistik estimeres på en populations parameter ud fra en stikprøve, vil resultatet aldrig være perfekt. Dette skyldes at der er en fejlmargin, som der skal tages højde fra. En måde hvorpå man kan tage højde for denne fejlmargin er et konfidensinterval.
 
@@ -565,6 +534,7 @@ $$
 $$
 
 ### Hypoteser
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
 Hver signifikanstest har to hypoteser. En hypotese er et udsagn omkring værdien af population parameter. En hypotese forudsiger, hvorvidt en parameter påvirker en numerisk værdi eller falder indenfor en specifik værdimængde. Det gør det så muligt at beregne, om en hypotese er sand eller falsk.  
 
 For at sørge for, at man anvender en pålidelig analysemetode på en stikprøve, så opsættes en hypotese omkring sammenhængen af ens data, hvorefter der opstilles en hypotesetest. Det er en metode til at teste en hypotese, (Alternativ hypotese - $H_a$) hvor den sættes op mod en konkurrerende hypotese, nulhypotesen ($H_0$). En stikprøve tages ud af en population, hvor $H_0$ testes imod $H_a$ ved brug af et signifikansniveau ($\alpha$) og en $p$-værdi.
@@ -589,6 +559,7 @@ For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en ræk
 
 
 ### Hypotesetest
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
 For hypotesetester for kvantitative variabler, er der et par nødvendige antagelser. Først og fremmest antages det at populationen er normalfordelt, samt at stikprøven som der undersøges ud fra er taget ud fra populationen tilfældigt.   
   
 Det  næste der skal gøres, er at opsætte nogle hypoteser, altså en $H_0$ og en $H_a$:
@@ -655,7 +626,9 @@ I figur P1 er $p$-scoren $2\cdot0.159=0.318$, mens at figur P2 har en $p$-score 
 # Metoder
 
 
+
 ## Fejl i hypotesetest
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
 
 Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor konklusionen er korrekt og to, hvor  konklusionen er forkert. De to fejltyper kaldes type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand. Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
@@ -669,7 +642,7 @@ grid.arrange(p1, p2, ncol=2)
 ```
 
 ## Lineær regression
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 9 I BOGEN
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 9 I BOGEN  
 Lineær regression er en model, hvori det ønskes at forudsige $y$ (en responsvariabel), ud fra $x$ (en forklarende variabel). Ud fra denne undersøgelse vil der opnås en graf, med en regressionslinje. En regressionslinje er en ret linje som minimerer den vertikale afstand mellem alle punkterne og linjen. Der vil desuden også være en ligning for denne regressionslinje, se nedenstående:
 $$
 \begin{aligned}
@@ -738,7 +711,8 @@ E(y) = \alpha + \beta_1 \cdot x_1 + \beta_2 \cdot x_2 + ... + \beta_n \cdot x_n
 $$
 
 ## F-test
-En F-test er en statistisk test som har en F fordelingen under nul hypotese. Den er mest ofte brugt når man sammenligner statistiske modeller i et datasæt til at identificere den model som passer bedst til populationen fra dataen. Det er en test som hæder statistikeren, Ronald A. Fisher, som opdagede F-fordelingen i 1922. F-fordelingen kan kun tage ikke negative værdier og den er noget skævt til højre, ligesom en chi i anden-fordelingen. Den nedenstående figur illustrerer dette. (CAP 11) I forhold til T-test som har til formål at sammenligne middelværdierne i to populationer, så vil F-test sammenligne spredninger (eller varianser. Principperne for denne test er identiske med principperne for t-testene. Blot beregnes tesetstørrelsen på en anden måde, og der skal bruges F-fordelingen til at beregnes testsandsynligheden.
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 11 I BOGEN  
+En F-test er en statistisk test som har en F fordelingen under nul hypotese. Den er mest ofte brugt når man sammenligner statistiske modeller i et datasæt til at identificere den model som passer bedst til populationen fra dataen. Det er en test som hæder statistikeren, Ronald A. Fisher, som opdagede F-fordelingen i 1922. F-fordelingen kan kun tage ikke negative værdier og den er noget skævt til højre, ligesom en chi i anden-fordelingen. Den nedenstående figur illustrerer dette. I forhold til T-test som har til formål at sammenligne middelværdierne i to populationer, så vil F-test sammenligne spredninger (eller varianser. Principperne for denne test er identiske med principperne for t-testene. Blot beregnes tesetstørrelsen på en anden måde, og der skal bruges F-fordelingen til at beregnes testsandsynligheden.
 
 ![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/F-model.png){width=50%}
 
