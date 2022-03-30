@@ -320,6 +320,12 @@ Box_muller_transform()
 
 # Teori
 
+## Population og stikprøve
+Kapitel 1: ASta bog
+Population:
+En population kan betragtes som alle ting eller folk, som eksempelvist har en eller flere vilkår, der gælder. For eksempel kan det være den voksne del af den danske befolkningen, der spiller fodbold. Ud fra en population kan der tages en stikprøve,altså en subgruppe af populationen, hvor der regelmæssigt benyttes "Simple Random Sampling", hvor alle observationerne, har lige sandsynlighed for at blive trukke ud i stikprøven. 
+
+
 ## Middelværdi og standardafvigelse
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 3 I BOGEN  
 I en population findes der to værdier, $\mu$ og $\sigma$, som er interessante at kigge nærmere på. Gennemsnittet af en population kaldes $\mu$ (middelværdi), mens at populationens standardafvigelse kaldes $\sigma$.
