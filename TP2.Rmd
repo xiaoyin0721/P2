@@ -462,7 +462,7 @@ grid.arrange(p1, p2, nrow=2)
 
 ## Statistisk inferens
 Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus at lave forudsigelser om et element på baggrund af data og tendenser dertil.
-I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså et gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er meget meget lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat, eller et konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
+I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså et gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er en uendeligt lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat, eller et konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
 
 ### Konfidensinterval
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
@@ -541,25 +541,28 @@ $$
 
 ### Hypoteser
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
-Hver signifikanstest har to hypoteser. En hypotese er et udsagn omkring værdien af population parameter. En hypotese forudsiger, hvorvidt en parameter påvirker en numerisk værdi eller falder indenfor en specifik værdimængde. Det gør det så muligt at beregne, om en hypotese er sand eller falsk.  
+Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Der findes så to værdier $H_0$ og $H_a$, det er nulhypotesen og den alternative hypotese. Nulhypotese opstilles hvor der stilles en hypotese op, hvor man antager en værdi som ingen effekt har på hypotesetesten.
 
-For at sørge for, at man anvender en pålidelig analysemetode på en stikprøve, så opsættes en hypotese omkring sammenhængen af ens data, hvorefter der opstilles en hypotesetest. Det er en metode til at teste en hypotese, (Alternativ hypotese - $H_a$) hvor den sættes op mod en konkurrerende hypotese, nulhypotesen ($H_0$). En stikprøve tages ud af en population, hvor $H_0$ testes imod $H_a$ ved brug af et signifikansniveau ($\alpha$) og en $p$-værdi.
-
-Et klassisk eksempel på dette kunne være at opstille:
+Et eksempel på en nulhypotese kan være:
 $$
 \begin{aligned}
-H_0 : \mu = \mu_0
-\\
-H_a : \mu \not= \mu_0
+H_0: \mu = 0
 \end{aligned}
 $$
-Hvor $\mu$ er den ene stikprøves populations middelværdi og $\mu_0$ er er den andens stikprøves populations middelværdi.
 
-For at tjekke hvilken af hypoteserne er sand eller falsk, vælges et signifikansniveau som ofte er $\alpha$ = 5% eller $\alpha$ = 1%. Ud fra dette signifikansniveau bliver der udregnet en kritisk værdi på en sandsynlighedsfordeling.
+Dette er en antagelse at $\mu$ skal være ligmed 0, som betyder den ingen effekt har på hypotesetesten.
 
-$p$ > $\alpha$ så forkastes $H_0$ ikke.
-\
-$p$ $\le$ $\alpha$ så forkastes $H_0$, og $H_1$ foretrækkes. 
+Et eksempel på en hypotesetest kan være:
+$$
+\begin{aligned}
+H_0 : \mu = 0
+\\
+H_a : \mu \not= 0
+\end{aligned}
+$$
+Dette er en hypotesetest, hvor der tjekkes om $\mu$ er ligmed 0, hvis ikke så forkastes $H_0$ og $H_a$ accepteres. Dette vil så betyde $\mu$ har en effekt på hypotesetesten. 
+
+For at tjekke hvilken af hypoteserne accepteres, vælges et signifikansniveau som ofte er $\alpha$ = 5% eller $\alpha$ = 1%. Ud fra dette signifikansniveau bliver der udregnet en kritisk værdi på en sandsynlighedsfordeling.Der tages så en stikprøve ud af en population, hvor $H_0$ testes imod $H_a$ ved brug af et signifikansniveauet ($\alpha$) og en $p$-værdi. Hvis $p$ > $\alpha$ så forkastes $H_0$ ikke. Hvis $p$ $\le$ $\alpha$ så forkastes $H_0$, og $H_a$ accepteres. 
 
 For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en række hypotesetest, som vil være relevante i forskellige sammenhænge.
 
@@ -582,18 +585,18 @@ $$
 t = \frac{\overline{y}-\mu_0}{sf}, \ \ \ sf=\frac{s}{\sqrt{n}} 
 \end{aligned}
 $$
-Det kan ses at $t$-scoren afhænger af $\overline{y}$, og den estimerede $\mu_0$ værdi. Yderligere afhænger $t$-scoren også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer. Nu kan $t_{crit}$ udregnes ved hjælp af en T-fordeling med $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $95\%$. 
+Det kan ses at $t$-værdien afhænger af $\overline{y}$, og den estimerede $\mu_0$ værdi. Yderligere afhænger $t$-scoren også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer. Nu kan $t_{crit}$ udregnes ved hjælp af en T-fordeling med $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
 ```{r}
 qdist("t", p = c(0.025, 0.975), df = 99)
 ```
 Nu kan $t_{crit}$ aflæses til at være $\pm 1.984$. 
-Hernæst skal den udregnede $t$-score benyttes i en T-fordeling med $n-1$ frihedsgrader. Dette vil give $p$-scoren. Nedenstående er der 2 eksempler hvor $t$-scoren henholdsvis er 1 og 2.5:
+Hernæst skal den udregnede $t$-score benyttes i en T-fordeling med $n-1$ frihedsgrader. Dette vil give $p$-scoren. Nedenstående er der 2 eksempler hvor $t$-værdien henholdsvis er 1 og 2.5:
 ```{r, fig.height = 3, fig.width = 8}
 p1 <- pdist("t", q = 1, df = 99, return = "plot", title = "P1")
 p2 <- pdist("t", q = 2.5, df = 99, return = "plot", title = "P2")
 grid.arrange(p1, p2, ncol=2)
 ```
-I figur P1 er $p$-scoren $2\cdot0.16=0.32$, mens at figur P2 har en $p$-score på $2\cdot0.007=0.014$. Da signifikansniveauet $\alpha=0.05$, betyder det altså for P1 at $p\ge\alpha$. Dette betyder at der ikke er nok evidens til at forkaste $H_0$. For P2 betyder det at $p\le\alpha$. Dette betyder at der er nok evidens til at forkaste $H_0$, og at $H_a$ er mere sandsynlig.
+I figur P1 er $p$-værdien $2\cdot0.16=0.32$, mens at figur P2 har en $p$-værdi på $2\cdot0.007=0.014$. Da signifikansniveauet $\alpha=0.05$, betyder det altså for P1 at $p\ge\alpha$. Dette betyder at der ikke er nok evidens til at forkaste $H_0$. For P2 betyder det at $p\le\alpha$. Dette betyder at der er nok evidens til at forkaste $H_0$, og at $H_a$ er mere sandsynlig.
 
 
 
@@ -632,10 +635,11 @@ I figur P1 er $p$-scoren $2\cdot0.159=0.318$, mens at figur P2 har en $p$-score 
 # Metoder
 
 
-## Fejl i signifikanstest
+
+## Fejl i hypotesetest
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
 
-Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor man har ret og to, hvor man tager fejl. De to fejltyper hedder type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand. Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså "probability" er under 0,05 forkastes hypotesen. Det har den virkning at der i 5 procent af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
+Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor konklusionen er korrekt og to, hvor  konklusionen er forkert. De to fejltyper kaldes type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand. Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
 ![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
 
