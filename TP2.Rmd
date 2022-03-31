@@ -541,18 +541,28 @@ $$
 
 ### Hypoteser
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
-Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Der findes så to værdier $H_0$ og $H_a$, det er nulhypotesen og den alternative hypotese. Nulhypotese opstilles hvor der stilles en hypotese op, hvor man antager en værdi som ingen effekt har på hypotesetesten.
+Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Der findes så to værdier $H_0$ og $H_a$, det er nulhypotesen og den alternative hypotese. Nulhypotese opstilles hvor der opsættes en hypotese, hvor der antages en værdi som ingen effekt har på hypotesetesten.
 
-Et eksempel på en nulhypotese kan være:
+Et klassisk eksempel på en nulhypotese kan være:
 $$
 \begin{aligned}
-H_0: \mu = 0
+H_0: \mu = \mu_0
 \end{aligned}
 $$
+Dette er en antagelse at hvor der tjekkes om $\mu$ er ligmed $\mu_0$, som ofte vælges at sættes til 0, siden at dette ofte svarer til at det ingen effekt har, hvis ikke så forkastes $H_0$. Der opstilles også en konkurrence hypotese som er $H_a$, den alternativ hypotese. 
 
-Dette er en antagelse at $\mu$ skal være ligmed 0, som betyder den ingen effekt har på hypotesetesten.
+Disse to hypoteser vil opstilles på følgende måde:
+$$
+\begin{aligned}
+H_0 : \mu = \mu_0
+\\
+H_a : \mu \not= \mu_0
+\end{aligned}
+$$
+Her hvor der tjekkes der igen om $\mu$ er ligmed $\mu_0$, hvis ikke så forkastes $H_0$ og $H_a$ accepteres. Dette vil så betyde $\mu$ har en effekt på populations parameter. Hvis en population havde $\mu$ = 10 og $\sigma$ = 2 og en stikprøve har $\overline{y}$ = 12, $s$ = 2 og n = 120, så ville denne stikprøve være signifikant. 
 
-Et eksempel på en hypotesetest kan være:
+Et eksempel på en hypotesetest:
+
 $$
 \begin{aligned}
 H_0 : \mu = 0
@@ -560,18 +570,15 @@ H_0 : \mu = 0
 H_a : \mu \not= 0
 \end{aligned}
 $$
-Dette er en hypotesetest, hvor der tjekkes om $\mu$ er ligmed 0, hvis ikke så forkastes $H_0$ og $H_a$ accepteres. Dette vil så betyde $\mu$ har en effekt på hypotesetesten. 
 
-For at tjekke hvilken af hypoteserne accepteres, vælges et signifikansniveau som ofte er $\alpha$ = 5% eller $\alpha$ = 1%. Ud fra dette signifikansniveau bliver der udregnet en kritisk værdi på en sandsynlighedsfordeling.Der tages så en stikprøve ud af en population, hvor $H_0$ testes imod $H_a$ ved brug af et signifikansniveauet ($\alpha$) og en $p$-værdi. Hvis $p$ > $\alpha$ så forkastes $H_0$ ikke. Hvis $p$ $\le$ $\alpha$ så forkastes $H_0$, og $H_a$ accepteres. 
-
-For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en række hypotesetest, som vil være relevante i forskellige sammenhænge.
+Der findes værdier som kan benyttes til at vurdere hvorvidt man beholder $H_0$ eller forkaster den. Disse vil forklares og arbejdes videre med i hypotesetest afsnittet. 
 
 
 ### Hypotesetest
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
-For hypotesetester for kvantitative variabler, er der et par nødvendige antagelser. Først og fremmest antages det at populationen er normalfordelt, samt at stikprøven som der undersøges ud fra er taget ud fra populationen tilfældigt.   
-  
-Det  næste der skal gøres, er at opsætte nogle hypoteser, altså en $H_0$ og en $H_a$:
+For en hypotesetest for kvantitative variabler, er der et par nødvendige antagelser. Først og fremmest antages det at populationen er normalfordelt, samt at stikprøven som der undersøges ud fra en population tilfældigt.   
+
+For eksempelvis kan der benyttes de tidligere hypoteser som blev sat op i forrige afsnit:
 $$
 \begin{aligned}
 H_0: \mu = \mu_0
@@ -579,26 +586,26 @@ H_0: \mu = \mu_0
 H_a: \mu  \ne \mu_0
 \end{aligned}
 $$
-Det næste der skal gøres, er at udregne en $t$-score, som kan gøres ved hjælp af følgende formel:
+Det næste der skal gøres, er at udregne en test størrelse, som kan gøres ved hjælp af følgende formel:
 $$
 \begin{aligned}
-t = \frac{\overline{y}-\mu_0}{sf}, \ \ \ sf=\frac{s}{\sqrt{n}} 
+t = \frac{\overline{y}-\mu_0}{sf}, \ \ \ sf(\overline{y})=\frac{s}{\sqrt{n}} 
 \end{aligned}
 $$
-Det kan ses at $t$-værdien afhænger af $\overline{y}$, og den estimerede $\mu_0$ værdi. Yderligere afhænger $t$-scoren også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer. Nu kan $t_{crit}$ udregnes ved hjælp af en T-fordeling med $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
+
+Det kan ses at $t$-værdien afhænger af $\overline{y}$, og $\mu_0$ værdien. Yderligere afhænger $t$-scoren også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer. Nu kan $t_{crit}$ udregnes ved hjælp af en T-fordeling med $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
+Et eksempel på at finde en $t_{crit}$ kunne være således:
 ```{r}
 qdist("t", p = c(0.025, 0.975), df = 99)
 ```
-Nu kan $t_{crit}$ aflæses til at være $\pm 1.984$. 
-Hernæst skal den udregnede $t$-score benyttes i en T-fordeling med $n-1$ frihedsgrader. Dette vil give $p$-scoren. Nedenstående er der 2 eksempler hvor $t$-værdien henholdsvis er 1 og 2.5:
+$t_{crit}$ kan så aflæses til at være $\pm 1.984$. 
+Hernæst skal den udregnede $t$-score benyttes i en T-fordeling med $n-1$ frihedsgrader. Dette vil give $p$-værdi. Nedenstående er der 2 eksempler hvor $t$-værdien henholdsvis er 1 og 2.5:
 ```{r, fig.height = 3, fig.width = 8}
 p1 <- pdist("t", q = 1, df = 99, return = "plot", title = "P1")
 p2 <- pdist("t", q = 2.5, df = 99, return = "plot", title = "P2")
 grid.arrange(p1, p2, ncol=2)
 ```
 I figur P1 er $p$-værdien $2\cdot0.16=0.32$, mens at figur P2 har en $p$-værdi på $2\cdot0.007=0.014$. Da signifikansniveauet $\alpha=0.05$, betyder det altså for P1 at $p\ge\alpha$. Dette betyder at der ikke er nok evidens til at forkaste $H_0$. For P2 betyder det at $p\le\alpha$. Dette betyder at der er nok evidens til at forkaste $H_0$, og at $H_a$ er mere sandsynlig.
-
-
 
 Fremgangsmåden til hypotesetest ved proportioner, er i stort omfang lig med hypotesetesten for kvantitative variabler. En af forskellene er at en antagelse for proportioner er at man forventer mindst 10 observationer. Hypotesen er for test er bygget op på fuldstændig samme måde, dog er forskellen denotationen, hvor der heri benyttes $\pi$ i stedet for $\mu$. Dvs. at Nulhypotesen ser således ud.
 $$
@@ -769,3 +776,11 @@ $$
 \end{aligned}
 $$
 Det vil sige hvor højere $R^2$ er, desto større er ratioen $\frac{R^2}{1-R^2}$, og desto større er F test værdien. Ved en høj F test værdi hvor større evidens er der for at forkaste $H_0$.
+
+
+# Problemanalyse
+
+## Simulationer
+En simulation er en modellering af tilfældige begivenheder, hvor det simulerede udfald, skal estimere mulige udfald for virkeligheden. 
+ 
+
