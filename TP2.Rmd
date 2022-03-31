@@ -320,6 +320,12 @@ Box_muller_transform()
 
 # Teori
 
+## Population og stikprøve
+Kapitel 1: ASta bog
+Population:
+En population kan betragtes som alle ting eller folk, som eksempelvist har en eller flere vilkår, der gælder. For eksempel kan det være den voksne del af den danske befolkningen, der spiller fodbold. Ud fra en population kan der tages en stikprøve,altså en subgruppe af populationen, hvor der regelmæssigt benyttes "Simple Random Sampling", hvor alle observationerne, har lige sandsynlighed for at blive trukke ud i stikprøven. 
+
+
 ## Middelværdi og standardafvigelse
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 3 I BOGEN  
 I en population findes der to værdier, $\mu$ og $\sigma$, som er interessante at kigge nærmere på. Gennemsnittet af en population kaldes $\mu$ (middelværdi), mens at populationens standardafvigelse kaldes $\sigma$.
@@ -456,7 +462,7 @@ grid.arrange(p1, p2, nrow=2)
 
 ## Statistisk inferens
 Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus at lave forudsigelser om et element på baggrund af data og tendenser dertil.
-I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså et gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er meget meget lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat, eller et konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
+I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså et gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er en uendeligt lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat, eller et konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
 
 ### Konfidensinterval
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
@@ -763,3 +769,11 @@ $$
 \end{aligned}
 $$
 Det vil sige hvor højere $R^2$ er, desto større er ratioen $\frac{R^2}{1-R^2}$, og desto større er F test værdien. Ved en høj F test værdi hvor større evidens er der for at forkaste $H_0$.
+
+
+# Problemanalyse
+
+## Simulationer
+En simulation er en modellering af tilfældige begivenheder, hvor det simulerede udfald, skal estimere mulige udfald for virkeligheden. 
+ 
+
