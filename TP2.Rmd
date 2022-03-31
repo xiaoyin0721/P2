@@ -459,10 +459,10 @@ grid.arrange(p1, p2, nrow=2)
 ```
 
 
-
+SKREVET UD FRA SIDE 16 OG 115 
 ## Statistisk inferens
-Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus at lave forudsigelser om et element på baggrund af data og tendenser dertil.
-I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså et gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er en uendeligt lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat, eller et konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
+Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus, at lave forudsigelser om et element på baggrund af data og tendenser dertil.
+I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså det bedste gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er en uendeligt lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat (et kvalificeret gæt på et interval, hvori undersøgte parameter i en population ligger). Dette eksemplificeres ved den mest almindelige form for intervalestimat; konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
 
 ### Konfidensinterval
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
