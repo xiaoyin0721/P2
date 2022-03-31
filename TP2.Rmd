@@ -535,7 +535,7 @@ $$
 
 ### Hypoteser
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
-Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Der findes så to værdier $H_0$ og $H_a$, det er nulhypotesen og den alternative hypotese. Nulhypotese opstilles hvor der stilles en hypotese op, hvor man antager en værdi som ingen effekt har på hypotesetesten.
+Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Der findes så to værdier $H_0$ og $H_a$, det er nulhypotesen og den alternative hypotese. Nulhypotese opstilles hvor der opsættes en hypotese, hvor der antages en værdi som ingen effekt har på hypotesetesten.
 
 Et eksempel på en nulhypotese kan være:
 $$
@@ -563,9 +563,9 @@ For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en ræk
 
 ### Hypotesetest
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
-For hypotesetester for kvantitative variabler, er der et par nødvendige antagelser. Først og fremmest antages det at populationen er normalfordelt, samt at stikprøven som der undersøges ud fra er taget ud fra populationen tilfældigt.   
-  
-Det  næste der skal gøres, er at opsætte nogle hypoteser, altså en $H_0$ og en $H_a$:
+For en hypotesetest for kvantitative variabler, er der et par nødvendige antagelser. Først og fremmest antages det at populationen er normalfordelt, samt at stikprøven som der undersøges ud fra en population tilfældigt.   
+
+For eksempelvis kan der benyttes de tidligere hypoteser som blev sat op i forrige afsnit:
 $$
 \begin{aligned}
 H_0: \mu = \mu_0
@@ -573,18 +573,18 @@ H_0: \mu = \mu_0
 H_a: \mu  \ne \mu_0
 \end{aligned}
 $$
-Det næste der skal gøres, er at udregne en $t$-score, som kan gøres ved hjælp af følgende formel:
+Det næste der skal gøres, er at udregne en test størrelse, som kan gøres ved hjælp af følgende formel:
 $$
 \begin{aligned}
-t = \frac{\overline{y}-\mu_0}{sf}, \ \ \ sf=\frac{s}{\sqrt{n}} 
+t = \frac{\overline{y}-\mu_0}{sf}, \ \ \ sf(\overline{y})=\frac{s}{\sqrt{n}} 
 \end{aligned}
 $$
-Det kan ses at $t$-værdien afhænger af $\overline{y}$, og den estimerede $\mu_0$ værdi. Yderligere afhænger $t$-scoren også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer. Nu kan $t_{crit}$ udregnes ved hjælp af en T-fordeling med $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
+Det kan ses at $t$-værdien afhænger af $\overline{y}$, og $\mu_0$ værdien. Yderligere afhænger $t$-scoren også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer. Nu kan $t_{crit}$ udregnes ved hjælp af en T-fordeling med $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
 ```{r}
 qdist("t", p = c(0.025, 0.975), df = 99)
 ```
 Nu kan $t_{crit}$ aflæses til at være $\pm 1.984$. 
-Hernæst skal den udregnede $t$-score benyttes i en T-fordeling med $n-1$ frihedsgrader. Dette vil give $p$-scoren. Nedenstående er der 2 eksempler hvor $t$-værdien henholdsvis er 1 og 2.5:
+Hernæst skal den udregnede $t$-score benyttes i en T-fordeling med $n-1$ frihedsgrader. Dette vil give $p$-værdi. Nedenstående er der 2 eksempler hvor $t$-værdien henholdsvis er 1 og 2.5:
 ```{r, fig.height = 3, fig.width = 8}
 p1 <- pdist("t", q = 1, df = 99, return = "plot", title = "P1")
 p2 <- pdist("t", q = 2.5, df = 99, return = "plot", title = "P2")
