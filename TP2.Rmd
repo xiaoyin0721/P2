@@ -769,3 +769,11 @@ $$
 \end{aligned}
 $$
 Det vil sige hvor højere $R^2$ er, desto større er ratioen $\frac{R^2}{1-R^2}$, og desto større er F test værdien. Ved en høj F test værdi hvor større evidens er der for at forkaste $H_0$.
+
+
+# Problemanalyse
+
+## Simulationer
+En simulation er en modellering af tilfældige begivenheder, hvor det simulerede udfald, skal estimere mulige udfald for virkeligheden. 
+ 
+
