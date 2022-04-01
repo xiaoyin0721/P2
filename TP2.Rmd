@@ -452,7 +452,7 @@ $$
 
 ### Hypoteser
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
-Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Der findes så to værdier $H_0$ og $H_a$, det er nulhypotesen og den alternative hypotese. Nulhypotese opstilles hvor der opsættes en hypotese, hvor der antages en værdi som ingen effekt har på hypotesetesten.
+Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Specifikt findes der to hypoteser, som typisk bruges indenfor statistik, som er betegnet som $H_0$ og $H_a$, det er henholdsvis nulhypotesen og den alternative hypotese.
 
 Et klassisk eksempel på en nulhypotese kan være:
 $$
@@ -460,8 +460,13 @@ $$
 H_0: \mu = \mu_0
 \end{aligned}
 $$
-Dette er en antagelse at hvor der tjekkes om $\mu$ er ligmed $\mu_0$, som ofte vælges at sættes til 0, siden at dette ofte svarer til at det ingen effekt har, hvis ikke så forkastes $H_0$. Der opstilles også en konkurrence hypotese som er $H_a$, den alternativ hypotese. 
-
+Dette er en antagelse, hvor $\mu$ er lig med $\mu_0$. Typisk vil $\mu_0$ sættes lig med 0, da nulhypotesens formål er at antage at der ingen effekt er. Hernæst opstilles der en konkurrerende hypotese som er $H_a$, den alternativ hypotese.
+$$
+\begin{aligned}
+H_a: \mu \ne \mu_0
+\end{aligned}
+$$
+Dette er en antagelse, hvor $\mu$ ikke er lig med $\mu_0$. Den alternative hypoteses formål er at antage at der er en effekt. Derved hvis at $\mu_0 = 0$, så vil enhver anden værdi, positiv eller negativ, have en effekt.
 Disse to hypoteser vil opstilles på følgende måde:
 $$
 \begin{aligned}
@@ -470,21 +475,10 @@ H_0 : \mu = \mu_0
 H_a : \mu \not= \mu_0
 \end{aligned}
 $$
-Her hvor der tjekkes der igen om $\mu$ er ligmed $\mu_0$, hvis ikke så forkastes $H_0$ og $H_a$ accepteres. Dette vil så betyde $\mu$ har en effekt på populations parameter. Der laves så en hypotesetest for at finde ud af hvilken af disse hypoteser skal beholdes.
+For at finde ud af hvilken af disse hypoteser, som er den korrekte og mest sandsynlige, kan der foretages en hypotesetest, som vil blive forklaret i næste afsnit.
+# Metoder
 
-Et eksempel på en hypotesetest:
-
-$$
-\begin{aligned}
-H_0 : \mu = 0
-\\
-H_a : \mu \not= 0
-\end{aligned}
-$$
-
-Der findes så værdier som kan benyttes til at vurdere hvorvidt man beholder $H_0$ eller forkaster den. Disse vil forklares og arbejdes videre med i hypotesetest afsnittet. 
-
-### Hypotesetest
+## Hypotesetest
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
 
 I en hypotesetest for kvantitative variabler, er der nogle nødvendige antagelser. Først og fremmest, antages det at populationen er normalfordelt, samt at der alle observationerne i stikprøven er udvalgt tilfældigt ud fra populationen. Dernæst opstilles der to hypoteser, $H_0$ $H_a$:
@@ -516,14 +510,16 @@ Test størrelsen kan også undersøges ved hjælp af $p$-værdien frem for $t_{c
 2* (1 - pdist("t", q = 2, df = 99))
 ```
 Her aflæses $p$-værdien altså til at være 0.048. Da signifikansniveauet $\alpha = 0.05$, betyder det altså at $p\le\alpha$. Dette betyder at der evidens til at forkaste $H_0$, hvilket betyder at $H_a$ er mere sandsynlig og den accepteres derfor. Hvis $p$-værdien er højere end signifikansniveauet, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil derved accepteres.
-# Metoder
 
 
 
 ## Fejl i hypotesetest
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
 
-Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor konklusionen er korrekt og to, hvor  konklusionen er forkert. De to fejltyper kaldes type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand. Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
+Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor konklusionen er korrekt og to, hvor  konklusionen er forkert. De to fejltyper kaldes type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand.
+
+
+ Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
 ![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
 
@@ -653,6 +649,15 @@ $$
 \end{aligned}
 $$
 Det vil sige hvor højere $R^2$ er, desto større er ratioen $\frac{R^2}{1-R^2}$, og desto større er F test værdien. Ved en høj F test værdi hvor større evidens er der for at forkaste $H_0$.
+
+
+# Problemformulering
+Indenfor statistisk er der nogle interessante problemstillinger. Hvordan genereres tilfældige tal? Hvordan kan genereret tilfældige tal transformeres til en normalfordeling? Hvilke antagelser er der bag forskellige tests i statistisk, og hvad ville der ske, hvis disse antagelser blev brudt? Disse er alle interessante spørgsmål, som har ledt ud i følgende problemformulering:
+- Hvordan kan der ved hjælp af en PRNG, genereres tilfældige tal?  
+- Kan tilfældigeheden af PRNG'er blive undersøgt med tests og grafer?
+- Hvilke antagelser er der bag en t-test og ANOVA?
+- Hvad vil der ske, hvis disse antagelser brydes? Vil antallet af type I og type II fejl variere?
+- Er det muligt at reducere type I og type II fejl, på trods af at antagelserne er brudt?
 
 
 # Problemanalyse
