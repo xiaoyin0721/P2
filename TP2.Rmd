@@ -9,7 +9,7 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 library(mosaic)
 library(ggplot2)
-library(ggpubr)
+#library(ggpubr)
 library(cowplot)
 require(gridExtra)
 #install.packages("ggpubr")
@@ -327,6 +327,32 @@ Population:
 En population kan betragtes som alle ting eller folk, som eksempelvist har en eller flere vilkår, der gælder. For eksempel kan det være den voksne del af den danske befolkningen, der spiller fodbold. Ud fra en population kan der tages en stikprøve,altså en subgruppe af populationen, hvor der regelmæssigt benyttes "Simple Random Sampling", hvor alle observationerne, har lige sandsynlighed for at blive trukke ud i stikprøven. 
 
 
+##CLT og Stikprøv
+
+According to Central Limit Theorem, the sample mean $\bar{y}$ is normally distributed $\bar{y}\approx norm(\mu, \frac{\sigma}{\sqrt{n}})$. It is stated that population mean $\mu$ lies in the interval $[\bar{y} - 2\frac{\sigma}{\sqrt{n}}, \bar{y} + 2\frac{\sigma}{\sqrt{n}}]$  at a significance level at $\alpha = 0.05$.
+
+Below it is shown that taking sufficiently large random samples from a left-skewed population, the distribution of the sample means is observed to be approximately normally distributed, provided that the sample size is sufficiently large ($n>=30$).
+
+
+```{r}
+
+generate_sampling_distribution <- function(sample_size){
+  set.seed(199)
+  n = 10^5
+  sample_means = rep(0, n)
+  for (i in 1:n){
+   sample_means[i] = mean(rgamma(sample_size, shape=9, rate=2))
+  }
+  hist(sample_means, main="Central Limit Theorem", xlab="Sampling distribution with a sample size of 30")
+  
+  
+}
+
+## Sampling Distribution, CLT
+generate_sampling_distribution(30)
+```
+
+
 ## Middelværdi og standardafvigelse
 I en population findes der to værdier, $\mu$ og $\sigma$, som henholdsvis er middelværdien af en indenfor populationen, og spredningen af en indenfor populationen.
 Populationens middelværdi udregnes på følgende måde:
@@ -352,6 +378,21 @@ $$
 \sigma=\pm\sqrt{\sigma^2}
 \end{aligned}
 $$
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
 
 ## Fordelinger
 Der findes en lang række sandynlighedsfordelinger og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
