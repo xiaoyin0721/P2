@@ -528,7 +528,7 @@ Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal fo
 
  Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
-#![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
+#![]#(C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
 
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist(mean = 0, sd = 1, p = 1, return = "plot")
@@ -610,7 +610,7 @@ $$
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 11 I BOGEN  
 En F-test er en statistisk test som har en F fordelingen under nul hypotese. Den er mest ofte brugt når man sammenligner statistiske modeller i et datasæt til at identificere den model som passer bedst til populationen fra dataen. Det er en test som hæder statistikeren, Ronald A. Fisher, som opdagede F-fordelingen i 1922. F-fordelingen kan kun tage ikke negative værdier og den er noget skævt til højre, ligesom en chi i anden-fordelingen. Den nedenstående figur illustrerer dette. I forhold til T-test som har til formål at sammenligne middelværdierne i to populationer, så vil F-test sammenligne spredninger (eller varianser. Principperne for denne test er identiske med principperne for t-testene. Blot beregnes tesetstørrelsen på en anden måde, og der skal bruges F-fordelingen til at beregnes testsandsynligheden.
 
-![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/F-model.png){width=50%}
+#![]#(C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/F-model.png){width=50%}
 
 Denne figur viser $F$ fordelingen og $P$-værdien for $F$ test. Hvor højere $F$-værdier betyder at der er større evidens for at kunne forkaste $H_0$.
 
