@@ -6,12 +6,18 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = TRUE,
+	warning = TRUE
+)
 library(mosaic)
 library(ggplot2)
 library(ggpubr)
 library(cowplot)
 require(gridExtra)
+install.packages("Rtools")
+install.packages("Pandoc")
 #install.packages("ggpubr")
 #tinytex::install_tinytex()
 ```
@@ -324,6 +330,7 @@ Box_muller_transform()
 Kapitel 1: ASta bog
 Population:
 En population kan betragtes som alle ting eller folk, som eksempelvist har en eller flere vilkår, der gælder. For eksempel kan det være den voksne del af den danske befolkningen, der spiller fodbold. Ud fra en population kan der tages en stikprøve,altså en subgruppe af populationen, hvor der regelmæssigt benyttes "Simple Random Sampling", hvor alle observationerne, har lige sandsynlighed for at blive trukke ud i stikprøven. 
+I en population betegnes middelværdien som $\mu$ og standardafvigelsen som $\sigma$, hvorimod stikprøvens middelværdi betegnes som $\overline{y}$, og stikprøvens standardafvigelse betegnes som $s$.
 
 
 ## Middelværdi og standardafvigelse
@@ -773,7 +780,33 @@ Det vil sige hvor højere $R^2$ er, desto større er ratioen $\frac{R^2}{1-R^2}$
 
 # Problemanalyse
 
+
+
 ## Simulationer
-En simulation er en modellering af tilfældige begivenheder, hvor det simulerede udfald, skal estimere mulige udfald for virkeligheden. 
+En simulation er en modellering af tilfældige begivenheder, hvor det simulerede udfald, skal estimere mulige udfald for virkeligheden. Formålet med simulationen i projektets omfang, er at eftervise statiske metoder, samt se hvornår de fejler. 
+
+
+
+
+--- 
+Bibliografi
+---
+#
+```{bibTex}
+
+
+@Manual{R-base,
+  title = {R: A Language and Environment for Statistical
+           Computing},
+  author = {{R Core Team}},
+  organization = {R Foundation for Statistical Computing},
+  address = {Vienna, Austria},
+  year = {2019},
+  url = {https://www.R-project.org},
+}
+
+
+```
+
  
 
