@@ -326,6 +326,7 @@ Box_muller_transform()
 
 # Teori
 
+
 ## Population og stikprøve
 Kapitel 1: ASta bog
 Population:
@@ -334,251 +335,161 @@ I en population betegnes middelværdien som $\mu$ og standardafvigelsen som $\si
 
 
 ## Middelværdi og standardafvigelse
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 3 I BOGEN  
-I en population findes der to værdier, $\mu$ og $\sigma$, som er interessante at kigge nærmere på. Gennemsnittet af en population kaldes $\mu$ (middelværdi), mens at populationens standardafvigelse kaldes $\sigma$.
+I en population findes der to værdier, $\mu$ og $\sigma$, som henholdsvis er middelværdien af en indenfor populationen, og spredningen af en indenfor populationen.
+Populationens middelværdi udregnes på følgende måde:
+$$
+\begin{aligned}
+\mu = \frac{1}{n}\sum_{i=1}^nx_i
+\end{aligned}
+$$
+hvor $n$ er antallet af observationer og $x_i$ er den i'te observation i populationen.
 
-Populations standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser, hvordan variansen for en stikprøve kan udregnes:
-
+Populations standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser hvordan variansen for en population kan udregnes:
 
 $$
 \begin{aligned}
-var(x)=s^2 = \sum_{i=1}^{n} \frac{(x_i-\overline{x})^2}{n}
+\sigma^2 = \sum_{i=1}^{n} \frac{(x_i-\mu)^2}{n}
 \end{aligned}
 $$
-Herunder er der:  
-- $x_i$, som svarer til den enkelte observation i stikprøven.  
-- $\overline{x}$, som svarer til gennemsnittet af stikprøven.  
+Hvor $x_i$, som svarer til den i'te observation i populationen og $\overline{x}$, som svarer til gennemsnittet af populationen.
 
-Sammenhængen mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning.:
+Sammenhænget mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning:
 $$
 \begin{aligned}
-\sigma=\sqrt{var(X)}=\sqrt{\sigma^2}
+\sigma=\pm\sqrt{\sigma^2}
 \end{aligned}
 $$
-Populationen bliver her betegnet som X.
 
 ## Fordelinger
-Der findes en lang række sandsynlighedsfordelinger, og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
+Der findes en lang række sandynlighedsfordelinger og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
 
-### Standardnormalfordeling
-Standardnormalfordeling: https://mse.redwoods.edu/darnold/math15/UsingRInStatistics/StandardNormal.php
-
-En standardnormalfordeling er kendetegnet ved at $\mu=0$, og at $\sigma = 1$. Desuden har en standardnormalfordeling et klokkeformet udseende. Nedenstående er der plottet en standardnormalfordeling:
-```{r}
-qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4))
-```
-Der er en høj sandsynlighed for, at få en værdi tæt på 0. Jo længere man afviger fra $\mu$, jo mindre er densiteten, som medfører at sandsynligheden for de givne værdier mindskes. Ergo vil sandsynligheden for at få 2, være mindre end sandsynligheden for at få 0. 
-En af anveldeserne for en standardnormalfordeling er, at den kan benyttes til en Z-test, som benyttes senere i projektet.
-
-#### Z-fordeling  
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 4 I BOGEN 
-
-For at finde z-scoren, skal $\mu,\sigma$ være kendt. 
-$z$-scoren kan udregnes for normalfordelinger ved formlen:
+### Normalfordeling
+En normalfordeling er en symmetrisk klokkeformet fordeling. Centrum af denne graf bestemmes ud fra $\mu$ og spredningen af denne graf bestemmes ud fra $\sigma$. Fordelingen laves ud fra følgende formel:
 $$
 \begin{aligned}
-z = \frac{y-\mu}\sigma
+\phi(x) = \frac{1}{\sqrt{2\pi\sigma^2}}\cdot e^{-\frac{(x-\mu)^2}{2\sigma^2}}
 \end{aligned}
 $$
-hvor $y$ er en værdi, som er $z$ standardafvigelser fra $\mu$.
-Desuden, kan det udledes, at hvis $z>0$ er $y$-værdien på højre side af $\mu$, og omvendt, hvis  $z<0$, er $y$-værdien på venstre side af $\mu$.
+hvor $\sigma$ og $\mu$ er kendt.
+
+En standardnormalfordeling er kendetegnet ved at $\mu = 0$, og at $\sigma = 1$. Nedenstående er der plottet en standardnormalfordeling:
+```{r, echo = FALSE}
+qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4), return = "plot", ylab = "Tæthed") + theme(legend.position = "none")
+```
+Jo højere tætheden er ved en specifik værdi, jo højere er sandsynligheden for at få værdier tæt på den specifikke værdi. Altså er sandsynligheden for at få en værdi tæt på 0 høj, da densiteten ved nul er ca. 0.4. I en normalfordeling gælder det, at jo længere der afviges fra $\mu$, jo lavere er tætheden, og sandsynligheden til at få værdier omkring specifikke værdier såsom 2, er lavere. 
+En af anvendelserne for en standarnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
 
 #### T-fordeling  
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
 
-En T-fordeling laves ud fra en standardnormalfordeling og dens udseende minder også om denne fordeling. Forskellen på en T-fordeling og en standardnormalfordeling, ligger i, at en T-fordeling laves ud fra frihedsgrader. For en stikprøve vil antallet af frihedsgrader være antallet af observationer minus 1, altså $n-1$. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
-```{r, fig.height = 3, fig.width = 8} 
-p1 <- qdist("t", df = 5, p = 1, return = "plot")
-p2 <- qdist("t", df = 100, p = 1, return = "plot")
-#p3 <- qdist(mean = 0, sd = 1, p = 0, return="plot")
+En T-fordeling har et symmetrisk klokkeformet udseende. Hvorimod en normalfordeling laves ved hjælp af $\mu$ og $\sigma$, så laves en T-fordeling ud fra frihedsgrader. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
+```{r, echo = FALSE, fig.height = 3, fig.width = 8} 
+p1 <- qdist("t", df = 5, p = 1, return = "plot", xlim = c(-3, 3), ylab = "Tæthed") + theme(legend.position = "none")
+p2 <- qdist("t", df = 100, p = 1, return = "plot", xlim = c(-3, 3), ylab = "Tæthed") + theme(legend.position = "none")
 grid.arrange(p1, p2, ncol=2)
 ```
-
-
-### Binomialfordeling
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
-Binomialfordelingen benyttes i sammenhænge med kvalitative data. Specifikt er der kun to mulige udfald. Hvis der er lige stor chance for hvert af udfaldene, altså $\pi = 0.50$, og en stor stikprøve, vil en binomialfordeling vise sig at være symmetrisk.
-Nedenstående er et eksempel på 4 binomialfordelinger.
-
-```{r}
-set.seed(987)
-rbino1 <- c(rbinom(100, 20, 0.5))
-p1 <- gf_histogram(~ rbino1, fill="black", col="grey", breaks = seq(2,18, by=1), title = "Kontrol", xlab = "") #Test 1: Grundtest,(20 mønter kastes 100 gange)
-
-
-#Test 2: Antallet af test forøges
-set.seed(987)
-rbino2 <- c(rbinom(10000,20,0.5))
-p2 <- gf_histogram(~ rbino2, fill = "black", col = "grey", breaks = seq(2,18, by =1), title = "T1", xlab = "") 
-
-#Test 3: Antallet af kroner forøges
-set.seed(987)
-rbino3 <- c(rbinom(100,30,0.5))
-p3 <- gf_histogram(~ rbino3, fill = "black", col = "grey", breaks = seq(5,25, by =1), title = "T2", xlab = "") 
-
-#Test 4: Sandsynligheden ændres fra 50%
-set.seed(987)
-rbino4 <- c(rbinom(100,20,0.3))
-p4 <- gf_histogram(~ rbino4, fill = "black", col = "grey", breaks = seq(0,11, by =1), title = "T3", xlab = "") 
-
-grid.arrange(p1, p2, p3, p4,ncol=2,nrow = 2)
-
-```
-I ovenstående figur er der altså fire grafer, som er lavet ud fra binomialfordelingen. Der er en kontrolgraf, hvor 100 observationer hver bliver testet 20 gange med en $50\%$ chance for success. Yderligere er der T1, T2 og T3, hvor der ved hver graf er ændret en af parameterene fra kontrol grafen. T1 har flere observationer, som gør at grafen får et udseende af en normalfordeling, her kan det aflæses at $\overline{x} = 10$. Ved T2 bliver hver observation testet 30 gange i stedet for 20 gange, og dette resulterer i at middelværdien (hvis antallet af observationer er stort nok) i stedet vil være $\overline{x} = 15$. I T3 er sandsynligheden for success ændret fra $50\%$ til $30\%$. Dette ændrer igen udseendet på grafen, hvor middelværdien bliver lavere, da hver test har en mindre sandsynlighed for at være en success. 
-
-### Poisson Fordeling
-https://www.statology.org/plot-poisson-distribution-r/  
-En poisson fordeling beskriver chancen for at en begivenhed sker et givet antal gange over et kendt tidsinterval. Dette kunne være hvor mange gange der har været stormvejr indenfor det sidste år. Fordelingen laves ud fra følgende formel:
-$$
-\begin{aligned}
-P(x;\lambda) = \frac{(e^{-\lambda}\cdot\lambda^x)}{x!}
-\end{aligned}
-$$
-Hvor:
-- $e$ er eulers tal.
-- $\lambda$ er begivenhedsraten, altså det forventede antal gange begivenheden vil ske.
-
-Hvis $lambda$ er 5, og der undersøges hvad chancen for at begivenheden sker 7 gange, så vil $x=7$. Dette eksempel kan ses forneden:
-```{r}
-(exp(1)^-5*5^7)/factorial(7)
-```
-Der er altså en $10.4\%$ chance for at en begivenhed sker 7 gange, hvis begivenhedsraten er 5. Nedenstående er resultaterne af denne poissonfordeling plottet:
-```{r}
-sucess <- 0:20
-dpois(7, 5)
-plot(sucess, dpois(0:20, 5), type = "h", xlab = "", ylab = "")
-```
-
 ### Uniform fordeling
+Der findes to slags uniforme fordelinger, en diskret uniform fordeling og en kontinuert uniform fordeling. I dette projekt arbejdes der med en kontinuert uniform fordeling. Dette skyldes at denne fordeling benyttes under generationen af tilfældige tal, hvor de genererede stokastiske variable er kontinuere. Den uniforme fordeling består af et antal søjler indenfor et givet interval. Søjlerne deler intervallet yderligere op. Sandsynligheden for at en værdi falder indenfor søjlernes interval er lige stor, da det er en uniform fordeling. Dette vil sige, at hvis der er 10 søjler, så er der en $10\%$ chance for at en værdi bliver genereret i den første søjles interval. Der er også en $10\%$ chance for at en værdi bliver genereret indenfor den anden søjles interval. Chancen vil altså være lige stor for alle søjlerne. Hvis antallet af observationer er lavt, vil fordelingen ikke tilsyneladende være uniform. Forneden plottes to uniforme fordelingen, hvor den eneste forskel er, at antallet af observationer ændres. Se nedenstående:
 
-En uniform fordeling, er hvor dataet bliver inddelt i lige store intervaller, og alle intervaller, har lige antal observationer. Det er vigtigt at notere at hvis antallet af observationer er lavt, vil fordelingen ikke tilsyneladende være uniform. Dette vises ved at lave to uniformfordelinger på det samme seed, hvor den eneste forskel er antallet af observationer. Dette kan ses i de nedenstående grafer. 
-
-```{r, fig.height=7}
+```{r, echo = FALSE, fig.height=7}
 
 set.seed(1234)
 unifx <- runif(50,min = 0, max =1)
 set.seed(1234)
 unifx1 <- runif(5000, min = 0, max = 1)
 
-p1 <- gf_histogram(~unifx,breaks = seq(0,1,by=0.1), fill="black", col="grey",xlab = "tilfældige tal inddelt i intervaller", ylab = "antal", title = "Uniform fordeling ved 50 observationer")
-p2 <- gf_histogram(~unifx1,breaks = seq(0,1,by=0.1), fill="black", col="grey",xlab = "tilfældige tal inddelt i intervaller", ylab = "antal", title = "Uniform fordeling ved 5000 observationer")
+p1 <- gf_histogram(~unifx,breaks = seq(0,1,by=0.1), fill="black", col="grey",xlab = "Tilfældige tal inddelt i intervaller", ylab = "Antal", title = "Uniform fordeling ved 50 observationer")
+p2 <- gf_histogram(~unifx1,breaks = seq(0,1,by=0.1), fill="black", col="grey",xlab = "Tilfældige tal inddelt i intervaller", ylab = "Antal", title = "Uniform fordeling ved 5000 observationer")
 grid.arrange(p1, p2, nrow=2)
 ```
 
 
 
+SKREVET UD FRA SIDE 16 OG 115 
 ## Statistisk inferens
-Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus at lave forudsigelser om et element på baggrund af data og tendenser dertil.
-I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså et gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er en uendeligt lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat, eller et konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
+Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus, at lave forudsigelser om et element på baggrund af data og tendenser dertil.
+I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså det bedste gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er en uendeligt lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat (et kvalificeret gæt på et interval, hvori undersøgte parameter i en population ligger). Dette eksemplificeres ved den mest almindelige form for intervalestimat; konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
 
 ### Konfidensinterval
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
 
-Når der indenfor statistik estimeres på en populations parameter ud fra en stikprøve, vil resultatet aldrig være perfekt. Dette skyldes at der er en fejlmargin, som der skal tages højde fra. En måde hvorpå man kan tage højde for denne fejlmargin er et konfidensinterval.
+Når der indenfor statistik estimeres en populations parameter ud fra en stikprøve, vil resultatet aldrig være perfekt. Dette resulterer i en fejlmargin, som der skal tages højde for. En måde hvorpå man kan tage højde for denne fejlmargin er et konfidensinterval.
 
 Et konfidensinterval for en givet parameter, er et interval mellem to tal, hvori det estimeres at parameteren ligger.
-Sandsynligheden for at producere et interval, som indeholder parameteren kaldes for et konfidensniveau. Denne værdi er valgt til et tal tæt på 1, som regel enten 0.95 eller 0.99.
+Sandsynligheden for at producere et interval, som indeholder parameteren kaldes for et dækningsgraden af konfidensintervallet. Denne værdi er valgt til et tal tæt på 1, som regel enten 0.95 eller 0.99.
 
-En konfidensinterval skabes på baggrund, af et punktestimat og fejlmarginen. Måden dette gøres på, kan ses forneden:
+En konfidensinterval skabes på baggrund, af et punktestimat og fejlmarginen. Måden dette gøres på, kan ses forneden. Desuden er det også antaget, at populationen er normaltfordelt:
 $$
 \begin{aligned}
 KI = Punktestimat \; \pm \; fejlmargin
 \end{aligned}
 $$
-Måden at finde konfidensintervallet varierer baseret på, hvilken fordeling man bruger. I de følgende afsnit vil der forklares, hvordan konfidensintervallet for kvalitative og kvantitative variabler findes, og opstilles ved hjælp af eksempler.
-
-#### Kvalitative variabler
-
-Hvis man spurgte en population, hvorvidt de kunne lide deres job eller ej, ville en andel svare "ja", og en andel svare "nej". Er man interesseret i hvor mange procent svarede "ja" til spørgsmålet, ville man dividere antallet der svarede "ja" med antallet af observation. Se følgende:
-$$
-\begin{aligned}
-\hat{\pi}_{ja} = \frac{n_{ja}}{n{_{total}}}
-\end{aligned}
-$$
-Før selve konfidensintervallet kan opstilles, skal standardfejlen ($sf$) findes. Følgende formel bruges for at finde standardfejlen for kvalitative variabler:
-$$
-\begin{aligned}
-sf(\hat{\pi}) = \sqrt{\frac{\hat{\pi}(1-\hat{\pi})}n{}}
-\end{aligned}
-$$
-Når standardfejlen er fundet, kan denne ganges med en værdi som afhænger af signifikansniveauet. Denne værdi kaldes $z_{crit}$. For at finde ud af hvilken værdi $z_{crit}$ skal være, benyttes en z-test. En z-test er i realiteten bare en standardnormalfordeling. For at finde $z_{crit}$ for signifikansniveauet 95%, findes x-værdien ved 97.5% og 2.5%.
-```{r}
-qdist("norm", mean = 0, sd = 1, p = c(0.025,0.975))
-```
-Denne værdi aflæses til at være ~1.96. Nu kan konfidensintervallet opstilles via følgende ligning:
-$$
-\begin{aligned}
-KI = \hat{\pi}\; \pm 1.96\cdot sf(\hat{\pi})
-\end{aligned}
-$$
-Da dette blev lavet udfra signifikansniveauet 95%, kan der altså med 95%'s sikkerhed siges at $\hat\pi$ ligger indenfor intervallet:
-$$
-\begin{aligned}
-(\hat\pi\;-1.96\;\cdot sf(\hat\pi) \ \ ,\ \  \hat\pi \; + 1.96\;\cdot sf(\hat\pi))
-\end{aligned}
-$$
+I det nedenstående afsnit, vil der ved hjælp af et eksempel vises, hvordan et konfidensinterval for kvantitative variabler findes.
 
 #### Kvantitative variabler
-
-Konfidensintervallet for kvantitative variabler har næsten samme formel som ved kvalitative variabler. Dog er måden hvorpå standardfejlen findes anderledes. Desuden skal der bruges en anden slags test ved hjælp af signifikansniveauet. 
-
+Hvis der tages en stikprøve ud fra en population, kunne denne stikprøve have $\overline{y} = 10$ og $s = 1$. Selve formlen for konfidensintervallet ser ud som forneden, når der arbejdes med kvantitative variabler:
 $$
 \begin{aligned}
 KI = \overline{y}\;\pm t_{crit} \;\cdot sf(\overline{y})
 \end{aligned}
 $$
-Herunder er standardfejlen udregnet ved: 
+
+En af de første ting der skal findes, for at kunne lave et konfidensinterval er standardfejlen ($sf$). Formlen for at finde denne, vises forneden:
 $$
 \begin{aligned}
 sf(\overline{y}) = \frac{s}{\sqrt{n}}
 \end{aligned}
 $$
-hvor s er standardafvigelsen for stikprøven, og n er antallet af observationer i stikprøven.
-
-For at finde $t_{crit}$ benyttes der en t-test. Hvis det ønskede signifikansniveau igen er 95%, hvor der igen aflæses x-værdien ved $2.5\%$ og $97.5\%$. Nedenstående er der et eksempel, hvor en t-test med 50 frihedsgrader benyttes til, at finde 95% signifikansniveauet:
-```{r}
-qdist("t", df = 50, p = c(0.025,0.975))
+hvor $s$ er standardafvigelsen for stikprøven og $n$ er antallet af observationer. Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Hvis det ønskede signifikansniveau er $5\%$, så skal x-værdien aflæses ved $2.5\%$ og $97.5\%$. I nedenstående eksempel er der en T-fordeling med 10 frihedsgrader:
+```{r, echo = FALSE}
+qdist("t", df = 10, p = c(0.025,0.975))
 ```
-Denne værdi aflæses til at være ~2.01. Nu kan konfidensintervallet igen opstilles:
+Denne værdi aflæses til at være ~2.22. Nu kan konfidensintervallet opstilles:
 $$
 \begin{aligned}
-(\overline{x}\;-2.01 \;\cdot sf(\overline{x}) \ \ , \ \ \overline{x}\;+2.01 \;\cdot sf(\overline{x})
+KI = \overline{y}\;\pm 2.22 \;\cdot sf(\overline{y})
+\end{aligned}
+$$
+Da $t_{crit}$ blev fundet ud fra at signifikansniveauet er $5\%$, kan der med $95\%$ sikkerhed siges at $\mu$ ligger i følgende interval:
+$$
+\begin{aligned}
+(\overline{x}\;-2.22 \;\cdot sf(\overline{x}) \ \ , \ \ \overline{x}\;+2.22 \;\cdot sf(\overline{x})
 \end{aligned}
 $$
 
 ### Hypoteser
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
-Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Der findes så to værdier $H_0$ og $H_a$, det er nulhypotesen og den alternative hypotese. Nulhypotese opstilles hvor der stilles en hypotese op, hvor man antager en værdi som ingen effekt har på hypotesetesten.
+Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Specifikt findes der to hypoteser, som typisk bruges indenfor statistik, som er betegnet som $H_0$ og $H_a$, det er henholdsvis nulhypotesen og den alternative hypotese.
 
-Et eksempel på en nulhypotese kan være:
+Et klassisk eksempel på en nulhypotese kan være:
 $$
 \begin{aligned}
-H_0: \mu = 0
+H_0: \mu = \mu_0
 \end{aligned}
 $$
-
-Dette er en antagelse at $\mu$ skal være ligmed 0, som betyder den ingen effekt har på hypotesetesten.
-
-Et eksempel på en hypotesetest kan være:
+Dette er en antagelse, hvor $\mu$ er lig med $\mu_0$. Typisk vil $\mu_0$ sættes lig med 0, da nulhypotesens formål er at antage at der ingen effekt er. Hernæst opstilles der en konkurrerende hypotese som er $H_a$, den alternativ hypotese.
 $$
 \begin{aligned}
-H_0 : \mu = 0
+H_a: \mu \ne \mu_0
+\end{aligned}
+$$
+Dette er en antagelse, hvor $\mu$ ikke er lig med $\mu_0$. Den alternative hypoteses formål er at antage at der er en effekt. Derved hvis at $\mu_0 = 0$, så vil enhver anden værdi, positiv eller negativ, have en effekt.
+Disse to hypoteser vil opstilles på følgende måde:
+$$
+\begin{aligned}
+H_0 : \mu = \mu_0
 \\
-H_a : \mu \not= 0
+H_a : \mu \not= \mu_0
 \end{aligned}
 $$
-Dette er en hypotesetest, hvor der tjekkes om $\mu$ er ligmed 0, hvis ikke så forkastes $H_0$ og $H_a$ accepteres. Dette vil så betyde $\mu$ har en effekt på hypotesetesten. 
+For at finde ud af hvilken af disse hypoteser, som er den korrekte og mest sandsynlige, kan der foretages en hypotesetest, som vil blive forklaret i næste afsnit.
+# Metoder
 
-For at tjekke hvilken af hypoteserne accepteres, vælges et signifikansniveau som ofte er $\alpha$ = 5% eller $\alpha$ = 1%. Ud fra dette signifikansniveau bliver der udregnet en kritisk værdi på en sandsynlighedsfordeling.Der tages så en stikprøve ud af en population, hvor $H_0$ testes imod $H_a$ ved brug af et signifikansniveauet ($\alpha$) og en $p$-værdi. Hvis $p$ > $\alpha$ så forkastes $H_0$ ikke. Hvis $p$ $\le$ $\alpha$ så forkastes $H_0$, og $H_a$ accepteres. 
-
-For at finde $p$-værdien skal der foretages en hypotesetest. Der findes en række hypotesetest, som vil være relevante i forskellige sammenhænge.
-
-
-### Hypotesetest
+## Hypotesetest
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
-For hypotesetester for kvantitative variabler, er der et par nødvendige antagelser. Først og fremmest antages det at populationen er normalfordelt, samt at stikprøven som der undersøges ud fra er taget ud fra populationen tilfældigt.   
-  
-Det  næste der skal gøres, er at opsætte nogle hypoteser, altså en $H_0$ og en $H_a$:
+
+I en hypotesetest for kvantitative variabler, er der nogle nødvendige antagelser. Først og fremmest, antages det at populationen er normalfordelt, samt at der alle observationerne i stikprøven er udvalgt tilfældigt ud fra populationen. Dernæst opstilles der to hypoteser, $H_0$ $H_a$:
+
 $$
 \begin{aligned}
 H_0: \mu = \mu_0
@@ -586,67 +497,36 @@ H_0: \mu = \mu_0
 H_a: \mu  \ne \mu_0
 \end{aligned}
 $$
-Det næste der skal gøres, er at udregne en $t$-score, som kan gøres ved hjælp af følgende formel:
+Det næste der skal gøres, er at udregne en test størrelse, som kan gøres ved hjælp af følgende formel:
 $$
 \begin{aligned}
-t = \frac{\overline{y}-\mu_0}{sf}, \ \ \ sf=\frac{s}{\sqrt{n}} 
+t = \frac{\overline{y}-\mu_0}{sf(\overline{y})}, \ \ \ sf(\overline{y})=\frac{s}{\sqrt{n}} 
 \end{aligned}
 $$
-Det kan ses at $t$-værdien afhænger af $\overline{y}$, og den estimerede $\mu_0$ værdi. Yderligere afhænger $t$-scoren også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer. Nu kan $t_{crit}$ udregnes ved hjælp af en T-fordeling med $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
-```{r}
-qdist("t", p = c(0.025, 0.975), df = 99)
+Det kan ses at test størrelsen afhænger af $\overline{y}$, og $\mu_0$-værdien. Yderligere afhænger test størrelsen også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer.
+Ud fra denne test størrelse, er der nu to mulige måder at fortsætte. Enten skal $t_{crit}$ findes eller $p$-værdien skal findes. Først vil metoden med $t_{crit}$ forklares, hvorefter metoden med $p$-værdien forklares.
+
+Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Denne T-fordeling vil have $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
+```{r, echo = FALSE}
+qdist("t", p = c(0.025, 0.975), df = 99, return = "plot")
 ```
-Nu kan $t_{crit}$ aflæses til at være $\pm 1.984$. 
-Hernæst skal den udregnede $t$-score benyttes i en T-fordeling med $n-1$ frihedsgrader. Dette vil give $p$-scoren. Nedenstående er der 2 eksempler hvor $t$-værdien henholdsvis er 1 og 2.5:
-```{r, fig.height = 3, fig.width = 8}
-p1 <- pdist("t", q = 1, df = 99, return = "plot", title = "P1")
-p2 <- pdist("t", q = 2.5, df = 99, return = "plot", title = "P2")
-grid.arrange(p1, p2, ncol=2)
+Nu kan $t_{crit}$ aflæses til at være $\pm 1.984$. Ved at sammenligne test størrelsen med $t_{crit}$, kan man dernæst komme til en konklusion. Hvis $t_{crit}$ ligger indenfor $\pm 1.984$, altså $t_{crit}$, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil dermed accepteres. Hvis test størrelsen ligger udenfor intervallet, vil $H_0$ forkastes, og $H_a$ vil dermed være mere sandsynlig.
+
+Test størrelsen kan også undersøges ved hjælp af $p$-værdien frem for $t_{crit}$. Her kan $p$-værdien findes, ved at benytte test størrelsen sammen med en T-fordeling. Denne T-fordeling har $n-1$ frihedsgrader. I nedenstående eksempel er $p$-værdien udregnet ud fra en test størrelse på 2:
+```{r, echo = FALSE}
+2* (1 - pdist("t", q = 2, df = 99))
 ```
-I figur P1 er $p$-værdien $2\cdot0.16=0.32$, mens at figur P2 har en $p$-værdi på $2\cdot0.007=0.014$. Da signifikansniveauet $\alpha=0.05$, betyder det altså for P1 at $p\ge\alpha$. Dette betyder at der ikke er nok evidens til at forkaste $H_0$. For P2 betyder det at $p\le\alpha$. Dette betyder at der er nok evidens til at forkaste $H_0$, og at $H_a$ er mere sandsynlig.
-
-
-
-Fremgangsmåden til hypotesetest ved proportioner, er i stort omfang lig med hypotesetesten for kvantitative variabler. En af forskellene er at en antagelse for proportioner er at man forventer mindst 10 observationer. Hypotesen er for test er bygget op på fuldstændig samme måde, dog er forskellen denotationen, hvor der heri benyttes $\pi$ i stedet for $\mu$. Dvs. at Nulhypotesen ser således ud.
-$$
-\begin{aligned}
-H_0 : \pi = \pi_0
-\newline
-H_a : \pi \not= pi_0
-\end{aligned}
-$$
-Hvor $\pi_0$ er den forventede proportion.
-Desuden benyttes der nu z-score, hvor z-værdien får ud fra følgende ligning:
-$$
-\begin{aligned}
-z = \frac{\hat{\pi}-\pi_0}{sf_0}, \ \ \ \ sf_0 = \sqrt{\pi_0\frac{(1-\pi_0)}n}
-\end{aligned}
-$$
-
-Det kan ses at z-testen indeholder en $\hat\pi$, som svarer til proportionen for stikprøven. Standardfejlen udregnes på en anden måde end ved $t$-test.
-
-Man kan finde $z_{crit}$ ved hjælp af en standardnormalfordeling, hvor man igen skal have et signifikansniveau. I nedenstående graf er $95\%$ brugt:
-
-```{r}
-qdist("norm", mean = 0, sd = 1, p = c(0.025, 0.975))
-```
-Ergo er $z_{crit}$ altså $\pm 1.96$. Nu kan $z$-scoren benyttes til at finde $p$-værdien. Nedenstående er der to eksempler, hvor $z$-scoren er henholdsvis 1 og 3:
-```{r, fig.height = 3, fig.width = 8}
-p1 <- pdist("norm", mean = 0, sd = 1, q = 1, return = "plot", title = "P1")
-p2 <- pdist("norm", mean = 0, sd = 1, q = 2.5, return = "plot", title = "P2")
-grid.arrange(p1, p2, ncol=2)
-```
-I figur P1 er $p$-scoren $2\cdot0.159=0.318$, mens at figur P2 har en $p$-score på $2\cdot0.006=0.012$. Da signifikansniveauet $\alpha=0.05$, betyder det altså for P1 at $p\ge\alpha$. Dette betyder at der ikke er nok evidens til at forkaste $H_0$. For P2 betyder det at $p\le\alpha$. Dette betyder at der er nok evidens til at forkaste $H_0$, og at $H_a$ er mere sandsynlig.
-
-
-# Metoder
+Her aflæses $p$-værdien altså til at være 0.048. Da signifikansniveauet $\alpha = 0.05$, betyder det altså at $p\le\alpha$. Dette betyder at der evidens til at forkaste $H_0$, hvilket betyder at $H_a$ er mere sandsynlig og den accepteres derfor. Hvis $p$-værdien er højere end signifikansniveauet, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil derved accepteres.
 
 
 
 ## Fejl i hypotesetest
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
 
-Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor konklusionen er korrekt og to, hvor  konklusionen er forkert. De to fejltyper kaldes type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand. Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
+Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor konklusionen er korrekt og to, hvor  konklusionen er forkert. De to fejltyper kaldes type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand.
+
+
+ Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
 ![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
 
@@ -776,6 +656,15 @@ $$
 \end{aligned}
 $$
 Det vil sige hvor højere $R^2$ er, desto større er ratioen $\frac{R^2}{1-R^2}$, og desto større er F test værdien. Ved en høj F test værdi hvor større evidens er der for at forkaste $H_0$.
+
+
+# Problemformulering
+Indenfor statistisk er der nogle interessante problemstillinger. Hvordan genereres tilfældige tal? Hvordan kan genereret tilfældige tal transformeres til en normalfordeling? Hvilke antagelser er der bag forskellige tests i statistisk, og hvad ville der ske, hvis disse antagelser blev brudt? Disse er alle interessante spørgsmål, som har ledt ud i følgende problemformulering:
+- Hvordan kan der ved hjælp af en PRNG, genereres tilfældige tal?  
+- Kan tilfældigeheden af PRNG'er blive undersøgt med tests og grafer?
+- Hvilke antagelser er der bag en t-test og ANOVA?
+- Hvad vil der ske, hvis disse antagelser brydes? Vil antallet af type I og type II fejl variere?
+- Er det muligt at reducere type I og type II fejl, på trods af at antagelserne er brudt?
 
 
 # Problemanalyse
