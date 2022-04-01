@@ -6,20 +6,21 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-	echo = TRUE,
-	message = TRUE,
-	warning = TRUE
-)
+
 library(mosaic)
 library(ggplot2)
 library(ggpubr)
 library(cowplot)
 require(gridExtra)
-install.packages("Rtools")
+#install.packages("Rtools")
 #install.packages("ggpubr")
 #tinytex::install_tinytex()
 ```
+# Fuckede min knit op)
+#knitr::opts_chunk$set(
+	#echo = TRUE,
+#	message = TRUE,
+	#warning = TRUE)
 
 
 # Introduktion
@@ -57,7 +58,7 @@ Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en genera
 De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. I en undersøgelse af PRNG'er blev det påvist at den optimale periode kan opnås på to måder. Enten skal 2 være opløftet i $m$, eller 10 skal være opløftet i $m$. I denne rapport vælges $2^m$, og dertil er der yderligere nogle krav. Først og fremmest skal $c$ være et ulige tal, samt at $a-1\; mod\;4  = 0$, så længe $m$'s værdi kan divideres med 4. Dette er grunden til at de valgte værdier 
 
 ```{r}
-#![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
+##![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
 ```
 Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en funktion f, som ikke har en invers funktion. Dette kan dog kun gøres en gang per tilstand, hvorimod andre PRNG’er kan have flere tilstande på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgås i rapporten.
 
@@ -676,25 +677,7 @@ En simulation er en modellering af tilfældige begivenheder, hvor det simulerede
 
 
 
---- 
-Bibliografi
----
-#
-```{bibTex}
 
-
-@Manual{R-base,
-  title = {R: A Language and Environment for Statistical
-           Computing},
-  author = {{R Core Team}},
-  organization = {R Foundation for Statistical Computing},
-  address = {Vienna, Austria},
-  year = {2019},
-  url = {https://www.R-project.org},
-}
-
-
-```
 
  
 
