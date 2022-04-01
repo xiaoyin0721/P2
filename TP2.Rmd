@@ -17,7 +17,6 @@ library(ggpubr)
 library(cowplot)
 require(gridExtra)
 install.packages("Rtools")
-install.packages("Pandoc")
 #install.packages("ggpubr")
 #tinytex::install_tinytex()
 ```
