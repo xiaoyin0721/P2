@@ -7,6 +7,10 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 
+knitr::opts_chunk$set(
+	echo = TRUE,
+ message = TRUE,
+	warning = TRUE)
 library(mosaic)
 library(ggplot2)
 library(ggpubr)
@@ -16,11 +20,7 @@ require(gridExtra)
 #install.packages("ggpubr")
 #tinytex::install_tinytex()
 ```
-# Fuckede min knit op)
-#knitr::opts_chunk$set(
-	#echo = TRUE,
-#	message = TRUE,
-	#warning = TRUE)
+
 
 
 # Introduktion
@@ -528,7 +528,7 @@ Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal fo
 
  Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
-![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
+#![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
 
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist(mean = 0, sd = 1, p = 1, return = "plot")
