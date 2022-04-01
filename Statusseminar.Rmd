@@ -199,6 +199,7 @@ $$
 hvor $\sigma$ og $\mu$ er kendt.
 
 En standardnormalfordeling er kendetegnet ved at $\mu = 0$, og at $\sigma = 1$. Nedenstående er der plottet en standardnormalfordeling:
+
 ```{r, echo = FALSE}
 qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4), return = "plot", ylab = "Tæthed") + theme(legend.position = "none")
 ```
@@ -209,6 +210,7 @@ En af anvendelserne for en standarnormalfordeling er at den kan benyttes til en 
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
 
 En T-fordeling har et symmetrisk klokkeformet udseende. Hvorimod en normalfordeling laves ved hjælp af $\mu$ og $\sigma$, så laves en T-fordeling ud fra frihedsgrader. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
+
 ```{r, echo = FALSE, fig.height = 3, fig.width = 8} 
 p1 <- qdist("t", df = 5, p = 1, return = "plot", xlim = c(-3, 3), ylab = "Tæthed") + theme(legend.position = "none")
 p2 <- qdist("t", df = 100, p = 1, return = "plot", xlim = c(-3, 3), ylab = "Tæthed") + theme(legend.position = "none")
@@ -299,9 +301,11 @@ Det kan ses at test størrelsen afhænger af $\overline{y}$, og $\mu_0$-værdien
 Ud fra denne test størrelse, er der nu to mulige måder at fortsætte. Enten skal $t_{crit}$ findes eller $p$-værdien skal findes. Først vil metoden med $t_{crit}$ forklares, hvorefter metoden med $p$-værdien forklares.
 
 Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Denne T-fordeling vil have $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
+
 ```{r, echo = FALSE}
 qdist("t", p = c(0.025, 0.975), df = 99, return = "plot")
 ```
+
 Nu kan $t_{crit}$ aflæses til at være $\pm 1.984$. Ved at sammenligne test størrelsen med $t_{crit}$, kan man dernæst komme til en konklusion. Hvis $t_{crit}$ ligger indenfor $\pm 1.984$, altså $t_{crit}$, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil dermed accepteres. Hvis test størrelsen ligger udenfor intervallet, vil $H_0$ forkastes, og $H_a$ vil dermed være mere sandsynlig.
 
 Test størrelsen kan også undersøges ved hjælp af $p$-værdien frem for $t_{crit}$. Her kan $p$-værdien findes, ved at benytte test størrelsen sammen med en T-fordeling. Denne T-fordeling har $n-1$ frihedsgrader. I nedenstående eksempel er $p$-værdien udregnet ud fra en test størrelse på 2:
@@ -309,3 +313,152 @@ Test størrelsen kan også undersøges ved hjælp af $p$-værdien frem for $t_{c
 2* (1 - pdist("t", q = 2, df = 99))
 ```
 Her aflæses $p$-værdien altså til at være 0.048. Da signifikansniveauet $\alpha = 0.05$, betyder det altså at $p\le\alpha$. Dette betyder at der evidens til at forkaste $H_0$, hvilket betyder at $H_a$ er mere sandsynlig og den accepteres derfor. Hvis $p$-værdien er højere end signifikansniveauet, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil derved accepteres.
+
+## Fejl i hypotesetest
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
+
+Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor konklusionen er korrekt og to, hvor  konklusionen er forkert. De to fejltyper kaldes type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand.
+
+
+ Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
+
+
+
+```{r, fig.height = 3, fig.width = 8} 
+p1 <- qdist(mean = 0, sd = 1, p = 1, return = "plot")
+p2 <- qdist(mean = 0, sd = 1, p = 0.5, return = "plot")
+#p3 <- qdist(mean = 0, sd = 1, p = 0, return="plot")
+grid.arrange(p1, p2, ncol=2)
+
+```
+
+
+## Lineær regression
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 9 I BOGEN  
+Lineær regression er en model, hvori det ønskes at forudsige $y$ (en responsvariabel), ud fra $x$ (en forklarende variabel). Ud fra denne undersøgelse vil der opnås en graf, med en regressionslinje. En regressionslinje er en ret linje som minimerer den vertikale afstand mellem alle punkterne og linjen. Der vil desuden også være en ligning for denne regressionslinje, se nedenstående:
+$$
+\begin{aligned}
+E(y) = \alpha + \beta \ \cdot x
+\end{aligned}
+$$
+hvor:  
+- $E(y)$ er den forventede værdi af $y$.  
+- $\alpha$ er skæringen i y-aksen.  
+- $\beta$ bestemmer hældningen af regressionslinjen baseret på $x$'s værdi.  
+
+```{r dataframe for lineær regression, include = FALSE}
+set.seed(1)
+df <- data.frame(x = c(0:20))
+df$y <- 2*df$x + rnorm(20, sd = 5)
+```
+Nedenstående er der plottet et eksempel på en lineær model. Desuden er der indskrevet ligningen for regressionslinjen:
+```{r eksempel på lineær regression}
+ggplot(data = df, aes(x = x, y = y)) +
+  geom_smooth(method = "lm") +
+  geom_point() +
+  stat_regline_equation(label.x = 5, label.y = 35) +
+  ggtitle("Eksempel på lineær regression")
+  
+```
+Som det kan ses på figuren, er der få punkter som ligger tæt på regressionslinjen. Dette skyldes at denne regressionslinje er den "bedste" rette linje, altså den rette linje, hvor den vertikale afstand mellem punkterne og linjen er mindst.
+
+For at undersøge hvad den vertikale afstand mellem punkterne og regressionslinjen, benyttes en metode kaldes "Sum of Squares Error" (også kaldet $SSE$), som udregnes på følgende måde:
+$$
+\begin{aligned}
+SSE = \sum (y_i-\hat{y_i})^2
+\end{aligned}
+$$
+Jo lavere $SSE$ er, jo bedre passer punkterne altså på regressionslinjen, den forklarer yderligere, hvor langt hvert datapunkt er fra de forudsagte datapunkter. Yderligere kan "Total Sum of Squares" (også kaldet $TSS$) udregnes på følgende måde:
+$$
+\begin{aligned}
+TSS = \sum (y_i-\overline{y})^2
+\end{aligned}
+$$
+Denne formel forklarer forskellen mellem hvert punkt og $y$'s gennemsnit. Endnu en formel man kan udregne kaldes "Sum of Squared Regression" (også kaldet $SSR$) og udregnes på følgende måde:
+$$
+\begin{aligned}
+SSR = \sum (\hat{y_i}-\overline{y})^2
+\end{aligned}
+$$
+Denne formel forklarer forskellen mellem de forudsagte datapunkter og $y$'s gennemsnit. Der er en sammenhæng mellem disse tre formler, nemlig at:
+$$
+\begin{aligned}
+TSS = SSE + SSR
+\end{aligned}
+$$
+Med disse 3 værdier kan det udregnes hvor god $x$ er til at forudsige $y$. Måden hvorpå dette kan udregnes, står forneden:
+$$
+\begin{aligned}
+R^2 = \frac{SSR}{TSS}=\frac{TSS-SSE}{TSS}
+\end{aligned}
+$$
+Denne $R^2$-værdi vil altid være imellem 0 og 1, hvor 1 betyder at $y$ kan forudsiges ud fra $x$ alene, og hvor 0 betyder at $y$ slet ikke kan forudsiges ud fra $x$.
+
+## Multipel lineær regression
+En multipel lineær regression minder meget om en lineær regression, dog med den forskel at der her er flere forklarende variabler. Dette vil altså sige, at den førnævnte ligning for regressionslinjen, her vil se ud på denne måde:
+$$
+\begin{aligned}
+E(y) = \alpha + \beta_1 \cdot x_1 + \beta_2 \cdot x_2 + ... + \beta_n \cdot x_n
+\end{aligned}
+$$
+
+
+## F-test
+DETTE AFSNIT ER SKREVET UD FRA KAPITEL 11 I BOGEN  
+En F-test er en statistisk test som har en F fordelingen under nul hypotese. Den er mest ofte brugt når man sammenligner statistiske modeller i et datasæt til at identificere den model som passer bedst til populationen fra dataen. Det er en test som hæder statistikeren, Ronald A. Fisher, som opdagede F-fordelingen i 1922. F-fordelingen kan kun tage ikke negative værdier og den er noget skævt til højre, ligesom en chi i anden-fordelingen. Den nedenstående figur illustrerer dette. I forhold til T-test som har til formål at sammenligne middelværdierne i to populationer, så vil F-test sammenligne spredninger (eller varianser. Principperne for denne test er identiske med principperne for t-testene. Blot beregnes tesetstørrelsen på en anden måde, og der skal bruges F-fordelingen til at beregnes testsandsynligheden.
+
+
+
+Denne figur viser $F$ fordelingen og $P$-værdien for $F$ test. Hvor højere $F$-værdier betyder at der er større evidens for at kunne forkaste $H_0$.
+
+For at udregne en f-score skal man opstille en $F$-brøk. En $F$-brøk udregnes på følgende måde:
+
+$$
+\begin{aligned}
+F = \frac{MSR}{MSE}
+\end{aligned}
+$$
+$MSR$ og $MSE$ er varianser fra variationerne $SSR$ og $SSE$. Disse varianser står for $MSR$ betyder "Mean Square Regression" og $MSE$ betyder "Mean Square Error". De bliver så udregnet på følgende måde:
+
+$$
+\begin{aligned}
+MSR = \frac{SSR}{k}
+\end{aligned}
+$$
+$$
+\begin{aligned}
+MSE = \frac{SSE}{n-k-1}
+\end{aligned}
+$$
+Varians udregnes ved at dividere variationen med dens frihedsgrad. Dette er bestemt af to frihedsgrader som er noteret som $df_1$ og $df_2$
+
+Dette er antallet af variabler i modellen.
+$$
+\begin{aligned}
+df_1 = k
+\end{aligned}
+$$
+Dette er n - antal af parameter i regressions udregningen.
+$$
+\begin{aligned}
+df_2 = n - (k+1)
+\end{aligned}
+$$
+
+Den første frihedsgrad, $df_1$ = $k$ er tælleren ($R^2$) i F testen. Den anden frihedsgrad $df_2$ = n - (k + 1) er nævneren (1- $R^2$).
+
+$$
+\begin{aligned}
+\frac{R^2}{(1-R^2)}
+\end{aligned}
+$$
+Det vil sige hvor højere $R^2$ er, desto større er ratioen $\frac{R^2}{1-R^2}$, og desto større er F test værdien. Ved en høj F test værdi hvor større evidens er der for at forkaste $H_0$.
+
+
+# Problemformulering
+Indenfor statistisk er der nogle interessante problemstillinger. Hvordan genereres tilfældige tal? Hvordan kan genereret tilfældige tal transformeres til en normalfordeling? Hvilke antagelser er der bag forskellige tests i statistisk, og hvad ville der ske, hvis disse antagelser blev brudt? Disse er alle interessante spørgsmål, som har ledt ud i følgende problemformulering:
+- Hvordan kan der ved hjælp af en PRNG, genereres tilfældige tal?  
+- Kan tilfældigeheden af PRNG'er blive undersøgt med tests og grafer?
+- Hvilke antagelser er der bag en t-test og ANOVA?
+- Hvad vil der ske, hvis disse antagelser brydes? Vil antallet af type I og type II fejl variere?
+- Er det muligt at reducere type I og type II fejl, på trods af at antagelserne er brudt?
