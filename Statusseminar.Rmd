@@ -207,10 +207,9 @@ Jo højere tætheden er ved en specifik værdi, jo højere er sandsynligheden fo
 En af anvendelserne for en standarnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
 
 #### T-fordeling  
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
+
 
 En T-fordeling har et symmetrisk klokkeformet udseende. Hvorimod en normalfordeling laves ved hjælp af $\mu$ og $\sigma$, så laves en T-fordeling ud fra frihedsgrader. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
-
 ```{r, echo = FALSE, fig.height = 3, fig.width = 8} 
 p1 <- qdist("t", df = 5, p = 1, return = "plot", xlim = c(-3, 3), ylab = "Tæthed") + theme(legend.position = "none")
 p2 <- qdist("t", df = 100, p = 1, return = "plot", xlim = c(-3, 3), ylab = "Tæthed") + theme(legend.position = "none")
@@ -252,7 +251,7 @@ I det nedenstående afsnit, vil der ved hjælp af et eksempel vises, hvordan et 
 
 
 ### Hypoteser
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
+
 Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Specifikt findes der to hypoteser, som typisk bruges indenfor statistik, som er betegnet som $H_0$ og $H_a$, det er henholdsvis nulhypotesen og den alternative hypotese.
 
 Et klassisk eksempel på en nulhypotese kan være:
@@ -280,7 +279,7 @@ For at finde ud af hvilken af disse hypoteser, som er den korrekte og mest sands
 # Metoder
 
 ## Hypotesetest
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
+  
 
 I en hypotesetest for kvantitative variabler, er der nogle nødvendige antagelser. Først og fremmest, antages det at populationen er normalfordelt, samt at der alle observationerne i stikprøven er udvalgt tilfældigt ud fra populationen. Dernæst opstilles der to hypoteser, $H_0$ $H_a$:
 
@@ -305,17 +304,17 @@ Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Denne T-fordeling vil have 
 ```{r, echo = FALSE}
 qdist("t", p = c(0.025, 0.975), df = 99, return = "plot")
 ```
-
 Nu kan $t_{crit}$ aflæses til at være $\pm 1.984$. Ved at sammenligne test størrelsen med $t_{crit}$, kan man dernæst komme til en konklusion. Hvis $t_{crit}$ ligger indenfor $\pm 1.984$, altså $t_{crit}$, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil dermed accepteres. Hvis test størrelsen ligger udenfor intervallet, vil $H_0$ forkastes, og $H_a$ vil dermed være mere sandsynlig.
 
 Test størrelsen kan også undersøges ved hjælp af $p$-værdien frem for $t_{crit}$. Her kan $p$-værdien findes, ved at benytte test størrelsen sammen med en T-fordeling. Denne T-fordeling har $n-1$ frihedsgrader. I nedenstående eksempel er $p$-værdien udregnet ud fra en test størrelse på 2:
+
 ```{r, echo = FALSE}
 2* (1 - pdist("t", q = 2, df = 99))
 ```
 Her aflæses $p$-værdien altså til at være 0.048. Da signifikansniveauet $\alpha = 0.05$, betyder det altså at $p\le\alpha$. Dette betyder at der evidens til at forkaste $H_0$, hvilket betyder at $H_a$ er mere sandsynlig og den accepteres derfor. Hvis $p$-værdien er højere end signifikansniveauet, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil derved accepteres.
 
 ## Fejl i hypotesetest
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
+
 
 Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor konklusionen er korrekt og to, hvor  konklusionen er forkert. De to fejltyper kaldes type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand.
 
@@ -334,7 +333,7 @@ grid.arrange(p1, p2, ncol=2)
 
 
 ## Lineær regression
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 9 I BOGEN  
+ 
 Lineær regression er en model, hvori det ønskes at forudsige $y$ (en responsvariabel), ud fra $x$ (en forklarende variabel). Ud fra denne undersøgelse vil der opnås en graf, med en regressionslinje. En regressionslinje er en ret linje som minimerer den vertikale afstand mellem alle punkterne og linjen. Der vil desuden også være en ligning for denne regressionslinje, se nedenstående:
 $$
 \begin{aligned}
@@ -404,7 +403,7 @@ $$
 
 
 ## F-test
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 11 I BOGEN  
+
 En F-test er en statistisk test som har en F fordelingen under nul hypotese. Den er mest ofte brugt når man sammenligner statistiske modeller i et datasæt til at identificere den model som passer bedst til populationen fra dataen. Det er en test som hæder statistikeren, Ronald A. Fisher, som opdagede F-fordelingen i 1922. F-fordelingen kan kun tage ikke negative værdier og den er noget skævt til højre, ligesom en chi i anden-fordelingen. Den nedenstående figur illustrerer dette. I forhold til T-test som har til formål at sammenligne middelværdierne i to populationer, så vil F-test sammenligne spredninger (eller varianser. Principperne for denne test er identiske med principperne for t-testene. Blot beregnes tesetstørrelsen på en anden måde, og der skal bruges F-fordelingen til at beregnes testsandsynligheden.
 
 
