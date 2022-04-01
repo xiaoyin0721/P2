@@ -1,3 +1,4 @@
+
 ---
 title: "P2"
 author: "Tobias Pedersen, Dat Luong, Adam Rumi, Kristoffer Lading, Xiaoyin Chang, Kasper Sommer"
@@ -13,7 +14,7 @@ knitr::opts_chunk$set(
 	warning = TRUE)
 library(mosaic)
 library(ggplot2)
-#library(ggpubr)
+library(ggpubr)
 library(cowplot)
 require(gridExtra)
 #install.packages("Rtools")
@@ -21,25 +22,12 @@ require(gridExtra)
 #tinytex::install_tinytex()
 ```
 
-
-
 # Introduktion
 I denne del af projektet, skabes der en Pseudo-Random Number generator, hvis formål er at generere tilfældige tal. Fordelingen af disse tal vil være uniform, og ved hjælp af en Box-Muller transformation vil der opnås en normalfordeling. Grunden til dette er at undersøge stikprøver fra en normalfordeling i forhold til Central Limit Theorem, da der er adskillige interessante statistiske spørgsmål herinden under.
 
 
 # Pseudo-Random Number Generators
 For at kunne generere tilfældige tal ud fra deterministiske computere,er det nødvendigt at bearbejde et input ved hjælp af en algoritme, således at det genererede tal tilsyneladende er tilfældigt. Et sådanne genereret tal kaldes et "Pseudo-Random Number", og disse bliver genereret ved hjælp af Pseudo-Random Number Generators (også kaldet PRNG'er). PRNG'er benytter et seed, som kan bestemmes af brugeren, til at generere de tilfældige tal. Et eksempel på en kendt PRNG, er en Lineære Kongruentiel Generator (Også kaldet LCG). 
-
-# True-Random Number Generators
-I modsætning til PRNG'er, eksisterer der også True-Random Number Generators (også kaldet TRNG'er). Disse generators genererer tilfældige tal, uden nødvendigvis at afhænge af algoritmer. Et eksempel på en kendt TRNG, er at generere tilfældige tal ved hjælp af atmosfærisk støj.
-
-# Sammenligning af PRNG'er og TRNG'er
-
-En PRNG er meget velegnet til simulationer, da det er muligt at reproducere dataet ved at sætte seed'et til en bestemt værdi. Dette gør det muligt for andre indenfor samme område, at kunne få dataet fra en given simulation, og derved er det nemmere at diskutere fund og eller problemer med den givne simulation.
-
-TRNG'er kan også benyttes til simulationer, og siden tallene er mere tilfældige i forhold til PRNG'erne, kan de være mere velegnet til simulationer. Problemet er dog, at siden seedets værdi ikke kan bestemme, er det umuligt at reproducere dataet. Grundet dette, er PRNG i adskillige situationer foretrukket indenfor simulationer. Dog er det værd at nævne, at siden dataet fra en TRNG ikke kan reproduceres, er det optimalt for ting som skal være tilfældige, såsom lotteriet, gambling eller kryptering.
-
-I dette projekt vil en PRNG implementeres i R, hvornæst de uniform fordelte tal skal transformeres v.h.a. Box-Muller. Dernæst vil R's indbyggede PRNG benyttes til at undersøge adskillige statistiske spørgsmål.
 
 # Lineær kongruens generator
 I en lineær kongruens generator (LCG) er det muligt at generere tilfældige tal. LCG er en PRNG, så tallene der fås fra generatoren, vil ikke være fuldstændigt tilfældige. For LCG'en benyttes følgende formel, for at generere de tilfældige tal: 
@@ -57,10 +45,9 @@ Her vil man starte med at indsætte $X_0$ på $X_{n}$'s plads, og ud fra dette k
 Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv, længden fra det første tal i generatoren frem til det første gentagende tal kaldes for en periode, og perioden afhænger meget af de valgte værdier af $a$, $c$ og $m$. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
 De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. I en undersøgelse af PRNG'er blev det påvist at den optimale periode kan opnås på to måder. Enten skal 2 være opløftet i $m$, eller 10 skal være opløftet i $m$. I denne rapport vælges $2^m$, og dertil er der yderligere nogle krav. Først og fremmest skal $c$ være et ulige tal, samt at $a-1\; mod\;4  = 0$, så længe $m$'s værdi kan divideres med 4. Dette er grunden til at de valgte værdier 
 
-```{r}
-##![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
-```
+
 Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en funktion f, som ikke har en invers funktion. Dette kan dog kun gøres en gang per tilstand, hvorimod andre PRNG’er kan have flere tilstande på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgås i rapporten.
+
 
 # Implementering af linear congruential generator
 Nedenstående blok kode blev brugt til at lave den lineære kongruentiale generator (LCG):
@@ -88,7 +75,7 @@ KILDE: https://dl.acm.org/doi/pdf/10.5555/2955239.2955463
 
 ```{r Linear Congruence, echo=FALSE}
 
-gf_histogram(~linear_congruence(i=100000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller",title = "Resultaterne af den implementerede PRNG")
+gf_histogram(~linear_congruence(i=10000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller",title = "Resultaterne af den implementerede PRNG")
     
 ```
 
@@ -134,27 +121,6 @@ Dette betyder altså at hvis nulhypotesen er sand, så er der en $43\%$ chance f
 Grundet alt dette følger LCG'en altså en uniform fordeling med $95\%$ konfidens.
 
 
-#Spektral test
-Ud over Pearson's chi i anden-test, kan det også undersøges visuelt ved hjælp af en spektral test. Denne test vil give en graf. Hvis grafen har ca. lige mange punkter over det hele, vil det være en uniformfordeling. Alle værdierne vil falde mellem 0 og 1. Nedenstående er grafen for LCG'en vist:
-
-
-```{r}
-
-spectral_test <- function(){
-  nSim = 10000
-  X = rep(0,nSim)
-  v1 <- linear_congruence(i=1000, X_0 = 1576)
-  for (i in 2:length(v1)){
-   X[i] = v1[i]
-  }
-plot(X[-1],X[-nSim],col="blue", type="p", pch=20,lwd=2, xlab = "", ylab = "")
-    
-}
-spectral_test()
-
-```
-
-
 
 # Box-Muller transformation
 Box-Muller transformationen er en metode, hvori to uniforme random variabler transformeres til en normal fordeling. Den primære ide er at ændre fra koordinatorne fra kartetiske til polære koordinator. 
@@ -193,6 +159,7 @@ cartesian_polar_transform()
 
 
 
+
 #Quantile-quantile plot
 
 A Q–Q plot is a probability plot, which is a graphical method for comparing two probability distributions by plotting their quantiles against each other. we use qqplot to check the generated data X, Y follows a normal distribution. 
@@ -217,188 +184,6 @@ qq_normality_check()
 
 ```
 
-#Kolmogorov-Smirnov Test
-
-Kolmogorov-Smirnov Test can be used to test sample of n observations is from a continuous distribution. If the generated X, Y all follows a normal distribution, the principle is that the difference between observed CDF $F_0(X)$ and expected CDF $F_e(X)$ should be small. 
-
-The test statistics are $K^+$, maximum observed deviation below the expected cdf and $K^-$, the minimum observed deviation below the expected cdf. 
-
-$K^+ = \sqrt(n)max(F_0(x) - F_e(x))$
-
-$K^- = \sqrt(n)max(F_e(x) - F_0(x))$
-
-if $K^+ < K[1-\alpha, n]$ and $K^- < K[1-\alpha, n]$, test is passed at $\alpha$ level of significance. 
-
-Test Statistics $D = Max|K^+, K^-|$
-
-$F_e(x)$ is the theoretical frequency distribution, the normal distribution cdf is $F_X(x) = 1/2(1+erf(x-\mu/\sqrt2\sigma)$, while the error funtion is defined as
-$erf(x) = 2/\sqrt\pi \int_{0}^{x}exp(-t^2)dt$
-
-
-We can firstly compare two cdfs visually
-
-```{r}
-
-KS_compare_cdf <- function(){
-  uni_rand_num1 <- linear_congruence(i=10000, X_0 = 145)
-  uni_rand_num2 <- linear_congruence(i=10000, X_0 = 7346)
-  R <- sqrt(-2*log(uni_rand_num1))
-  theta <- 2*pi*uni_rand_num2
-  n <- 10^4
-  X <- R*cos(theta)
-  Y <- R*sin(theta) 
-  Z <- rnorm(n) #Normal distribution generated by rnorm() function in R
-  samples <- matrix(ncol = 3, nrow = n)
-  samples[,1] <- X
-  samples[,2] <- Y 
-  samples[,3] <- Z
-  Label <- rep(c("X", "Y", "Normal Fordeling"),n)
-  value <- c(samples[,1],samples[,2], samples[,3])
-  df <- data.frame(value, Label)
-  ggplot(df, aes(x=value)) + stat_ecdf(aes(color=Label)) 
-}
-
-KS_compare_cdf()
-
-```
-
-It can be observed that X,Y follows the cdf function for normal distribution. However it could still be in our interest to run a Kolmogorov-Smirnov test. 
-
-```{r}
-ks_normality_test_X <- function(){
-  uni_rand_num1 <- linear_congruence(i=10000, X_0 = 145)
-  uni_rand_num2 <- linear_congruence(i=10000, X_0 = 7346)
-  R <- sqrt(-2*log(uni_rand_num1))
-  theta <- 2*pi*uni_rand_num2
-  X <- R*cos(theta)
-  Y <- R*sin(theta)
-  ks.test(X,'pnorm')
-}
-
-ks_normality_test_Y <- function(){
-  uni_rand_num1 <- linear_congruence(i=10000, X_0 = 145)
-  uni_rand_num2 <- linear_congruence(i=10000, X_0 = 7346)
-  R <- sqrt(-2*log(uni_rand_num1))
-  theta <- 2*pi*uni_rand_num2
-  X <- R*cos(theta)
-  Y <- R*sin(theta)
-  ks.test(Y, 'pnorm') #value for X is already returned
-}
-
-ks_normality_test_X()
-ks_normality_test_Y()
-
-
-```
-
-We firstly run KS test to examine if X is from a normal distribution, then run KS test to check if the two distributions are critical values for KS test is 0.04301, for each ks-test for X and Y, the D score is smaller than the critical score, therefore we confirm that both X and Y are normally distributed. 
-
-
-Ud af dette, fås der to tal $x$ og $y$, som i dette tilfælde er uafhængige tilfældige variabler med en normalfordeling. Resultater X,Y er to uafhægige normal fordelinger. Forneden kan resultaterne af Box-Muller transformationen ses:
-
-
-
-```{r echo=FALSE}
-
-Box_muller_transform <- function(){
-  uni_rand_num1 <- linear_congruence(i=10000, X_0 = 145)
-  uni_rand_num2 <- linear_congruence(i=10000, X_0 = 7346)
-  R <- sqrt(-2*log(uni_rand_num1))
-  theta <- 2*pi*uni_rand_num2
-  X <- R*cos(theta)
-  Y <- R*sin(theta)
-  n <- 10^4
-  samples <- matrix(ncol = 2, nrow = n)
-  samples[,1] <- X
-  samples[,2] <- Y 
-  Label <- rep(c("X", "Y"),n)
-  value <- c(samples[,1],samples[,2])
-  df <- data.frame(value, Label)
-  plt <- ggplot(df, aes(x=value, color=Label, fill=Label)) + geom_histogram(aes(y=..density..), bins = 90, position= "identity", alpha =0.3) + labs(title = "Box-Muller Transformationen", x="Value", y="Density") + theme_bw() + stat_function(fun = dnorm, col="blue") 
-  print(plt)
-}
-Box_muller_transform()
-
-
-```
-
-
-
-# Teori
-
-
-## Population og stikprøve
-Kapitel 1: ASta bog
-Population:
-En population kan betragtes som alle ting eller folk, som eksempelvist har en eller flere vilkår, der gælder. For eksempel kan det være den voksne del af den danske befolkningen, der spiller fodbold. Ud fra en population kan der tages en stikprøve,altså en subgruppe af populationen, hvor der regelmæssigt benyttes "Simple Random Sampling", hvor alle observationerne, har lige sandsynlighed for at blive trukke ud i stikprøven. 
-I en population betegnes middelværdien som $\mu$ og standardafvigelsen som $\sigma$, hvorimod stikprøvens middelværdi betegnes som $\overline{y}$, og stikprøvens standardafvigelse betegnes som $s$.
-
-
-##CLT og Stikprøv
-
-According to Central Limit Theorem, the sample mean $\bar{y}$ is normally distributed $\bar{y}\approx norm(\mu, \frac{\sigma}{\sqrt{n}})$. It is stated that population mean $\mu$ lies in the interval $[\bar{y} - 2\frac{\sigma}{\sqrt{n}}, \bar{y} + 2\frac{\sigma}{\sqrt{n}}]$  at a significance level at $\alpha = 0.05$.
-
-Below it is shown that taking sufficiently large random samples from a left-skewed population, the distribution of the sample means is observed to be approximately normally distributed, provided that the sample size is sufficiently large ($n>=30$).
-
-
-```{r}
-
-generate_sampling_distribution <- function(sample_size){
-  set.seed(199)
-  n = 10^5
-  sample_means = rep(0, n)
-  for (i in 1:n){
-   sample_means[i] = mean(rgamma(sample_size, shape=9, rate=2))
-  }
-  hist(sample_means, main="Central Limit Theorem", xlab="Sampling distribution with a sample size of 30")
-  
-  
-}
-
-## Sampling Distribution, CLT
-generate_sampling_distribution(30)
-```
-
-
-## Middelværdi og standardafvigelse
-I en population findes der to værdier, $\mu$ og $\sigma$, som henholdsvis er middelværdien af en indenfor populationen, og spredningen af en indenfor populationen.
-Populationens middelværdi udregnes på følgende måde:
-$$
-\begin{aligned}
-\mu = \frac{1}{n}\sum_{i=1}^nx_i
-\end{aligned}
-$$
-hvor $n$ er antallet af observationer og $x_i$ er den i'te observation i populationen.
-
-Populations standardafvigelse kan udregnes ud fra populationens varians. Nedenstående ligning viser hvordan variansen for en population kan udregnes:
-
-$$
-\begin{aligned}
-\sigma^2 = \sum_{i=1}^{n} \frac{(x_i-\mu)^2}{n}
-\end{aligned}
-$$
-Hvor $x_i$, som svarer til den i'te observation i populationen og $\overline{x}$, som svarer til gennemsnittet af populationen.
-
-Sammenhænget mellem en populations standardafvigelse og populationens varians kan ses i nedenstående ligning:
-$$
-\begin{aligned}
-\sigma=\pm\sqrt{\sigma^2}
-\end{aligned}
-$$
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
 
 
 ## Fordelinger
@@ -414,6 +199,7 @@ $$
 hvor $\sigma$ og $\mu$ er kendt.
 
 En standardnormalfordeling er kendetegnet ved at $\mu = 0$, og at $\sigma = 1$. Nedenstående er der plottet en standardnormalfordeling:
+
 ```{r, echo = FALSE}
 qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4), return = "plot", ylab = "Tæthed") + theme(legend.position = "none")
 ```
@@ -421,7 +207,7 @@ Jo højere tætheden er ved en specifik værdi, jo højere er sandsynligheden fo
 En af anvendelserne for en standarnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
 
 #### T-fordeling  
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
+
 
 En T-fordeling har et symmetrisk klokkeformet udseende. Hvorimod en normalfordeling laves ved hjælp af $\mu$ og $\sigma$, så laves en T-fordeling ud fra frihedsgrader. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
 ```{r, echo = FALSE, fig.height = 3, fig.width = 8} 
@@ -444,15 +230,11 @@ p2 <- gf_histogram(~unifx1,breaks = seq(0,1,by=0.1), fill="black", col="grey",xl
 grid.arrange(p1, p2, nrow=2)
 ```
 
-
-
-SKREVET UD FRA SIDE 16 OG 115 
 ## Statistisk inferens
 Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus, at lave forudsigelser om et element på baggrund af data og tendenser dertil.
 I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså det bedste gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er en uendeligt lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat (et kvalificeret gæt på et interval, hvori undersøgte parameter i en population ligger). Dette eksemplificeres ved den mest almindelige form for intervalestimat; konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
 
 ### Konfidensinterval
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
 
 Når der indenfor statistik estimeres en populations parameter ud fra en stikprøve, vil resultatet aldrig være perfekt. Dette resulterer i en fejlmargin, som der skal tages højde for. En måde hvorpå man kan tage højde for denne fejlmargin er et konfidensinterval.
 
@@ -467,39 +249,9 @@ KI = Punktestimat \; \pm \; fejlmargin
 $$
 I det nedenstående afsnit, vil der ved hjælp af et eksempel vises, hvordan et konfidensinterval for kvantitative variabler findes.
 
-#### Kvantitative variabler
-Hvis der tages en stikprøve ud fra en population, kunne denne stikprøve have $\overline{y} = 10$ og $s = 1$. Selve formlen for konfidensintervallet ser ud som forneden, når der arbejdes med kvantitative variabler:
-$$
-\begin{aligned}
-KI = \overline{y}\;\pm t_{crit} \;\cdot sf(\overline{y})
-\end{aligned}
-$$
-
-En af de første ting der skal findes, for at kunne lave et konfidensinterval er standardfejlen ($sf$). Formlen for at finde denne, vises forneden:
-$$
-\begin{aligned}
-sf(\overline{y}) = \frac{s}{\sqrt{n}}
-\end{aligned}
-$$
-hvor $s$ er standardafvigelsen for stikprøven og $n$ er antallet af observationer. Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Hvis det ønskede signifikansniveau er $5\%$, så skal x-værdien aflæses ved $2.5\%$ og $97.5\%$. I nedenstående eksempel er der en T-fordeling med 10 frihedsgrader:
-```{r, echo = FALSE}
-qdist("t", df = 10, p = c(0.025,0.975))
-```
-Denne værdi aflæses til at være ~2.22. Nu kan konfidensintervallet opstilles:
-$$
-\begin{aligned}
-KI = \overline{y}\;\pm 2.22 \;\cdot sf(\overline{y})
-\end{aligned}
-$$
-Da $t_{crit}$ blev fundet ud fra at signifikansniveauet er $5\%$, kan der med $95\%$ sikkerhed siges at $\mu$ ligger i følgende interval:
-$$
-\begin{aligned}
-(\overline{x}\;-2.22 \;\cdot sf(\overline{x}) \ \ , \ \ \overline{x}\;+2.22 \;\cdot sf(\overline{x})
-\end{aligned}
-$$
 
 ### Hypoteser
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
+
 Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Specifikt findes der to hypoteser, som typisk bruges indenfor statistik, som er betegnet som $H_0$ og $H_a$, det er henholdsvis nulhypotesen og den alternative hypotese.
 
 Et klassisk eksempel på en nulhypotese kan være:
@@ -527,7 +279,7 @@ For at finde ud af hvilken af disse hypoteser, som er den korrekte og mest sands
 # Metoder
 
 ## Hypotesetest
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
+  
 
 I en hypotesetest for kvantitative variabler, er der nogle nødvendige antagelser. Først og fremmest, antages det at populationen er normalfordelt, samt at der alle observationerne i stikprøven er udvalgt tilfældigt ud fra populationen. Dernæst opstilles der to hypoteser, $H_0$ $H_a$:
 
@@ -548,38 +300,40 @@ Det kan ses at test størrelsen afhænger af $\overline{y}$, og $\mu_0$-værdien
 Ud fra denne test størrelse, er der nu to mulige måder at fortsætte. Enten skal $t_{crit}$ findes eller $p$-værdien skal findes. Først vil metoden med $t_{crit}$ forklares, hvorefter metoden med $p$-værdien forklares.
 
 Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Denne T-fordeling vil have $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
+
 ```{r, echo = FALSE}
 qdist("t", p = c(0.025, 0.975), df = 99, return = "plot")
 ```
 Nu kan $t_{crit}$ aflæses til at være $\pm 1.984$. Ved at sammenligne test størrelsen med $t_{crit}$, kan man dernæst komme til en konklusion. Hvis $t_{crit}$ ligger indenfor $\pm 1.984$, altså $t_{crit}$, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil dermed accepteres. Hvis test størrelsen ligger udenfor intervallet, vil $H_0$ forkastes, og $H_a$ vil dermed være mere sandsynlig.
 
 Test størrelsen kan også undersøges ved hjælp af $p$-værdien frem for $t_{crit}$. Her kan $p$-værdien findes, ved at benytte test størrelsen sammen med en T-fordeling. Denne T-fordeling har $n-1$ frihedsgrader. I nedenstående eksempel er $p$-værdien udregnet ud fra en test størrelse på 2:
+
 ```{r, echo = FALSE}
 2* (1 - pdist("t", q = 2, df = 99))
 ```
 Her aflæses $p$-værdien altså til at være 0.048. Da signifikansniveauet $\alpha = 0.05$, betyder det altså at $p\le\alpha$. Dette betyder at der evidens til at forkaste $H_0$, hvilket betyder at $H_a$ er mere sandsynlig og den accepteres derfor. Hvis $p$-værdien er højere end signifikansniveauet, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil derved accepteres.
 
-
-
 ## Fejl i hypotesetest
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 6 I BOGEN  
+
 
 Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor konklusionen er korrekt og to, hvor  konklusionen er forkert. De to fejltyper kaldes type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand.
 
 
  Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
-#![]#(C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
+
 
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist(mean = 0, sd = 1, p = 1, return = "plot")
 p2 <- qdist(mean = 0, sd = 1, p = 0.5, return = "plot")
 #p3 <- qdist(mean = 0, sd = 1, p = 0, return="plot")
 grid.arrange(p1, p2, ncol=2)
+
 ```
 
+
 ## Lineær regression
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 9 I BOGEN  
+ 
 Lineær regression er en model, hvori det ønskes at forudsige $y$ (en responsvariabel), ud fra $x$ (en forklarende variabel). Ud fra denne undersøgelse vil der opnås en graf, med en regressionslinje. En regressionslinje er en ret linje som minimerer den vertikale afstand mellem alle punkterne og linjen. Der vil desuden også være en ligning for denne regressionslinje, se nedenstående:
 $$
 \begin{aligned}
@@ -647,11 +401,12 @@ E(y) = \alpha + \beta_1 \cdot x_1 + \beta_2 \cdot x_2 + ... + \beta_n \cdot x_n
 \end{aligned}
 $$
 
+
 ## F-test
-DETTE AFSNIT ER SKREVET UD FRA KAPITEL 11 I BOGEN  
+
 En F-test er en statistisk test som har en F fordelingen under nul hypotese. Den er mest ofte brugt når man sammenligner statistiske modeller i et datasæt til at identificere den model som passer bedst til populationen fra dataen. Det er en test som hæder statistikeren, Ronald A. Fisher, som opdagede F-fordelingen i 1922. F-fordelingen kan kun tage ikke negative værdier og den er noget skævt til højre, ligesom en chi i anden-fordelingen. Den nedenstående figur illustrerer dette. I forhold til T-test som har til formål at sammenligne middelværdierne i to populationer, så vil F-test sammenligne spredninger (eller varianser. Principperne for denne test er identiske med principperne for t-testene. Blot beregnes tesetstørrelsen på en anden måde, og der skal bruges F-fordelingen til at beregnes testsandsynligheden.
 
-#![]#(C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/F-model.png){width=50%}
+
 
 Denne figur viser $F$ fordelingen og $P$-værdien for $F$ test. Hvor højere $F$-værdier betyder at der er større evidens for at kunne forkaste $H_0$.
 
@@ -706,19 +461,3 @@ Indenfor statistisk er der nogle interessante problemstillinger. Hvordan generer
 - Hvilke antagelser er der bag en t-test og ANOVA?
 - Hvad vil der ske, hvis disse antagelser brydes? Vil antallet af type I og type II fejl variere?
 - Er det muligt at reducere type I og type II fejl, på trods af at antagelserne er brudt?
-
-
-# Problemanalyse
-
-
-
-## Simulationer
-En simulation er en modellering af tilfældige begivenheder, hvor det simulerede udfald, skal estimere mulige udfald for virkeligheden. Formålet med simulationen i projektets omfang, er at eftervise statiske metoder, samt se hvornår de fejler. 
-
-
-
-
-
-
- 
-
