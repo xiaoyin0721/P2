@@ -49,11 +49,8 @@ $$
 
 Her vil man starte med at indsætte $X_0$ på $X_{n}$'s plads, og ud fra dette kan man finde $X_1$. Derefter kan man indsætte $X_1$ på $X_n$’s plads og derefter få $X_2$. Denne proces kan gentages så mange gange som man har brug for.
 Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv, længden fra det første tal i generatoren frem til det første gentagende tal kaldes for en periode, og perioden afhænger meget af de valgte værdier af $a$, $c$ og $m$. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
-De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. I en undersøgelse af PRNG'er blev det påvist at den optimale periode kan opnås på to måder. Enten skal 2 være opløftet i $m$, eller 10 skal være opløftet i $m$. I denne rapport vælges $2^m$, og dertil er der yderligere nogle krav. Først og fremmest skal $c$ være et ulige tal, samt at $a-1\; mod\;4  = 0$, så længe $m$'s værdi kan divideres med 4. Dette er grunden til at de valgte værdier 
+De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. I en undersøgelse af PRNG'er blev det påvist at den optimale periode kan opnås på to måder. Enten skal 2 være opløftet i $m$, eller 10 skal være opløftet i $m$. I denne rapport vælges $2^m$, og dertil er der yderligere nogle krav. Først og fremmest skal $c$ være et ulige tal, samt at $a-1\; mod\;4  = 0$, så længe $m$'s værdi kan divideres med 4. Dette er grunden til at de valgte værdier. 
 
-```{r}
-#![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
-```
 Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en funktion f, som ikke har en invers funktion. Dette kan dog kun gøres en gang per tilstand, hvorimod andre PRNG’er kan have flere tilstande på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgås i rapporten.
 
 # Implementering af linear congruential generator
@@ -366,6 +363,7 @@ $$
 hvor $\sigma$ og $\mu$ er kendt.
 
 En standardnormalfordeling er kendetegnet ved at $\mu = 0$, og at $\sigma = 1$. Nedenstående er der plottet en standardnormalfordeling:
+
 ```{r, echo = FALSE}
 qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4), return = "plot", ylab = "Tæthed") + theme(legend.position = "none")
 ```
@@ -376,6 +374,7 @@ En af anvendelserne for en standarnormalfordeling er at den kan benyttes til en 
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 5 I BOGEN  
 
 En T-fordeling har et symmetrisk klokkeformet udseende. Hvorimod en normalfordeling laves ved hjælp af $\mu$ og $\sigma$, så laves en T-fordeling ud fra frihedsgrader. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
+
 ```{r, echo = FALSE, fig.height = 3, fig.width = 8} 
 p1 <- qdist("t", df = 5, p = 1, return = "plot", xlim = c(-3, 3), ylab = "Tæthed") + theme(legend.position = "none")
 p2 <- qdist("t", df = 100, p = 1, return = "plot", xlim = c(-3, 3), ylab = "Tæthed") + theme(legend.position = "none")
@@ -433,7 +432,8 @@ $$
 sf(\overline{y}) = \frac{s}{\sqrt{n}}
 \end{aligned}
 $$
-hvor $s$ er standardafvigelsen for stikprøven og $n$ er antallet af observationer. Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Hvis det ønskede signifikansniveau er $5\%$, så skal x-værdien aflæses ved $2.5\%$ og $97.5\%$. I nedenstående eksempel er der en T-fordeling med 10 frihedsgrader:
+hvor $s$ er standardafvigelsen for stikprøven og $n$ er antallet af observationer. Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Hvis det ønskede signifikansniveau er $5\%$, så skal x-værdien aflæses ved $2.5\%$ og $97.5\%$. I nedenstående eksempel er der en T-fordeling med 10 frihedsgrader:  
+
 ```{r, echo = FALSE}
 qdist("t", df = 10, p = c(0.025,0.975))
 ```
@@ -499,7 +499,7 @@ $$
 Det kan ses at test størrelsen afhænger af $\overline{y}$, og $\mu_0$-værdien. Yderligere afhænger test størrelsen også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer.
 Ud fra denne test størrelse, er der nu to mulige måder at fortsætte. Enten skal $t_{crit}$ findes eller $p$-værdien skal findes. Først vil metoden med $t_{crit}$ forklares, hvorefter metoden med $p$-værdien forklares.
 
-Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Denne T-fordeling vil have $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
+Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Denne T-fordeling vil have $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$:  
 ```{r, echo = FALSE}
 qdist("t", p = c(0.025, 0.975), df = 99, return = "plot")
 ```
@@ -653,11 +653,11 @@ Det vil sige hvor højere $R^2$ er, desto større er ratioen $\frac{R^2}{1-R^2}$
 
 # Problemformulering
 Indenfor statistisk er der nogle interessante problemstillinger. Hvordan genereres tilfældige tal? Hvordan kan genereret tilfældige tal transformeres til en normalfordeling? Hvilke antagelser er der bag forskellige tests i statistisk, og hvad ville der ske, hvis disse antagelser blev brudt? Disse er alle interessante spørgsmål, som har ledt ud i følgende problemformulering:
-- Hvordan kan der ved hjælp af en PRNG, genereres tilfældige tal?  
-- Kan tilfældigeheden af PRNG'er blive undersøgt med tests og grafer?
-- Hvilke antagelser er der bag en t-test og ANOVA?
-- Hvad vil der ske, hvis disse antagelser brydes? Vil antallet af type I og type II fejl variere?
-- Er det muligt at reducere type I og type II fejl, på trods af at antagelserne er brudt?
+- Hvordan kan der ved hjælp af en PRNG, genereres tilfældige tal? 
+- Kan tilfældigeheden af PRNG'er blive undersøgt med tests og grafer?  
+- Hvilke antagelser er der bag en t-test og ANOVA?  
+- Hvad vil der ske, hvis disse antagelser brydes? Vil antallet af type I og type II fejl variere?  
+- Er det muligt at reducere type I og type II fejl, på trods af at antagelserne er brudt?  
 
 
 # Problemanalyse
