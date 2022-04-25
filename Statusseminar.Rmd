@@ -1,0 +1,463 @@
+
+---
+title: "P2"
+author: "Tobias Pedersen, Dat Luong, Adam Rumi, Kristoffer Lading, Xiaoyin Chang, Kasper Sommer"
+date: "4/3/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+ message = TRUE,
+	warning = TRUE)
+library(mosaic)
+library(ggplot2)
+library(ggpubr)
+library(cowplot)
+require(gridExtra)
+#install.packages("Rtools")
+#install.packages("ggpubr")
+#tinytex::install_tinytex()
+```
+
+# Introduktion
+I denne del af projektet, skabes der en Pseudo-Random Number generator, hvis formål er at generere tilfældige tal. Fordelingen af disse tal vil være uniform, og ved hjælp af en Box-Muller transformation vil der opnås en normalfordeling. Grunden til dette er at undersøge stikprøver fra en normalfordeling i forhold til Central Limit Theorem, da der er adskillige interessante statistiske spørgsmål herinden under.
+
+
+# Pseudo-Random Number Generators
+For at kunne generere tilfældige tal ud fra deterministiske computere,er det nødvendigt at bearbejde et input ved hjælp af en algoritme, således at det genererede tal tilsyneladende er tilfældigt. Et sådanne genereret tal kaldes et "Pseudo-Random Number", og disse bliver genereret ved hjælp af Pseudo-Random Number Generators (også kaldet PRNG'er). PRNG'er benytter et seed, som kan bestemmes af brugeren, til at generere de tilfældige tal. Et eksempel på en kendt PRNG, er en Lineære Kongruentiel Generator (Også kaldet LCG). 
+
+# Lineær kongruens generator
+I en lineær kongruens generator (LCG) er det muligt at generere tilfældige tal. LCG er en PRNG, så tallene der fås fra generatoren, vil ikke være fuldstændigt tilfældige. For LCG'en benyttes følgende formel, for at generere de tilfældige tal: 
+$$
+\begin{aligned}
+      X_{(n+1)}=(a*X_n+c)\;mod\;m
+\end{aligned}      
+$$
+	- $X_0$, som svarer til denne generators seed, $X_0$ $\geq$ 0.  
+	- $a$, som bliver ganget på $X_0$, $a$ $\geq$ 0.  
+	- $c$, som bliver adderet til $X_0$, $c$ $\geq$ 0.  
+	- $m$, kaldet modulus, $m > X_0$, $m > a$, $m > c$.  
+
+Her vil man starte med at indsætte $X_0$ på $X_{n}$'s plads, og ud fra dette kan man finde $X_1$. Derefter kan man indsætte $X_1$ på $X_n$’s plads og derefter få $X_2$. Denne proces kan gentages så mange gange som man har brug for.
+Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv, længden fra det første tal i generatoren frem til det første gentagende tal kaldes for en periode, og perioden afhænger meget af de valgte værdier af $a$, $c$ og $m$. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
+De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. I en undersøgelse af PRNG'er blev det påvist at den optimale periode kan opnås på to måder. Enten skal 2 være opløftet i $m$, eller 10 skal være opløftet i $m$. I denne rapport vælges $2^m$, og dertil er der yderligere nogle krav. Først og fremmest skal $c$ være et ulige tal, samt at $a-1\; mod\;4  = 0$, så længe $m$'s værdi kan divideres med 4. Dette er grunden til at de valgte værdier 
+
+
+Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en funktion f, som ikke har en invers funktion. Dette kan dog kun gøres en gang per tilstand, hvorimod andre PRNG’er kan have flere tilstande på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgås i rapporten.
+
+
+# Implementering af linear congruential generator
+Nedenstående blok kode blev brugt til at lave den lineære kongruentiale generator (LCG):
+```{r}
+
+linear_congruence <- function(i, X_0) {
+t <- 0
+a <- 11102361
+c <- 21353
+m <- 2**32
+v1 <- c()
+while(t < i){
+  X_0 <- (a*X_0+c)%%m
+  v1 <- c(v1 , as.numeric(((X_0)/m)))
+  t <- t + 1
+}
+return(v1)
+}
+linear_congruence(i=10, X_0 = 234)
+
+```
+
+Som beskrevet i afsnittet om LCG'er, skal generatoren bruge et seed. Derfor sættes $X_0$ lig med et tilfældigt tal, som i dette tilfælde er $1576$. Der skulle også bruges en $a$, $c$ og $m$ værdi, som i denne kode er sat til henholdsvis $11,102,357$, $21,353$ og $2^{32}$. Der er også oprettet to variabler: $t$ og $i$, som bruges i programmet, hvor $i$ er en parameter for funktionen, som svarer til det ønskede antal tilfældigt genererede tal, og $t$ har en startsværdi på 0, og øges med 1, hvert gang et tilfældigt tal genereres. Funktionen er sat op således, at så længe $t$ er mindre end $i$, vil $X_0$ blive brugt til at udregne en ny $X_0$ værdi. Værdien bliver dernæst tilføjet til en vektor $v1$, dog ikke før at værdien bliver divideret med $m$ og ganget med 100. Dernæst bliver $1$ adderet til $t$, og så loop'er funktionen. Resultatet af denne funktion, kan ses forneden:  
+KILDE: https://dl.acm.org/doi/pdf/10.5555/2955239.2955463
+
+```{r Linear Congruence, echo=FALSE}
+
+gf_histogram(~linear_congruence(i=10000, X_0 = 1576), breaks = seq(0, 1, by=0.1), fill="black", col="grey", xlim = c(0, 1), ylab = "Antal", xlab = "Tilfældige tal inddelt i intervaller",title = "Resultaterne af den implementerede PRNG")
+    
+```
+
+
+
+# Uafhængige test
+Indenfor PRNG'er er det vigtigt at de tilfældige tal der fås ikke afhænger af hinanden. Altså skal et tilfældigt tal $U_{i+1}$ ikke afhænge af $U_i$. Måden hvorpå man kan teste hvorvidt de afhænger af hinanden kaldes for Pearson's Chi i anden-test.
+Til denne test skal der opstilles en nulhypotese. Denne er vist forneden:
+$$
+\begin{aligned}
+H_0: Tallene \ der \ fås \ via \ LCG'en \ er \ uafhaengige \ af \ hinanden.
+\end{aligned}
+$$
+Med $H_0$ opstillet, skal en score kaldet $\chi^2$-scoren nu findes. Nedenstående formel viser hvordan man udregner $\chi^2$-scoren:
+$$
+\begin{aligned}
+\chi^2=\sum_{i=1}^{k}\frac{(O_i-F_i)^2}{F_i}
+\end{aligned}
+$$
+- $k$ betyder antallet af søjler.  
+- $O_i$ er den observet frekvens for den i'ende søjle.    
+- $F_i$ er den forventet frekvens.   
+
+På grund af dette vil en lav $\chi^2$-score betyde at de observerede værdier ligger tæt på de forventede værdier. Nedenstående er $\chi^2$-scoren udregnet:
+```{r Udregning af chi i anden}
+obs <- hist(linear_congruence(i=10000, X_0 = 1576), ylab = "Frekvens", xlab = "Intervaller", main = paste("Histogram af implementeret PRNG"))$counts
+exp <-  10000/20
+Chi2_score <- sum((obs-exp)^2)/exp
+Chi2_score
+```
+Det næste der skal gøres er at sammenligne resultatet af $\chi^2$-scoren med en kritisk værdi. Hvis $\chi^2$-scoren er højere end den kritiske værdi, skal $H_0$ nemlig forkastes. Den kritiske værdi findes ved hjælp af qchisq-funktionen. Heri skal der bruges et signifikansniveau, som sættes til $5\%$. Desuden skal der bruges et antal frihedsgrader, som svarer til $k-1$, altså vil det svare til de 20 søjler fra ovenstående graf minus 1, altså 19. Dette gøres i nedenstående blok:
+```{r udregning af kritisk værdi og sammenligning af de to}
+Chi_significance <- qchisq(0.95, 19)
+Chi2_score
+Chi_significance
+```
+Siden at $\chi^2$-scoren er lavere end den kritiske værdi, kan $H_0$ ikke forkastes, og der er derfor ikke nok bevis til at modbevise at tallene der fås ved hjælp af LCG'en er uafhængige fra hinanden. Yderligere kan en p-værdi findes, som gøres forneden:
+```{r udregning af p-værdi for chi i anden-test}
+pchisq(17.332, 19)
+```
+Dette betyder altså at hvis nulhypotesen er sand, så er der en $43\%$ chance for at dette data optræder. Siden $43\%$ er højere end signifikansniveauet på $5\%$, accepteres $H_0$.
+
+Grundet alt dette følger LCG'en altså en uniform fordeling med $95\%$ konfidens.
+
+
+
+# Box-Muller transformation
+Box-Muller transformationen er en metode, hvori to uniforme random variabler transformeres til en normal fordeling. Den primære ide er at ændre fra koordinatorne fra kartetiske til polære koordinator. 
+
+The principle idea is..instead of sampling independent Gaussians for the x and y coordinates of the samples, we sample their independent uniform angles and exponential squared distances to origin.
+
+For two independent random variables x and y, the joint probability density function $f(x,y)$ is simply the product of density functions f(x) and f(y). 
+
+
+Transformationen mellem kartetiske og polære-koordinator er:
+$x = cos(\theta)*r$
+$y = sin(\theta)*r$
+
+By writing the joint density function in polar cooridnates, 'the joint PDF is the product of a constant $1/2\pi$ and an exponential decay of $r^2$ with the parameter $\lambda = 1/2$. 
+
+In pratices, $U_1$ and $U_2$ are uniform random variables, $R^2$ is calculated by applying the inverse CDF method to sample from an exponential decay distribution with $\lambda = 1/2$, which is $-2ln(U_1)$. $\Theta$ is calculated from multiplying $2\pi$ on $U_2$. 
+
+
+Dette svarer til at generere en tilfærdig vinkel og en tilfældig radius, som følger en ekponential fordeling, which means it is more likely to generate distances closer to the origin, which is shown as
+
+
+```{r}
+cartesian_polar_transform <- function(){
+  uni_rand_num1 <- linear_congruence(i=1000, X_0 = 145)
+  uni_rand_num2 <- linear_congruence(i=1000, X_0 = 7346)
+  R <- sqrt(-2*log(uni_rand_num1))
+  theta <- 2*pi*uni_rand_num2
+  X <- R*cos(theta)
+  Y <- R*sin(theta)
+  plot(X,Y,pch=19, cex=0.4, asp=1, las=1)
+}
+
+cartesian_polar_transform()
+
+```
+
+
+
+
+#Quantile-quantile plot
+
+A Q–Q plot is a probability plot, which is a graphical method for comparing two probability distributions by plotting their quantiles against each other. we use qqplot to check the generated data X, Y follows a normal distribution. 
+
+The result is most data points fall along a straight line, which means data points of X,Y appears to be normally distributed. 
+
+
+```{r}
+
+qq_normality_check <- function(){
+  uni_rand_num1 <- linear_congruence(i=1000, X_0 = 145)
+  uni_rand_num2 <- linear_congruence(i=1000, X_0 = 7346)
+  R <- sqrt(-2*log(uni_rand_num1))
+  theta <- 2*pi*uni_rand_num2
+  X <- R*cos(theta)
+  Y <- R*sin(theta)
+  qqplot(X, Y) 
+  qqline(X, col = "red")
+}
+
+qq_normality_check()
+
+```
+
+
+
+## Fordelinger
+Der findes en lang række sandynlighedsfordelinger og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
+
+### Normalfordeling
+En normalfordeling er en symmetrisk klokkeformet fordeling. Centrum af denne graf bestemmes ud fra $\mu$ og spredningen af denne graf bestemmes ud fra $\sigma$. Fordelingen laves ud fra følgende formel:
+$$
+\begin{aligned}
+\phi(x) = \frac{1}{\sqrt{2\pi\sigma^2}}\cdot e^{-\frac{(x-\mu)^2}{2\sigma^2}}
+\end{aligned}
+$$
+hvor $\sigma$ og $\mu$ er kendt.
+
+En standardnormalfordeling er kendetegnet ved at $\mu = 0$, og at $\sigma = 1$. Nedenstående er der plottet en standardnormalfordeling:
+
+```{r, echo = FALSE}
+qdist("norm",p=1,mean = 0, sd = 1,xlim = c(-4,4), return = "plot", ylab = "Tæthed") + theme(legend.position = "none")
+```
+Jo højere tætheden er ved en specifik værdi, jo højere er sandsynligheden for at få værdier tæt på den specifikke værdi. Altså er sandsynligheden for at få en værdi tæt på 0 høj, da densiteten ved nul er ca. 0.4. I en normalfordeling gælder det, at jo længere der afviges fra $\mu$, jo lavere er tætheden, og sandsynligheden til at få værdier omkring specifikke værdier såsom 2, er lavere. 
+En af anvendelserne for en standarnormalfordeling er at den kan benyttes til en Z-test, som benyttes senere i projektet.
+
+#### T-fordeling  
+
+
+En T-fordeling har et symmetrisk klokkeformet udseende. Hvorimod en normalfordeling laves ved hjælp af $\mu$ og $\sigma$, så laves en T-fordeling ud fra frihedsgrader. Jo flere frihedsgrader der er, jo mere ligner en T-fordeling en standardnormalfordeling. Nedenstående er der plottet 2 T-fordelinger med henholdsvis 5 og 100 frihedsgrader:
+```{r, echo = FALSE, fig.height = 3, fig.width = 8} 
+p1 <- qdist("t", df = 5, p = 1, return = "plot", xlim = c(-3, 3), ylab = "Tæthed") + theme(legend.position = "none")
+p2 <- qdist("t", df = 100, p = 1, return = "plot", xlim = c(-3, 3), ylab = "Tæthed") + theme(legend.position = "none")
+grid.arrange(p1, p2, ncol=2)
+```
+### Uniform fordeling
+Der findes to slags uniforme fordelinger, en diskret uniform fordeling og en kontinuert uniform fordeling. I dette projekt arbejdes der med en kontinuert uniform fordeling. Dette skyldes at denne fordeling benyttes under generationen af tilfældige tal, hvor de genererede stokastiske variable er kontinuere. Den uniforme fordeling består af et antal søjler indenfor et givet interval. Søjlerne deler intervallet yderligere op. Sandsynligheden for at en værdi falder indenfor søjlernes interval er lige stor, da det er en uniform fordeling. Dette vil sige, at hvis der er 10 søjler, så er der en $10\%$ chance for at en værdi bliver genereret i den første søjles interval. Der er også en $10\%$ chance for at en værdi bliver genereret indenfor den anden søjles interval. Chancen vil altså være lige stor for alle søjlerne. Hvis antallet af observationer er lavt, vil fordelingen ikke tilsyneladende være uniform. Forneden plottes to uniforme fordelingen, hvor den eneste forskel er, at antallet af observationer ændres. Se nedenstående:
+
+```{r, echo = FALSE, fig.height=7}
+
+set.seed(1234)
+unifx <- runif(50,min = 0, max =1)
+set.seed(1234)
+unifx1 <- runif(5000, min = 0, max = 1)
+
+p1 <- gf_histogram(~unifx,breaks = seq(0,1,by=0.1), fill="black", col="grey",xlab = "Tilfældige tal inddelt i intervaller", ylab = "Antal", title = "Uniform fordeling ved 50 observationer")
+p2 <- gf_histogram(~unifx1,breaks = seq(0,1,by=0.1), fill="black", col="grey",xlab = "Tilfældige tal inddelt i intervaller", ylab = "Antal", title = "Uniform fordeling ved 5000 observationer")
+grid.arrange(p1, p2, nrow=2)
+```
+
+## Statistisk inferens
+Indenfor statistisk analyse er der to kategorier; den første, deskriptiv statistik har i fokus at beskrive data, hvor den anden statistisk inferens har i fokus, at lave forudsigelser om et element på baggrund af data og tendenser dertil.
+I rapporten anvendes statistisk inferens, det gøres i form af estimation, der benyttes både punktestimater og intervalestimater, hvilket vil sige, at der først findes et punktestimat, altså det bedste gæt, eksemplificeret ved middelværdien fra en stikprøve. Selvom der så er en uendeligt lille sandsynlighed for, at det også er middelværdien i hele populationen, kan estimatet anvendes, til at lave et intervalestimat (et kvalificeret gæt på et interval, hvori undersøgte parameter i en population ligger). Dette eksemplificeres ved den mest almindelige form for intervalestimat; konfidensinterval, hvori hele populationens middelværdi med ret stor sikkerhed hører til.
+
+### Konfidensinterval
+
+Når der indenfor statistik estimeres en populations parameter ud fra en stikprøve, vil resultatet aldrig være perfekt. Dette resulterer i en fejlmargin, som der skal tages højde for. En måde hvorpå man kan tage højde for denne fejlmargin er et konfidensinterval.
+
+Et konfidensinterval for en givet parameter, er et interval mellem to tal, hvori det estimeres at parameteren ligger.
+Sandsynligheden for at producere et interval, som indeholder parameteren kaldes for et dækningsgraden af konfidensintervallet. Denne værdi er valgt til et tal tæt på 1, som regel enten 0.95 eller 0.99.
+
+En konfidensinterval skabes på baggrund, af et punktestimat og fejlmarginen. Måden dette gøres på, kan ses forneden. Desuden er det også antaget, at populationen er normaltfordelt:
+$$
+\begin{aligned}
+KI = Punktestimat \; \pm \; fejlmargin
+\end{aligned}
+$$
+I det nedenstående afsnit, vil der ved hjælp af et eksempel vises, hvordan et konfidensinterval for kvantitative variabler findes.
+
+
+### Hypoteser
+
+Hypoteserne gør det muligt at antage værdier af en populations parameter og ved hjælp af en hypotesetest kan der konkluderes om disse burde forkastes eller accepteres. Specifikt findes der to hypoteser, som typisk bruges indenfor statistik, som er betegnet som $H_0$ og $H_a$, det er henholdsvis nulhypotesen og den alternative hypotese.
+
+Et klassisk eksempel på en nulhypotese kan være:
+$$
+\begin{aligned}
+H_0: \mu = \mu_0
+\end{aligned}
+$$
+Dette er en antagelse, hvor $\mu$ er lig med $\mu_0$. Typisk vil $\mu_0$ sættes lig med 0, da nulhypotesens formål er at antage at der ingen effekt er. Hernæst opstilles der en konkurrerende hypotese som er $H_a$, den alternativ hypotese.
+$$
+\begin{aligned}
+H_a: \mu \ne \mu_0
+\end{aligned}
+$$
+Dette er en antagelse, hvor $\mu$ ikke er lig med $\mu_0$. Den alternative hypoteses formål er at antage at der er en effekt. Derved hvis at $\mu_0 = 0$, så vil enhver anden værdi, positiv eller negativ, have en effekt.
+Disse to hypoteser vil opstilles på følgende måde:
+$$
+\begin{aligned}
+H_0 : \mu = \mu_0
+\\
+H_a : \mu \not= \mu_0
+\end{aligned}
+$$
+For at finde ud af hvilken af disse hypoteser, som er den korrekte og mest sandsynlige, kan der foretages en hypotesetest, som vil blive forklaret i næste afsnit.
+# Metoder
+
+## Hypotesetest
+  
+
+I en hypotesetest for kvantitative variabler, er der nogle nødvendige antagelser. Først og fremmest, antages det at populationen er normalfordelt, samt at der alle observationerne i stikprøven er udvalgt tilfældigt ud fra populationen. Dernæst opstilles der to hypoteser, $H_0$ $H_a$:
+
+$$
+\begin{aligned}
+H_0: \mu = \mu_0
+\\
+H_a: \mu  \ne \mu_0
+\end{aligned}
+$$
+Det næste der skal gøres, er at udregne en test størrelse, som kan gøres ved hjælp af følgende formel:
+$$
+\begin{aligned}
+t = \frac{\overline{y}-\mu_0}{sf(\overline{y})}, \ \ \ sf(\overline{y})=\frac{s}{\sqrt{n}} 
+\end{aligned}
+$$
+Det kan ses at test størrelsen afhænger af $\overline{y}$, og $\mu_0$-værdien. Yderligere afhænger test størrelsen også af standardfejlen. Standardfejlen udregnes ved at dividere afvigelsen af stikprøven med kvadradroden af antallet af observationer.
+Ud fra denne test størrelse, er der nu to mulige måder at fortsætte. Enten skal $t_{crit}$ findes eller $p$-værdien skal findes. Først vil metoden med $t_{crit}$ forklares, hvorefter metoden med $p$-værdien forklares.
+
+Ved hjælp af en T-fordeling, kan $t_{crit}$ findes. Denne T-fordeling vil have $n-1$ frihedsgrader. Yderligere skal der vælges et signifikansniveau, og dette sættes til $5\%$. 
+
+```{r, echo = FALSE}
+qdist("t", p = c(0.025, 0.975), df = 99, return = "plot")
+```
+Nu kan $t_{crit}$ aflæses til at være $\pm 1.984$. Ved at sammenligne test størrelsen med $t_{crit}$, kan man dernæst komme til en konklusion. Hvis $t_{crit}$ ligger indenfor $\pm 1.984$, altså $t_{crit}$, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil dermed accepteres. Hvis test størrelsen ligger udenfor intervallet, vil $H_0$ forkastes, og $H_a$ vil dermed være mere sandsynlig.
+
+Test størrelsen kan også undersøges ved hjælp af $p$-værdien frem for $t_{crit}$. Her kan $p$-værdien findes, ved at benytte test størrelsen sammen med en T-fordeling. Denne T-fordeling har $n-1$ frihedsgrader. I nedenstående eksempel er $p$-værdien udregnet ud fra en test størrelse på 2:
+
+```{r, echo = FALSE}
+2* (1 - pdist("t", q = 2, df = 99))
+```
+Her aflæses $p$-værdien altså til at være 0.048. Da signifikansniveauet $\alpha = 0.05$, betyder det altså at $p\le\alpha$. Dette betyder at der evidens til at forkaste $H_0$, hvilket betyder at $H_a$ er mere sandsynlig og den accepteres derfor. Hvis $p$-værdien er højere end signifikansniveauet, så vil der ikke være nok evidens til at forkaste $H_0$, og den vil derved accepteres.
+
+## Fejl i hypotesetest
+
+
+Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal forkastes, eller at nulhypotesen ikke kan forkastes. Dette betyder at der er to typer tilfælde, hvor konklusionen er korrekt og to, hvor  konklusionen er forkert. De to fejltyper kaldes type 1 og type 2. Den førstnævnte, er når nulhypotesen forkastes, selvom den i virkeligheden, var sand.
+
+
+ Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
+
+
+
+```{r, fig.height = 3, fig.width = 8} 
+p1 <- qdist(mean = 0, sd = 1, p = 1, return = "plot")
+p2 <- qdist(mean = 0, sd = 1, p = 0.5, return = "plot")
+#p3 <- qdist(mean = 0, sd = 1, p = 0, return="plot")
+grid.arrange(p1, p2, ncol=2)
+
+```
+
+
+## Lineær regression
+ 
+Lineær regression er en model, hvori det ønskes at forudsige $y$ (en responsvariabel), ud fra $x$ (en forklarende variabel). Ud fra denne undersøgelse vil der opnås en graf, med en regressionslinje. En regressionslinje er en ret linje som minimerer den vertikale afstand mellem alle punkterne og linjen. Der vil desuden også være en ligning for denne regressionslinje, se nedenstående:
+$$
+\begin{aligned}
+E(y) = \alpha + \beta \ \cdot x
+\end{aligned}
+$$
+hvor:  
+- $E(y)$ er den forventede værdi af $y$.  
+- $\alpha$ er skæringen i y-aksen.  
+- $\beta$ bestemmer hældningen af regressionslinjen baseret på $x$'s værdi.  
+
+```{r dataframe for lineær regression, include = FALSE}
+set.seed(1)
+df <- data.frame(x = c(0:20))
+df$y <- 2*df$x + rnorm(20, sd = 5)
+```
+Nedenstående er der plottet et eksempel på en lineær model. Desuden er der indskrevet ligningen for regressionslinjen:
+```{r eksempel på lineær regression}
+ggplot(data = df, aes(x = x, y = y)) +
+  geom_smooth(method = "lm") +
+  geom_point() +
+  stat_regline_equation(label.x = 5, label.y = 35) +
+  ggtitle("Eksempel på lineær regression")
+  
+```
+Som det kan ses på figuren, er der få punkter som ligger tæt på regressionslinjen. Dette skyldes at denne regressionslinje er den "bedste" rette linje, altså den rette linje, hvor den vertikale afstand mellem punkterne og linjen er mindst.
+
+For at undersøge hvad den vertikale afstand mellem punkterne og regressionslinjen, benyttes en metode kaldes "Sum of Squares Error" (også kaldet $SSE$), som udregnes på følgende måde:
+$$
+\begin{aligned}
+SSE = \sum (y_i-\hat{y_i})^2
+\end{aligned}
+$$
+Jo lavere $SSE$ er, jo bedre passer punkterne altså på regressionslinjen, den forklarer yderligere, hvor langt hvert datapunkt er fra de forudsagte datapunkter. Yderligere kan "Total Sum of Squares" (også kaldet $TSS$) udregnes på følgende måde:
+$$
+\begin{aligned}
+TSS = \sum (y_i-\overline{y})^2
+\end{aligned}
+$$
+Denne formel forklarer forskellen mellem hvert punkt og $y$'s gennemsnit. Endnu en formel man kan udregne kaldes "Sum of Squared Regression" (også kaldet $SSR$) og udregnes på følgende måde:
+$$
+\begin{aligned}
+SSR = \sum (\hat{y_i}-\overline{y})^2
+\end{aligned}
+$$
+Denne formel forklarer forskellen mellem de forudsagte datapunkter og $y$'s gennemsnit. Der er en sammenhæng mellem disse tre formler, nemlig at:
+$$
+\begin{aligned}
+TSS = SSE + SSR
+\end{aligned}
+$$
+Med disse 3 værdier kan det udregnes hvor god $x$ er til at forudsige $y$. Måden hvorpå dette kan udregnes, står forneden:
+$$
+\begin{aligned}
+R^2 = \frac{SSR}{TSS}=\frac{TSS-SSE}{TSS}
+\end{aligned}
+$$
+Denne $R^2$-værdi vil altid være imellem 0 og 1, hvor 1 betyder at $y$ kan forudsiges ud fra $x$ alene, og hvor 0 betyder at $y$ slet ikke kan forudsiges ud fra $x$.
+
+## Multipel lineær regression
+En multipel lineær regression minder meget om en lineær regression, dog med den forskel at der her er flere forklarende variabler. Dette vil altså sige, at den førnævnte ligning for regressionslinjen, her vil se ud på denne måde:
+$$
+\begin{aligned}
+E(y) = \alpha + \beta_1 \cdot x_1 + \beta_2 \cdot x_2 + ... + \beta_n \cdot x_n
+\end{aligned}
+$$
+
+
+## F-test
+
+En F-test er en statistisk test som har en F fordelingen under nul hypotese. Den er mest ofte brugt når man sammenligner statistiske modeller i et datasæt til at identificere den model som passer bedst til populationen fra dataen. Det er en test som hæder statistikeren, Ronald A. Fisher, som opdagede F-fordelingen i 1922. F-fordelingen kan kun tage ikke negative værdier og den er noget skævt til højre, ligesom en chi i anden-fordelingen. Den nedenstående figur illustrerer dette. I forhold til T-test som har til formål at sammenligne middelværdierne i to populationer, så vil F-test sammenligne spredninger (eller varianser. Principperne for denne test er identiske med principperne for t-testene. Blot beregnes tesetstørrelsen på en anden måde, og der skal bruges F-fordelingen til at beregnes testsandsynligheden.
+
+
+
+Denne figur viser $F$ fordelingen og $P$-værdien for $F$ test. Hvor højere $F$-værdier betyder at der er større evidens for at kunne forkaste $H_0$.
+
+For at udregne en f-score skal man opstille en $F$-brøk. En $F$-brøk udregnes på følgende måde:
+
+$$
+\begin{aligned}
+F = \frac{MSR}{MSE}
+\end{aligned}
+$$
+$MSR$ og $MSE$ er varianser fra variationerne $SSR$ og $SSE$. Disse varianser står for $MSR$ betyder "Mean Square Regression" og $MSE$ betyder "Mean Square Error". De bliver så udregnet på følgende måde:
+
+$$
+\begin{aligned}
+MSR = \frac{SSR}{k}
+\end{aligned}
+$$
+$$
+\begin{aligned}
+MSE = \frac{SSE}{n-k-1}
+\end{aligned}
+$$
+Varians udregnes ved at dividere variationen med dens frihedsgrad. Dette er bestemt af to frihedsgrader som er noteret som $df_1$ og $df_2$
+
+Dette er antallet af variabler i modellen.
+$$
+\begin{aligned}
+df_1 = k
+\end{aligned}
+$$
+Dette er n - antal af parameter i regressions udregningen.
+$$
+\begin{aligned}
+df_2 = n - (k+1)
+\end{aligned}
+$$
+
+Den første frihedsgrad, $df_1$ = $k$ er tælleren ($R^2$) i F testen. Den anden frihedsgrad $df_2$ = n - (k + 1) er nævneren (1- $R^2$).
+
+$$
+\begin{aligned}
+\frac{R^2}{(1-R^2)}
+\end{aligned}
+$$
+Det vil sige hvor højere $R^2$ er, desto større er ratioen $\frac{R^2}{1-R^2}$, og desto større er F test værdien. Ved en høj F test værdi hvor større evidens er der for at forkaste $H_0$.
+
+
+# Problemformulering
+Indenfor statistisk er der nogle interessante problemstillinger. Hvordan genereres tilfældige tal? Hvordan kan genereret tilfældige tal transformeres til en normalfordeling? Hvilke antagelser er der bag forskellige tests i statistisk, og hvad ville der ske, hvis disse antagelser blev brudt? Disse er alle interessante spørgsmål, som har ledt ud i følgende problemformulering:
+- Hvordan kan der ved hjælp af en PRNG, genereres tilfældige tal?  
+- Kan tilfældigeheden af PRNG'er blive undersøgt med tests og grafer?
+- Hvilke antagelser er der bag en t-test og ANOVA?
+- Hvad vil der ske, hvis disse antagelser brydes? Vil antallet af type I og type II fejl variere?
+- Er det muligt at reducere type I og type II fejl, på trods af at antagelserne er brudt?

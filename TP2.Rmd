@@ -6,15 +6,21 @@ output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+ message = TRUE,
+	warning = TRUE)
 library(mosaic)
 library(ggplot2)
-library(ggpubr)
+#library(ggpubr)
 library(cowplot)
 require(gridExtra)
+#install.packages("Rtools")
 #install.packages("ggpubr")
 #tinytex::install_tinytex()
 ```
+
 
 
 # Introduktion
@@ -51,6 +57,9 @@ Her vil man starte med at indsætte $X_0$ på $X_{n}$'s plads, og ud fra dette k
 Det er vigtigt at nævne, at før eller siden vil tallene fra sådanne en generator begynde at gentage sig selv, længden fra det første tal i generatoren frem til det første gentagende tal kaldes for en periode, og perioden afhænger meget af de valgte værdier af $a$, $c$ og $m$. Ved at ændre m til et meget højt tal, vil der dog gå meget lang tid før at tallene begynder at gentage sig selv. Andre der bruger denne generator anbefaler $2^{31}$. 
 De tilfældige tal man kan få ud af denne generator, er uniform fordelt. Tallene er kontinuære. Ved at omhyggeligt vælge sine $a, c$ og $m$ værdier kan man også sørge for at tallene man får, ikke ser ud til at have nogen korrelation med hinanden. I en undersøgelse af PRNG'er blev det påvist at den optimale periode kan opnås på to måder. Enten skal 2 være opløftet i $m$, eller 10 skal være opløftet i $m$. I denne rapport vælges $2^m$, og dertil er der yderligere nogle krav. Først og fremmest skal $c$ være et ulige tal, samt at $a-1\; mod\;4  = 0$, så længe $m$'s værdi kan divideres med 4. Dette er grunden til at de valgte værdier. 
 
+```{r}
+##![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/PRNG_Forklaring.jpg){width=50%}
+```
 Når ens program startes op får man en state ud fra det seed man bruger. Denne state kan dernæst ændres til en anden state ved hjælp af en funktion f, som ikke har en invers funktion. Dette kan dog kun gøres en gang per tilstand, hvorimod andre PRNG’er kan have flere tilstande på en gang. Et eksempel er Mersenne twister, men denne vil ikke gennemgås i rapporten.
 
 # Implementering af linear congruential generator
@@ -322,6 +331,33 @@ Box_muller_transform()
 Kapitel 1: ASta bog
 Population:
 En population kan betragtes som alle ting eller folk, som eksempelvist har en eller flere vilkår, der gælder. For eksempel kan det være den voksne del af den danske befolkningen, der spiller fodbold. Ud fra en population kan der tages en stikprøve,altså en subgruppe af populationen, hvor der regelmæssigt benyttes "Simple Random Sampling", hvor alle observationerne, har lige sandsynlighed for at blive trukke ud i stikprøven. 
+I en population betegnes middelværdien som $\mu$ og standardafvigelsen som $\sigma$, hvorimod stikprøvens middelværdi betegnes som $\overline{y}$, og stikprøvens standardafvigelse betegnes som $s$.
+
+
+##CLT og Stikprøv
+
+According to Central Limit Theorem, the sample mean $\bar{y}$ is normally distributed $\bar{y}\approx norm(\mu, \frac{\sigma}{\sqrt{n}})$. It is stated that population mean $\mu$ lies in the interval $[\bar{y} - 2\frac{\sigma}{\sqrt{n}}, \bar{y} + 2\frac{\sigma}{\sqrt{n}}]$  at a significance level at $\alpha = 0.05$.
+
+Below it is shown that taking sufficiently large random samples from a left-skewed population, the distribution of the sample means is observed to be approximately normally distributed, provided that the sample size is sufficiently large ($n>=30$).
+
+
+```{r}
+
+generate_sampling_distribution <- function(sample_size){
+  set.seed(199)
+  n = 10^5
+  sample_means = rep(0, n)
+  for (i in 1:n){
+   sample_means[i] = mean(rgamma(sample_size, shape=9, rate=2))
+  }
+  hist(sample_means, main="Central Limit Theorem", xlab="Sampling distribution with a sample size of 30")
+  
+  
+}
+
+## Sampling Distribution, CLT
+generate_sampling_distribution(30)
+```
 
 
 ## Middelværdi og standardafvigelse
@@ -349,6 +385,21 @@ $$
 \sigma=\pm\sqrt{\sigma^2}
 \end{aligned}
 $$
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
 
 ## Fordelinger
 Der findes en lang række sandynlighedsfordelinger og i det følgende afsnit fokuseres der på de fordelinger, som har mest relevans for projektet. 
@@ -521,7 +572,7 @@ Indenfor signifikanstest, er der to mulige konklusioner; at nulhypotesen skal fo
 
  Dermed afhænger type 1  af signifikansniveauet, som sædvanligvis sættes til 5% således at hvis p-værdien, altså sansynligheden er under 0,05 forkastes hypotesen. Det har den virkning at der i 5% af tilfældene, laves en type 1 fejl. Type 2 fejl er således fejl, hvor nulhypotesen ikke forkastes, på trods af at den i virkeligheden er forkert. Denne type fejl sker oftere jo lavere signifikansniveauet er sat til, hvorfor signifikansniveauet ikke bare kan sættes til 0,00001 eller et andet meget lavet tal.
 
-![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
+#![]#(C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/FejlTabel.png){width=50%}
 
 ```{r, fig.height = 3, fig.width = 8} 
 p1 <- qdist(mean = 0, sd = 1, p = 1, return = "plot")
@@ -603,7 +654,7 @@ $$
 DETTE AFSNIT ER SKREVET UD FRA KAPITEL 11 I BOGEN  
 En F-test er en statistisk test som har en F fordelingen under nul hypotese. Den er mest ofte brugt når man sammenligner statistiske modeller i et datasæt til at identificere den model som passer bedst til populationen fra dataen. Det er en test som hæder statistikeren, Ronald A. Fisher, som opdagede F-fordelingen i 1922. F-fordelingen kan kun tage ikke negative værdier og den er noget skævt til højre, ligesom en chi i anden-fordelingen. Den nedenstående figur illustrerer dette. I forhold til T-test som har til formål at sammenligne middelværdierne i to populationer, så vil F-test sammenligne spredninger (eller varianser. Principperne for denne test er identiske med principperne for t-testene. Blot beregnes tesetstørrelsen på en anden måde, og der skal bruges F-fordelingen til at beregnes testsandsynligheden.
 
-![](C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/F-model.png){width=50%}
+#![]#(C:/Users/tobop/OneDrive - Aalborg Universitet/Documents/GitHub/P2/F-model.png){width=50%}
 
 Denne figur viser $F$ fordelingen og $P$-værdien for $F$ test. Hvor højere $F$-værdier betyder at der er større evidens for at kunne forkaste $H_0$.
 
@@ -662,7 +713,15 @@ Indenfor statistisk er der nogle interessante problemstillinger. Hvordan generer
 
 # Problemanalyse
 
+
+
 ## Simulationer
-En simulation er en modellering af tilfældige begivenheder, hvor det simulerede udfald, skal estimere mulige udfald for virkeligheden. 
+En simulation er en modellering af tilfældige begivenheder, hvor det simulerede udfald, skal estimere mulige udfald for virkeligheden. Formålet med simulationen i projektets omfang, er at eftervise statiske metoder, samt se hvornår de fejler. 
+
+
+
+
+
+
  
 
